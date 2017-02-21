@@ -97,7 +97,7 @@ public class RoofGeneralisation
             String _ASC = "asc";
             String _Input_Filename_WithoutExtension;
             File _Output_Directory;
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             File _Workspace_Directory = new File(_Input_Directory + "/Workspace/");
             String[] _ImageTypes = new String[1];
             _ImageTypes[0] = "PNG";

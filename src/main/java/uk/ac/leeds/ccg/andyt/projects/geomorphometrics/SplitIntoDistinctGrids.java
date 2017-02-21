@@ -232,7 +232,7 @@ public class SplitIntoDistinctGrids
             throws IOException {
         try {
             System.out.println("_Output " + _Grid2DSquareCell.toString(false));
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
             //int _StringLength = 1000;
             String _DotASC = ".asc";
@@ -290,7 +290,7 @@ public class SplitIntoDistinctGrids
             throws IOException {
         try {
             System.out.println("_Output " + _Grid2DSquareCell.toString(false));
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             //int _StringLength = 1000;
             String _DotPNG = ".png";
             String _PNG = "PNG";

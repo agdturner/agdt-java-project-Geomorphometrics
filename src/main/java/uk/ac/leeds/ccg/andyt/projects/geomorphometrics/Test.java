@@ -461,7 +461,7 @@ public class Test
             this.set_Directory(_Workspace_Directory);
             boolean swapOutInitialisedFiles = false;
             boolean swapOutProcessedChunks = false;
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
             int _NameLength = 1000;
             String _Name = _Grids_Environment.initString(_NameLength, false);
@@ -507,7 +507,6 @@ public class Test
 //                    _Name = initString( _NameLength, _HandleOutOfMemoryError );
                     output(
                             metrics1[i],
-                            _Grids_Environment.get_Grid2DSquareCellProcessor(),
                             _Output_Directory,
                             _ImageExporter,
                             null,
@@ -636,7 +635,7 @@ public class Test
                     _HandleOutOfMemoryError);
             _Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
             this.set_Directory(_Workspace_Directory);
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
             BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions(_HandleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
@@ -661,7 +660,6 @@ public class Test
                             _HandleOutOfMemoryError);
                     output(
                             _SlopeAndAspect[i],
-                            _Grids_Environment.get_Grid2DSquareCellProcessor(),
                             _Output_Directory,
                             _ImageExporter,
                             null,
@@ -704,7 +702,7 @@ public class Test
 //                    _Workspace_Directory0,
 //                    _Filename,
 //                    _HandleOutOfMemoryError );
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
 
             addToGrid(
@@ -717,8 +715,7 @@ public class Test
                     _HandleOutOfMemoryError);
             output(
                     _Grid,
-                    _Grids_Environment.get_Grid2DSquareCellProcessor(),
-                    _Output_Directory,
+                     _Output_Directory,
                     _ImageExporter,
                     null,
                     _ESRIAsciiGridExporter,
@@ -759,7 +756,7 @@ public class Test
                     _HandleOutOfMemoryError);
             _Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
             this.set_Directory(_Workspace_Directory);
-            ImageExporter _ImageExporter = new ImageExporter();
+            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
             ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
             double outflowHeight = 0;
             double _double_Minus1Point0 = -1.0d;
@@ -777,7 +774,6 @@ public class Test
                     _HandleOutOfMemoryError);
             output(
                     result,
-                    _Grids_Environment.get_Grid2DSquareCellProcessor(),
                     _Output_Directory,
                     _ImageExporter,
                     null,
