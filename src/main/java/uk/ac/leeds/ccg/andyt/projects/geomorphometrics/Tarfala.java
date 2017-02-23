@@ -76,7 +76,8 @@ public class Tarfala
      */
     public static void main(String[] args) {
         //File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/test/Workspace");
-        File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/Workspace");
+        //File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/Workspace");
+        File _Directory = new File("C:/Temp/Owen/Workspace");
         System.out.print("" + _Directory.toString());
         if (_Directory.exists()) {
             System.out.println(" exists.");
@@ -99,17 +100,21 @@ public class Tarfala
             // Init nrows, ncols, chunkNRows, chunkNCols, NoDataValue
             //nrows = 4415;
             //ncols = 4838;
-            nrows = 6192;
-            ncols = 7224;
+//            nrows = 6192;
+//            ncols = 7224;
             //nrows = 774;
             //ncols = 903;
+            nrows = 7110;
+            ncols = 6260;
 
 //            chunkNRows = 200;
 //            chunkNCols = 883;
 //            chunkNRows = 64;
 //            chunkNCols = 64;
-            chunkNRows = 774;
-            chunkNCols = 903;
+//            chunkNRows = 774;
+//            chunkNCols = 903;
+            chunkNRows = 711;
+            chunkNCols = 626;
             NoDataValue = -9999.0d;
             this._Grid2DSquareCellIntFactory = new Grid2DSquareCellIntFactory(
                     this._Directory,
@@ -265,25 +270,7 @@ public class Tarfala
 
 //        maxIterations = 2000;
         
-//            do_SlopeAndAspect(
-//                    grid,
-//                    outputDirectory,
-//                    workspaceDirectory,
-//                    aESRIAsciiGridExporter,
-//                    aImageExporter,
-//                    imageTypes,
-//                    minDistance,
-//                    maxDistance,
-//                    multiplier,
-//                    handleOutOfMemoryError);
-//            do_HollowFilledDEM(
-//                grid,
-//                maxIterations,
-//                outputDirectory,
-//                workspaceDirectory,
-//                handleOutOfMemoryError );
-            boolean swapOutProcessedChunks = true;
-            do_Metrics1(
+            do_SlopeAndAspect(
                     grid,
                     outputDirectory,
                     workspaceDirectory,
@@ -293,9 +280,27 @@ public class Tarfala
                     minDistance,
                     maxDistance,
                     multiplier,
-                    swapOutInitialisedFiles,
-                    swapOutProcessedChunks,
                     handleOutOfMemoryError);
+//            do_HollowFilledDEM(
+//                grid,
+//                maxIterations,
+//                outputDirectory,
+//                workspaceDirectory,
+//                handleOutOfMemoryError );
+            boolean swapOutProcessedChunks = true;
+//            do_Metrics1(
+//                    grid,
+//                    outputDirectory,
+//                    workspaceDirectory,
+//                    aESRIAsciiGridExporter,
+//                    aImageExporter,
+//                    imageTypes,
+//                    minDistance,
+//                    maxDistance,
+//                    multiplier,
+//                    swapOutInitialisedFiles,
+//                    swapOutProcessedChunks,
+//                    handleOutOfMemoryError);
 //            do_Metrics2(
 //                    grid,
 //                    outputDirectory,
