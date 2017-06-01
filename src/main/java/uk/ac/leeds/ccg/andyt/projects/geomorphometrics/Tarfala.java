@@ -77,7 +77,9 @@ public class Tarfala
     public static void main(String[] args) {
         //File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/test/Workspace");
         //File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/Workspace");
-        File _Directory = new File("C:/Temp/Owen/Workspace");
+        File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Owen/Workspace");
+        //File _Directory = new File("C:/Temp/Owen/Workspace");
+        //File _Directory = new File("C:/Temp/Owen/Workspace2");
         System.out.print("" + _Directory.toString());
         if (_Directory.exists()) {
             System.out.println(" exists.");
@@ -104,8 +106,13 @@ public class Tarfala
 //            ncols = 7224;
             //nrows = 774;
             //ncols = 903;
-            nrows = 7110;
-            ncols = 6260;
+//            nrows = 7110;
+//            ncols = 6260;
+//            nrows = 7426;
+//            ncols = 8304;
+            nrows = 1993;
+            ncols = 6728;
+            //ncols = 6727;
 
 //            chunkNRows = 200;
 //            chunkNCols = 883;
@@ -113,26 +120,22 @@ public class Tarfala
 //            chunkNCols = 64;
 //            chunkNRows = 774;
 //            chunkNCols = 903;
-            chunkNRows = 711;
-            chunkNCols = 626;
+//            chunkNRows = 711;
+//            chunkNCols = 626;
+//            chunkNRows = 3713;
+//            chunkNCols = 519;
+            chunkNRows = 1993;
+            chunkNCols = 232;
+            //chunkNCols = 217;
             NoDataValue = -9999.0d;
-            this._Grid2DSquareCellIntFactory = new Grid2DSquareCellIntFactory(
-                    this._Directory,
+            init_Grid2DSquareCellIntFactory(
                     chunkNRows,
-                    chunkNCols,
-                    this._Grid2DSquareCellIntChunkFactory,
-                    this._Grids_Environment,
-                    this._HandleOutOfMemoryError);
+                    chunkNCols);
             //this._Grid2DSquareCellIntFactory.set_ChunkNRows(chunkNRows);
             //this._Grid2DSquareCellIntFactory.set_ChunkNCols(chunkNCols);
-            this._Grid2DSquareCellDoubleFactory = new Grid2DSquareCellDoubleFactory(
-                    this._Directory,
-                    chunkNRows,
+            init_Grid2DSquareCellDoubleFactory(chunkNRows,
                     chunkNCols,
-                    this._Grid2DSquareCellDoubleChunkFactory,
-                    NoDataValue,
-                    this._Grids_Environment,
-                    this._HandleOutOfMemoryError);
+                    NoDataValue);
             this._Grids_Environment.setGrid2DSquareCellProcessor(this);
             //this._Grid2DSquareCellDoubleFactory.set_ChunkNRows(chunkNRows);
             //this._Grid2DSquareCellDoubleFactory.set_ChunkNCols(chunkNCols);
@@ -164,6 +167,20 @@ public class Tarfala
                                 inputDirectory,
                                 inputFilename,
                                 _HandleOutOfMemoryError);
+
+//                        if (inputFilename.equalsIgnoreCase("rastert_c0202_c1.asc")) {
+//                            nrows = 7594;
+//                            ncols = 8394;
+//                            chunkNRows = 3797;
+//                            chunkNCols = 1399;
+//                        }
+                        init_Grid2DSquareCellIntFactory(
+                                chunkNRows,
+                                chunkNCols);
+                        init_Grid2DSquareCellDoubleFactory(chunkNRows,
+                                chunkNCols,
+                                NoDataValue);
+
 //                        grid2DSquareCellDouble = (Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(
 //                                inputFile);
                         grid2DSquareCellDouble = (Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(
@@ -233,6 +250,32 @@ public class Tarfala
         }
     }
 
+    private void init_Grid2DSquareCellDoubleFactory(
+            int chunkNRows,
+            int chunkNCols,
+            double NoDataValue) {
+        this._Grid2DSquareCellDoubleFactory = new Grid2DSquareCellDoubleFactory(
+                this._Directory,
+                chunkNRows,
+                chunkNCols,
+                this._Grid2DSquareCellDoubleChunkFactory,
+                NoDataValue,
+                this._Grids_Environment,
+                this._HandleOutOfMemoryError);
+    }
+
+    private void init_Grid2DSquareCellIntFactory(
+            int chunkNRows,
+            int chunkNCols) {
+        this._Grid2DSquareCellIntFactory = new Grid2DSquareCellIntFactory(
+                this._Directory,
+                chunkNRows,
+                chunkNCols,
+                this._Grid2DSquareCellIntChunkFactory,
+                this._Grids_Environment,
+                this._HandleOutOfMemoryError);
+    }
+
     /**
      *
      * @param grid
@@ -269,7 +312,6 @@ public class Tarfala
             int multiplier = 2;
 
 //        maxIterations = 2000;
-        
             do_SlopeAndAspect(
                     grid,
                     outputDirectory,
@@ -491,19 +533,19 @@ public class Tarfala
                     _Filename,
                     handleOutOfMemoryError);
             _Filename = _Grids_Environment.initString(_FilenameLength, handleOutOfMemoryError);
-            this.set_Directory( workspaceDirectory );
+            this.set_Directory(workspaceDirectory);
             int _NameLength = 1000;
-            String _Name = _Grids_Environment.initString( _NameLength, handleOutOfMemoryError );
-            BigDecimal[] dimensions = grid.get_Dimensions( handleOutOfMemoryError );
-            double cellsize = Double.valueOf( dimensions[ 0 ].toString() ).doubleValue();
+            String _Name = _Grids_Environment.initString(_NameLength, handleOutOfMemoryError);
+            BigDecimal[] dimensions = grid.get_Dimensions(handleOutOfMemoryError);
+            double cellsize = Double.valueOf(dimensions[0].toString()).doubleValue();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
             AbstractGrid2DSquareCell dummyGrid = null;
-            long nrows = grid.get_NRows( handleOutOfMemoryError );
-            long ncols = grid.get_NCols( handleOutOfMemoryError );
+            long nrows = grid.get_NRows(handleOutOfMemoryError);
+            long ncols = grid.get_NCols(handleOutOfMemoryError);
             long _StartRowIndexLong = 0L;
             long _StartColIndexLong = 0L;
-            long _EndRowIndexLong =  0L;
+            long _EndRowIndexLong = 0L;
             long _EndColIndexLong = 0L;
             long _long_0 = 0L;
             long _long_1 = 1L;
@@ -512,8 +554,8 @@ public class Tarfala
             int i = 0;
             int _int_2 = 2;
             int _int_0 = 0;
-            for ( distances = 2; distances <= 32; distances *=2 ) {
-                distance = cellsize * ( double ) distances;
+            for (distances = 2; distances <= 32; distances *= 2) {
+                distance = cellsize * (double) distances;
 //                AbstractGrid2DSquareCell roughness = getMetrics2(
 //                        grid,
 //                        distance,
@@ -525,8 +567,8 @@ public class Tarfala
 //                output(roughness,
 //                            outputDirectory,
 //                            handleOutOfMemoryError );
-             }
-        } catch ( OutOfMemoryError _OutOfMemoryError ) {
+            }
+        } catch (OutOfMemoryError _OutOfMemoryError) {
             System.err.println("OOME fggfd");
         }
     }
