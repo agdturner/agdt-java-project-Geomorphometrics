@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunk64CellMapFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCellDoubleChunkFactory;
@@ -77,9 +77,9 @@ public class Test
         this._FileSeparator = System.getProperty("file.separator");
         this._MessageLength = 1000;
         this._FilenameLength = 1000;
-        this._Message0 = _Grids_Environment.initString(_MessageLength, _HandleOutOfMemoryError);
-        this._Message = _Grids_Environment.initString(_MessageLength, _HandleOutOfMemoryError);
-        this._Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+        this._Message0 = env.initString(_MessageLength, _HandleOutOfMemoryError);
+        this._Message = env.initString(_MessageLength, _HandleOutOfMemoryError);
+        this._Filename = env.initString(_FilenameLength, _HandleOutOfMemoryError);
     }
 
     /**
@@ -262,7 +262,7 @@ public class Test
             //boolean _NotLoadedAsGrid = false;
             boolean _NotLoadedAsGrid = true;
             if (_NotLoadedAsGrid) {
-                File _Input_File = _Grids_Environment.initFile(
+                File _Input_File = env.initFile(
                         _Input_Directory,
                         _Input_Filename,
                         _HandleOutOfMemoryError);
@@ -272,7 +272,7 @@ public class Test
                 _Grid2DSquareCellDouble.writeToFile(
                         _SwapToFileCache,
                         _HandleOutOfMemoryError);
-                _Grids_Environment.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
+                env.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
 //                _OutputImagePNG(
 //                        _Grid2DSquareCellDouble,
 //                        _Output_Directory,
@@ -280,7 +280,7 @@ public class Test
             } else {
                 _Grid2DSquareCellDouble = (Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
                         new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
-                _Grids_Environment.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
+                env.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
             }
 
             // Run
@@ -292,7 +292,7 @@ public class Test
             _Message = null;
             _Message = "Processing complete in " +
                     Utilities._ReportTime(System.currentTimeMillis() - time);
-            _Message = _Grids_Environment.println(_Message, _Message0, _HandleOutOfMemoryError);
+            _Message = env.println(_Message, _Message0, _HandleOutOfMemoryError);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -342,9 +342,9 @@ public class Test
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 run1(
                         _Grid2DSquareCellDouble,
                         _Output_Directory,
@@ -359,7 +359,7 @@ public class Test
 //    
 //    
 //    public void _OutputImagePNG(
-//            AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
 //            File _Output_Directory,
 //            boolean _HandleOutOfMemoryError )
 //            throws IOException {
@@ -401,7 +401,7 @@ public class Test
 //    }
 //    
 //    public void _OutputESRIAsciiGrid(
-//            AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
 //            File _Output_Directory,
 //            boolean _HandleOutOfMemoryError )
 //            throws IOException {
@@ -441,7 +441,7 @@ public class Test
 //        }
 //    }
     public void do_Metrics1(
-            AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
             boolean _HandleOutOfMemoryError)
@@ -449,27 +449,27 @@ public class Test
         try {
             // Initialistaion
             _Filename = "_Metrics1";
-            File _Output_Directory = _Grids_Environment.initFileDirectory(
+            File _Output_Directory = env.initFileDirectory(
                     _Output_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            File _Workspace_Directory = _Grids_Environment.initFileDirectory(
+            File _Workspace_Directory = env.initFileDirectory(
                     _Workspace_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            _Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+            _Filename = env.initString(_FilenameLength, _HandleOutOfMemoryError);
             this.set_Directory(_Workspace_Directory);
             boolean swapOutInitialisedFiles = false;
             boolean swapOutProcessedChunks = false;
-            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
+            ImageExporter _ImageExporter = new ImageExporter(env);
+            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
             int _NameLength = 1000;
-            String _Name = _Grids_Environment.initString(_NameLength, false);
+            String _Name = env.initString(_NameLength, false);
             BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions(_HandleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
-            AbstractGrid2DSquareCell dummyGrid = null;
+            Grids_AbstractGrid2DSquareCell dummyGrid = null;
             long nrows = _Grid2DSquareCell.get_NRows(_HandleOutOfMemoryError);
             long ncols = _Grid2DSquareCell.get_NCols(_HandleOutOfMemoryError);
             long _StartRowIndexLong = 0L;
@@ -485,7 +485,7 @@ public class Test
             int _int_0 = 0;
             for (distances = 1; distances <= 2; distances *= 2) {
                 distance = cellsize * (double) distances;
-                AbstractGrid2DSquareCell[] metrics1 = getMetrics1(
+                Grids_AbstractGrid2DSquareCell[] metrics1 = getMetrics1(
                         _Grid2DSquareCell,
                         distance,
                         weightIntersect,
@@ -521,9 +521,9 @@ public class Test
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 do_Metrics1(
                         _Grid2DSquareCell,
                         _Output_Directory0,
@@ -536,7 +536,7 @@ public class Test
     }
 
     public void do_Roughness(
-            AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
             boolean _HandleOutOfMemoryError)
@@ -560,7 +560,7 @@ public class Test
 //            double cellsize = Double.valueOf( dimensions[ 0 ].toString() ).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
-//            AbstractGrid2DSquareCell dummyGrid = null;
+//            Grids_AbstractGrid2DSquareCell dummyGrid = null;
 //            long nrows = _Grid2DSquareCell.get_NRows( _HandleOutOfMemoryError );
 //            long ncols = _Grid2DSquareCell.get_NCols( _HandleOutOfMemoryError );
 //            long _StartRowIndexLong = 0L;
@@ -576,7 +576,7 @@ public class Test
 //            int _int_0 = 0;
 //            for ( distances = 2; distances <= 32; distances *=2 ) {
 //                distance = cellsize * ( double ) distances;
-//                AbstractGrid2DSquareCell _Roughness = get_Roughness(
+//                Grids_AbstractGrid2DSquareCell _Roughness = get_Roughness(
 //                        _Grid2DSquareCell,
 //                        distance,
 //                        weightIntersect,
@@ -617,7 +617,7 @@ public class Test
     }
 
     public void do_SlopeAndAspect(
-            AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
             boolean _HandleOutOfMemoryError)
@@ -625,29 +625,29 @@ public class Test
         try {
             // Initialistaion
             _Filename = "_SlopeAndAspect";
-            File _Output_Directory = _Grids_Environment.initFileDirectory(
+            File _Output_Directory = env.initFileDirectory(
                     _Output_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            File _Workspace_Directory = _Grids_Environment.initFileDirectory(
+            File _Workspace_Directory = env.initFileDirectory(
                     _Workspace_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            _Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+            _Filename = env.initString(_FilenameLength, _HandleOutOfMemoryError);
             this.set_Directory(_Workspace_Directory);
-            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
+            ImageExporter _ImageExporter = new ImageExporter(env);
+            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
             BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions(_HandleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
-            AbstractGrid2DSquareCell dummyGrid = null;
+            Grids_AbstractGrid2DSquareCell dummyGrid = null;
             double distance = 0.0d;
             int distances = 2;
             int i = 0;
             for (distances = 2; distances <= 16; distances *= 2) {
                 distance = cellsize * (double) distances;
-                AbstractGrid2DSquareCell[] _SlopeAndAspect = getSlopeAspect(
+                Grids_AbstractGrid2DSquareCell[] _SlopeAndAspect = getSlopeAspect(
                         _Grid2DSquareCell,
                         distance,
                         weightIntersect,
@@ -665,14 +665,14 @@ public class Test
                             null,
                             _ESRIAsciiGridExporter,
                             _HandleOutOfMemoryError);
-                    _Grids_Environment.get_AbstractGrid2DSquareCell_HashSet().remove(_SlopeAndAspect[i]);
+                    env.get_AbstractGrid2DSquareCell_HashSet().remove(_SlopeAndAspect[i]);
                 }
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 do_SlopeAndAspect(
                         _Grid2DSquareCell,
                         _Output_Directory0,
@@ -694,7 +694,7 @@ public class Test
         try {
             String _Filename = "_Difference";
             double _double_Minus1Point0 = -1.0d;
-            File _Output_Directory = _Grids_Environment.initFileDirectory(
+            File _Output_Directory = env.initFileDirectory(
                     _Output_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
@@ -702,8 +702,8 @@ public class Test
 //                    _Workspace_Directory0,
 //                    _Filename,
 //                    _HandleOutOfMemoryError );
-            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
+            ImageExporter _ImageExporter = new ImageExporter(env);
+            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
 
             addToGrid(
                     _Grid,
@@ -722,9 +722,9 @@ public class Test
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 do_Difference(
                         _Grid,
                         _GridToSubtract,
@@ -746,18 +746,18 @@ public class Test
             throws Exception, Error {
         try {
             _Filename = "_HollowFilledDEM";
-            File _Output_Directory = _Grids_Environment.initFileDirectory(
+            File _Output_Directory = env.initFileDirectory(
                     _Output_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            File _Workspace_Directory = _Grids_Environment.initFileDirectory(
+            File _Workspace_Directory = env.initFileDirectory(
                     _Workspace_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            _Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+            _Filename = env.initString(_FilenameLength, _HandleOutOfMemoryError);
             this.set_Directory(_Workspace_Directory);
-            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
+            ImageExporter _ImageExporter = new ImageExporter(env);
+            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
             double outflowHeight = 0;
             double _double_Minus1Point0 = -1.0d;
             //int maxIterations = 1;
@@ -787,9 +787,9 @@ public class Test
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 do_HollowFilledDEM(
                         _Grid2DSquareCellDouble,
                         maxIterations,
@@ -809,7 +809,7 @@ public class Test
      * @param distances
      */
     public void maskEdges(
-            AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             int distances,
             boolean _HandleOutOfMemoryError) {
         try {
@@ -868,11 +868,11 @@ public class Test
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
+                env.clear_MemoryReserve();
 //                swapToFile_Grid2DSquareCellChunk_AccountDetail();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunksExcept_Account(
+                env.swapToFile_Grid2DSquareCellChunksExcept_Account(
                         _Grid2DSquareCell, _HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_Grid2DSquareCell, _HandleOutOfMemoryError);
+                env.init_MemoryReserve(_Grid2DSquareCell, _HandleOutOfMemoryError);
                 maskEdges(
                         _Grid2DSquareCell,
                         distances,

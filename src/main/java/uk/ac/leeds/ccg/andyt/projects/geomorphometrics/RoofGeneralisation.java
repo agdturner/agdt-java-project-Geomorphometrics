@@ -20,7 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
 import java.math.BigDecimal;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
@@ -59,9 +59,9 @@ public class RoofGeneralisation
         this._FileSeparator = System.getProperty("file.separator");
         this._MessageLength = 1000;
         this._FilenameLength = 1000;
-        this._Message0 = _Grids_Environment.initString(_MessageLength, _HandleOutOfMemoryError);
-        this._Message = _Grids_Environment.initString(_MessageLength, _HandleOutOfMemoryError);
-        this._Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+        this._Message0 = env.initString(_MessageLength, _HandleOutOfMemoryError);
+        this._Message = env.initString(_MessageLength, _HandleOutOfMemoryError);
+        this._Filename = env.initString(_FilenameLength, _HandleOutOfMemoryError);
     }
 
     /**
@@ -97,7 +97,7 @@ public class RoofGeneralisation
             String _ASC = "asc";
             String _Input_Filename_WithoutExtension;
             File _Output_Directory;
-            ImageExporter _ImageExporter = new ImageExporter(_Grids_Environment);
+            ImageExporter _ImageExporter = new ImageExporter(env);
             File _Workspace_Directory = new File(_Input_Directory + "/Workspace/");
             String[] _ImageTypes = new String[1];
             _ImageTypes[0] = "PNG";
@@ -111,7 +111,7 @@ public class RoofGeneralisation
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
-                        File _Input_File = _Grids_Environment.initFile(
+                        File _Input_File = env.initFile(
                                 _Input_Directory,
                                 _Input_Filename,
                                 _HandleOutOfMemoryError);
@@ -121,7 +121,7 @@ public class RoofGeneralisation
                         _Grid2DSquareCellDouble.writeToFile(
                                 _SwapToFileCache,
                                 _HandleOutOfMemoryError);
-                        this._Grids_Environment.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
+                        this.env.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
 //                        outputImage(
 //                                _Grid2DSquareCellDouble,
 //                                _Output_Directory,
@@ -145,7 +145,7 @@ public class RoofGeneralisation
                     _Message = null;
                     _Message = "Processing complete in " +
                             Utilities._ReportTime(System.currentTimeMillis() - time);
-                    _Message = _Grids_Environment.println(_Message, _Message0, _HandleOutOfMemoryError);
+                    _Message = env.println(_Message, _Message0, _HandleOutOfMemoryError);
                 // output
 
                 }
@@ -200,9 +200,9 @@ public class RoofGeneralisation
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 run1(
                         _Grid2DSquareCellDouble,
                         _Output_Directory,
@@ -216,7 +216,7 @@ public class RoofGeneralisation
     }
 
     public void do_Metrics1(
-            AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
             ImageExporter _ImageExporter,
@@ -224,27 +224,27 @@ public class RoofGeneralisation
             throws Exception, Error {
         try {
             // Initialistaion
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter();
+            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
             _Filename = "_Metrics1";
-            File _Output_Directory = _Grids_Environment.initFileDirectory(
+            File _Output_Directory = env.initFileDirectory(
                     _Output_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            File _Workspace_Directory = _Grids_Environment.initFileDirectory(
+            File _Workspace_Directory = env.initFileDirectory(
                     _Workspace_Directory0,
                     _Filename,
                     _HandleOutOfMemoryError);
-            _Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+            _Filename = env.initString(_FilenameLength, _HandleOutOfMemoryError);
             this.set_Directory(_Workspace_Directory);
             boolean swapOutInitialisedFiles = false;
             boolean swapOutProcessedChunks = false;
             int _NameLength = 1000;
-            String _Name = _Grids_Environment.initString(_NameLength, false);
+            String _Name = env.initString(_NameLength, false);
             BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions(_HandleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
-            AbstractGrid2DSquareCell dummyGrid = null;
+            Grids_AbstractGrid2DSquareCell dummyGrid = null;
             long nrows = _Grid2DSquareCell.get_NRows(_HandleOutOfMemoryError);
             long ncols = _Grid2DSquareCell.get_NCols(_HandleOutOfMemoryError);
             long _StartRowIndexLong = 0L;
@@ -262,7 +262,7 @@ public class RoofGeneralisation
             double max = 1;
             for (distances = 2; distances <= 4; distances *= 2) {
                 distance = cellsize * (double) distances;
-                AbstractGrid2DSquareCell[] metrics1 = getMetrics1(
+                Grids_AbstractGrid2DSquareCell[] metrics1 = getMetrics1(
                         _Grid2DSquareCell,
                         distance,
                         weightIntersect,
@@ -301,9 +301,9 @@ public class RoofGeneralisation
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                _Grids_Environment.clear_MemoryReserve();
-                _Grids_Environment.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                _Grids_Environment.init_MemoryReserve(_HandleOutOfMemoryError);
+                env.clear_MemoryReserve();
+                env.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
+                env.init_MemoryReserve(_HandleOutOfMemoryError);
                 do_Metrics1(
                         _Grid2DSquareCell,
                         _Output_Directory0,
@@ -317,7 +317,7 @@ public class RoofGeneralisation
     }
 
     public void do_Roughness(
-            AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
             boolean _HandleOutOfMemoryError)
@@ -341,7 +341,7 @@ public class RoofGeneralisation
 //            double cellsize = Double.valueOf( dimensions[ 0 ].toString() ).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
-//            AbstractGrid2DSquareCell dummyGrid = null;
+//            Grids_AbstractGrid2DSquareCell dummyGrid = null;
 //            long nrows = _Grid2DSquareCell.get_NRows( _HandleOutOfMemoryError );
 //            long ncols = _Grid2DSquareCell.get_NCols( _HandleOutOfMemoryError );
 //            long _StartRowIndexLong = 0L;
@@ -357,7 +357,7 @@ public class RoofGeneralisation
 //            int _int_0 = 0;
 //            for ( distances = 2; distances <= 32; distances *=2 ) {
 //                distance = cellsize * ( double ) distances;
-//                AbstractGrid2DSquareCell _Roughness = get_Roughness(
+//                Grids_AbstractGrid2DSquareCell _Roughness = get_Roughness(
 //                        _Grid2DSquareCell,
 //                        distance,
 //                        weightIntersect,
@@ -398,7 +398,7 @@ public class RoofGeneralisation
     }
 
 //    public void do_SlopeAndAspect(
-//            AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
 //            File _Output_Directory0,
 //            File _Workspace_Directory0,
 //            boolean _HandleOutOfMemoryError)
@@ -420,13 +420,13 @@ public class RoofGeneralisation
 //            double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
-//            AbstractGrid2DSquareCell dummyGrid = null;
+//            Grids_AbstractGrid2DSquareCell dummyGrid = null;
 //            double distance = 0.0d;
 //            int distances = 2;
 //            int i = 0;
 //            for (distances = 2; distances <= 16; distances *= 2) {
 //                distance = cellsize * (double) distances;
-//                AbstractGrid2DSquareCell[] _SlopeAndAspect = getSlopeAspect(
+//                Grids_AbstractGrid2DSquareCell[] _SlopeAndAspect = getSlopeAspect(
 //                        _Grid2DSquareCell,
 //                        distance,
 //                        weightIntersect,
@@ -463,7 +463,7 @@ public class RoofGeneralisation
 //     *
 //     */
 //    public void maskEdges(
-//            AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
 //            int distances,
 //            boolean _HandleOutOfMemoryError) {
 //        try {
