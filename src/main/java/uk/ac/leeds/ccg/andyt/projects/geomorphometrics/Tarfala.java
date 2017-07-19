@@ -20,16 +20,16 @@ package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
 import java.math.BigDecimal;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellIntFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellIntFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorDEM;
-import uk.ac.leeds.ccg.andyt.grids.utilities.Utilities;
-import uk.ac.leeds.ccg.andyt.grids.utilities.FileCreator;
+import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
+import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_FileCreator;
 
 /**
  * Originally this class was for processing some data from Sweden, but it has 
@@ -52,7 +52,7 @@ public class Tarfala
      * Creates a new RoofGeneralisation
      */
     public Tarfala() {
-        this(new Grids_Environment(), FileCreator.createNewFile());
+        this(new Grids_Environment(), Grids_FileCreator.createNewFile());
     }
 
     /**
@@ -153,8 +153,8 @@ public class Tarfala
             String ascString = "asc";
             String inputFilenameWithoutExtension;
             File outputDirectory;
-            ESRIAsciiGridExporter aESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
-            ImageExporter aImageExporter = new ImageExporter(env);
+            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(env);
+            Grids_ImageExporter aImageExporter = new Grids_ImageExporter(env);
             File workspaceDirectory = new File(inputDirectory + "/Workspace/");
             String[] imageTypes = new String[1];
             imageTypes[0] = "PNG";
@@ -165,7 +165,7 @@ public class Tarfala
                     // Initialisation
                     inputFilenameWithoutExtension = inputFilename.substring(0, inputFilename.length() - 4);
                     outputDirectory = new File(inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
-                    Grid2DSquareCellDouble grid2DSquareCellDouble = null;
+                    Grids_Grid2DSquareCellDouble grid2DSquareCellDouble = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
@@ -187,9 +187,9 @@ public class Tarfala
                                 chunkNCols,
                                 NoDataValue);
 
-//                        grid2DSquareCellDouble = (Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(
+//                        grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(
 //                                inputFile);
-                        grid2DSquareCellDouble = (Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_GridStatistics,
+                        grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_GridStatistics,
                                 _Directory,
                                 inputFile,
                                 _Grid2DSquareCellDoubleChunkFactory,
@@ -220,7 +220,7 @@ public class Tarfala
                         System.out.println("</outputImage>");
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
@@ -237,7 +237,7 @@ public class Tarfala
                             _HandleOutOfMemoryError);
                     _Message = null;
                     _Message = "Processing complete in "
-                            + Utilities._ReportTime(System.currentTimeMillis() - time);
+                            + Grids_Utilities._ReportTime(System.currentTimeMillis() - time);
                     _Message = env.println(_Message, _Message0, _HandleOutOfMemoryError);
                     // output
 
@@ -259,7 +259,7 @@ public class Tarfala
             int chunkNRows,
             int chunkNCols,
             double NoDataValue) {
-        this._Grid2DSquareCellDoubleFactory = new Grid2DSquareCellDoubleFactory(
+        this._Grid2DSquareCellDoubleFactory = new Grids_Grid2DSquareCellDoubleFactory(
                 this._Directory,
                 chunkNRows,
                 chunkNCols,
@@ -272,7 +272,7 @@ public class Tarfala
     private void init_Grid2DSquareCellIntFactory(
             int chunkNRows,
             int chunkNCols) {
-        this._Grid2DSquareCellIntFactory = new Grid2DSquareCellIntFactory(
+        this._Grid2DSquareCellIntFactory = new Grids_Grid2DSquareCellIntFactory(
                 this._Directory,
                 chunkNRows,
                 chunkNCols,
@@ -295,11 +295,11 @@ public class Tarfala
      * @throws Error
      */
     public void run1(
-            Grid2DSquareCellDouble grid,
+            Grids_Grid2DSquareCellDouble grid,
             File outputDirectory,
             File workspaceDirectory,
-            ESRIAsciiGridExporter aESRIAsciiGridExporter,
-            ImageExporter aImageExporter,
+            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter,
+            Grids_ImageExporter aImageExporter,
             String[] imageTypes,
             boolean swapOutInitialisedFiles,
             boolean handleOutOfMemoryError)
@@ -362,7 +362,7 @@ public class Tarfala
 //                    swapOutProcessedChunks,
 //                    handleOutOfMemoryError);
 
-            log("Processing complete in " + Utilities._ReportTime(System.currentTimeMillis() - time),
+            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - time),
                     handleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -405,8 +405,8 @@ public class Tarfala
             Grids_AbstractGrid2DSquareCell grid2DSquareCell,
             File outputDirectory0,
             File workspaceDirectory0,
-            ESRIAsciiGridExporter aESRIAsciiGridExporter,
-            ImageExporter aImageExporter,
+            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter,
+            Grids_ImageExporter aImageExporter,
             String[] imageTypes,
             int minDistance,
             int maxDistance,
@@ -598,8 +598,8 @@ public class Tarfala
             Grids_AbstractGrid2DSquareCell grid,
             File outputDirectory0,
             File workspaceDirectory0,
-            ESRIAsciiGridExporter eSRIAsciiGridExporter,
-            ImageExporter imageExporter,
+            Grids_ESRIAsciiGridExporter eSRIAsciiGridExporter,
+            Grids_ImageExporter imageExporter,
             String[] imageTypes,
             int minDistance,
             int maxDistance,

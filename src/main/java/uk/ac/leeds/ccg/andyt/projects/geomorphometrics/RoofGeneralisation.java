@@ -21,12 +21,12 @@ package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 import java.io.File;
 import java.math.BigDecimal;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorDEM;
-import uk.ac.leeds.ccg.andyt.grids.utilities.Utilities;
-import uk.ac.leeds.ccg.andyt.grids.utilities.FileCreator;
+import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
+import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_FileCreator;
 
 public class RoofGeneralisation
         extends Grid2DSquareCellProcessorDEM {
@@ -44,7 +44,7 @@ public class RoofGeneralisation
      * Creates a new RoofGeneralisation
      */
     public RoofGeneralisation() {
-        this(FileCreator.createNewFile());
+        this(Grids_FileCreator.createNewFile());
     }
 
     /**
@@ -97,7 +97,7 @@ public class RoofGeneralisation
             String _ASC = "asc";
             String _Input_Filename_WithoutExtension;
             File _Output_Directory;
-            ImageExporter _ImageExporter = new ImageExporter(env);
+            Grids_ImageExporter _ImageExporter = new Grids_ImageExporter(env);
             File _Workspace_Directory = new File(_Input_Directory + "/Workspace/");
             String[] _ImageTypes = new String[1];
             _ImageTypes[0] = "PNG";
@@ -107,7 +107,7 @@ public class RoofGeneralisation
                     // Initialisation
                     _Input_Filename_WithoutExtension = _Input_Filename.substring(0, _Input_Filename.length() - 4);
                     _Output_Directory = new File(_Input_Directory + "/Geomorphometrics/" + _Input_Filename_WithoutExtension + "/");
-                    Grid2DSquareCellDouble _Grid2DSquareCellDouble = null;
+                    Grids_Grid2DSquareCellDouble _Grid2DSquareCellDouble = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
@@ -115,7 +115,7 @@ public class RoofGeneralisation
                                 _Input_Directory,
                                 _Input_Filename,
                                 _HandleOutOfMemoryError);
-                        _Grid2DSquareCellDouble = (Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_Input_File);
+                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_Input_File);
                         // Cache input
                         boolean _SwapToFileCache = true;
                         _Grid2DSquareCellDouble.writeToFile(
@@ -130,7 +130,7 @@ public class RoofGeneralisation
 //                                _HandleOutOfMemoryError);
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
@@ -144,7 +144,7 @@ public class RoofGeneralisation
                             _HandleOutOfMemoryError);
                     _Message = null;
                     _Message = "Processing complete in " +
-                            Utilities._ReportTime(System.currentTimeMillis() - time);
+                            Grids_Utilities._ReportTime(System.currentTimeMillis() - time);
                     _Message = env.println(_Message, _Message0, _HandleOutOfMemoryError);
                 // output
 
@@ -160,10 +160,10 @@ public class RoofGeneralisation
     }
 
     public void run1(
-            Grid2DSquareCellDouble _Grid2DSquareCellDouble,
+            Grids_Grid2DSquareCellDouble _Grid2DSquareCellDouble,
             File _Output_Directory,
             File _Workspace_Directory,
-            ImageExporter _ImageExporter,
+            Grids_ImageExporter _ImageExporter,
             boolean _HandleOutOfMemoryError)
             throws Exception, Error {
         try {
@@ -196,7 +196,7 @@ public class RoofGeneralisation
                     _ImageExporter,
                     _HandleOutOfMemoryError);
 
-            log("Processing complete in " + Utilities._ReportTime(System.currentTimeMillis() - time),
+            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - time),
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
@@ -219,12 +219,12 @@ public class RoofGeneralisation
             Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
-            ImageExporter _ImageExporter,
+            Grids_ImageExporter _ImageExporter,
             boolean _HandleOutOfMemoryError)
             throws Exception, Error {
         try {
             // Initialistaion
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
+            Grids_ESRIAsciiGridExporter _ESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(env);
             _Filename = "_Metrics1";
             File _Output_Directory = env.initFileDirectory(
                     _Output_Directory0,

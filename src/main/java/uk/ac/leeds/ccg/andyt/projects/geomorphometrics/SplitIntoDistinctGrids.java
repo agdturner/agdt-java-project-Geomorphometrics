@@ -22,13 +22,13 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellInt;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellInt;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorDEM;
-import uk.ac.leeds.ccg.andyt.grids.utilities.Utilities;
-import uk.ac.leeds.ccg.andyt.grids.utilities.FileCreator;
+import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
+import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_FileCreator;
 
 public class SplitIntoDistinctGrids
         extends Grid2DSquareCellProcessorDEM {
@@ -43,7 +43,7 @@ public class SplitIntoDistinctGrids
     String _Filename;
 
     public SplitIntoDistinctGrids() {
-        this(FileCreator.createNewFile());
+        this(Grids_FileCreator.createNewFile());
     }
 
     public SplitIntoDistinctGrids(File workspace) {
@@ -130,8 +130,8 @@ public class SplitIntoDistinctGrids
 
             this.set_Directory(_Workspace_Directory);
 
-//            Grid2DSquareCellInt _Grid2DSquareCellInt = null;
-            Grid2DSquareCellDouble _Grid2DSquareCellDouble = null;
+//            Grids_Grid2DSquareCellInt _Grid2DSquareCellInt = null;
+            Grids_Grid2DSquareCellDouble _Grid2DSquareCellDouble = null;
 
             // Load input
             //boolean _NotLoadedAsGrid = false;
@@ -141,7 +141,7 @@ public class SplitIntoDistinctGrids
                         _Input_Directory,
                         _Input_Filename,
                         _HandleOutOfMemoryError);
-                _Grid2DSquareCellDouble = (Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_Input_File);
+                _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_Input_File);
                 // Cache input
                 boolean _SwapToFileCache = true;
                 _Grid2DSquareCellDouble.writeToFile(
@@ -153,7 +153,7 @@ public class SplitIntoDistinctGrids
 //                        _Output_Directory,
 //                        _HandleOutOfMemoryError );
             } else {
-                _Grid2DSquareCellDouble = (Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
+                _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
                         new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
                  env.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
             }
@@ -166,7 +166,7 @@ public class SplitIntoDistinctGrids
                     _HandleOutOfMemoryError);
             _Message = null;
             _Message = "Processing complete in "
-                    + Utilities._ReportTime(System.currentTimeMillis() - time);
+                    + Grids_Utilities._ReportTime(System.currentTimeMillis() - time);
             _Message = env.println(_Message, _Message0, _HandleOutOfMemoryError);
 
         } catch (Exception e) {
@@ -179,7 +179,7 @@ public class SplitIntoDistinctGrids
     }
 
     public void run1(
-            Grid2DSquareCellDouble _Grid2DSquareCellDouble,
+            Grids_Grid2DSquareCellDouble _Grid2DSquareCellDouble,
             File _Output_Directory,
             File _Workspace_Directory,
             boolean _HandleOutOfMemoryError)
@@ -194,7 +194,7 @@ public class SplitIntoDistinctGrids
             int i = 0;
 
             // _SplitIntoDistinctGrids
-            Grid2DSquareCellDouble[] Grid2DSquareCellDoubles = _SplitIntoDistinctGrids(
+            Grids_Grid2DSquareCellDouble[] Grid2DSquareCellDoubles = _SplitIntoDistinctGrids(
                     _NumberOfRowsOfGrids,
                     _NumberOfColsOfGrids,
                     _Grid2DSquareCellDouble,
@@ -207,7 +207,7 @@ public class SplitIntoDistinctGrids
                 _OutputESRIAsciiGrid(Grid2DSquareCellDoubles[i], _Output_Directory, _HandleOutOfMemoryError);
             }
 
-            log("Processing complete in " + Utilities._ReportTime(System.currentTimeMillis() - time),
+            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - time),
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
@@ -232,8 +232,8 @@ public class SplitIntoDistinctGrids
             throws IOException {
         try {
             System.out.println("_Output " + _Grid2DSquareCell.toString(false));
-            ImageExporter _ImageExporter = new ImageExporter(env);
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
+            Grids_ImageExporter _ImageExporter = new Grids_ImageExporter(env);
+            Grids_ESRIAsciiGridExporter _ESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(env);
             //int _StringLength = 1000;
             String _DotASC = ".asc";
             String _DotPNG = ".png";
@@ -290,7 +290,7 @@ public class SplitIntoDistinctGrids
             throws IOException {
         try {
             System.out.println("_Output " + _Grid2DSquareCell.toString(false));
-            ImageExporter _ImageExporter = new ImageExporter(env);
+            Grids_ImageExporter _ImageExporter = new Grids_ImageExporter(env);
             //int _StringLength = 1000;
             String _DotPNG = ".png";
             String _PNG = "PNG";
@@ -333,7 +333,7 @@ public class SplitIntoDistinctGrids
             throws IOException {
         try {
             System.out.println("_Output " + _Grid2DSquareCell.toString(false));
-            ESRIAsciiGridExporter _ESRIAsciiGridExporter = new ESRIAsciiGridExporter(env);
+            Grids_ESRIAsciiGridExporter _ESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(env);
             //int _StringLength = 1000;
             String _DotASC = ".asc";
             BigDecimal _BigDecimal_Minus9999Point0 = new BigDecimal("-9999.0");
@@ -367,7 +367,7 @@ public class SplitIntoDistinctGrids
         }
     }
 
-    public Grid2DSquareCellDouble[] _SplitIntoDistinctGrids(
+    public Grids_Grid2DSquareCellDouble[] _SplitIntoDistinctGrids(
             int _NumberOfRowsOfGrids,
             int _NumberOfColsOfGrids,
             Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
@@ -377,7 +377,7 @@ public class SplitIntoDistinctGrids
             throws Exception, Error {
         // Initialistaion
         _Filename = "_SplitIntoDistinctGrids";
-        Grid2DSquareCellDouble[] result = new Grid2DSquareCellDouble[_NumberOfRowsOfGrids * _NumberOfColsOfGrids];
+        Grids_Grid2DSquareCellDouble[] result = new Grids_Grid2DSquareCellDouble[_NumberOfRowsOfGrids * _NumberOfColsOfGrids];
         File _Output_Directory = env.initFileDirectory(
                 _Output_Directory0,
                 _Filename,
@@ -400,11 +400,11 @@ public class SplitIntoDistinctGrids
         long _EndColIndexLong = -1L;
         long _long_0 = 0L;
         long _long_1 = 1L;
-        if (_Grid2DSquareCell instanceof Grid2DSquareCellDouble) {
-            _Grid2DSquareCellDoubleFactory.set_NoDataValue(((Grid2DSquareCellDouble) _Grid2DSquareCell).get_NoDataValue(_HandleOutOfMemoryError));
+        if (_Grid2DSquareCell instanceof Grids_Grid2DSquareCellDouble) {
+            _Grid2DSquareCellDoubleFactory.set_NoDataValue(((Grids_Grid2DSquareCellDouble) _Grid2DSquareCell).get_NoDataValue(_HandleOutOfMemoryError));
         } else {
-            //_Grid2DSquareCell instanceof Grid2DSquareCellInt
-            _Grid2DSquareCellDoubleFactory.set_NoDataValue(((Grid2DSquareCellInt) _Grid2DSquareCell).getNoDataValue(_HandleOutOfMemoryError));
+            //_Grid2DSquareCell instanceof Grids_Grid2DSquareCellInt
+            _Grid2DSquareCellDoubleFactory.set_NoDataValue(((Grids_Grid2DSquareCellInt) _Grid2DSquareCell).getNoDataValue(_HandleOutOfMemoryError));
         }
         long _RowIncrement = nrows / _NumberOfRowsOfGrids;
         long _ColIncrement = ncols / _NumberOfColsOfGrids;
@@ -419,7 +419,7 @@ public class SplitIntoDistinctGrids
                 System.out.println("_StartColIndexLong " + _StartColIndexLong);
                 System.out.println("_EndRowIndexLong " + _EndRowIndexLong);
                 System.out.println("_EndColIndexLong " + _EndColIndexLong);
-                result[ k] = (Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
+                result[ k] = (Grids_Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
                         _Grid2DSquareCell, _StartRowIndexLong, _StartColIndexLong,
                         _EndRowIndexLong, _EndColIndexLong);
                 k++;
