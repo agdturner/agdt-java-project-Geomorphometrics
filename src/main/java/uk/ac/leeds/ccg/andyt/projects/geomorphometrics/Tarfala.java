@@ -115,10 +115,12 @@ public class Tarfala
 //            ncols = 6260;
 //            nrows = 7426;
 //            ncols = 8304;
-            nrows = 1993;
-            ncols = 6728;
+//            nrows = 1993;
+//            ncols = 6728;
             //ncols = 6727;
-
+//nrows         = 7142;
+nrows         = 7142;
+ncols         = 5200;
 //            chunkNRows = 200;
 //            chunkNCols = 883;
 //            chunkNRows = 64;
@@ -129,8 +131,10 @@ public class Tarfala
 //            chunkNCols = 626;
 //            chunkNRows = 3713;
 //            chunkNCols = 519;
-            chunkNRows = 1993;
-            chunkNCols = 232;
+//            chunkNRows = 1993;
+//            chunkNCols = 232;
+            chunkNRows = 3571;
+            chunkNCols = 16;
             //chunkNCols = 217;
             NoDataValue = -9999.0d;
             init_Grid2DSquareCellIntFactory(
@@ -138,10 +142,11 @@ public class Tarfala
                     chunkNCols);
             //this._Grid2DSquareCellIntFactory.set_ChunkNRows(chunkNRows);
             //this._Grid2DSquareCellIntFactory.set_ChunkNCols(chunkNCols);
-            init_Grid2DSquareCellDoubleFactory(chunkNRows,
+            init_Grid2DSquareCellDoubleFactory(
+                    chunkNRows,
                     chunkNCols,
                     NoDataValue);
-            this.env.setGrid2DSquareCellProcessor(this);
+            ge.setGrid2DSquareCellProcessor(this);
             //this._Grid2DSquareCellDoubleFactory.set_ChunkNRows(chunkNRows);
             //this._Grid2DSquareCellDoubleFactory.set_ChunkNCols(chunkNCols);
             //this._Grid2DSquareCellDoubleFactory.set_NoDataValue(NoDataValue);
@@ -153,11 +158,20 @@ public class Tarfala
             String ascString = "asc";
             String inputFilenameWithoutExtension;
             File outputDirectory;
-            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(env);
-            Grids_ImageExporter aImageExporter = new Grids_ImageExporter(env);
+            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(ge);
+            Grids_ImageExporter aImageExporter = new Grids_ImageExporter(ge);
             File workspaceDirectory = new File(inputDirectory + "/Workspace/");
-            String[] imageTypes = new String[1];
-            imageTypes[0] = "PNG";
+            
+            
+            
+            
+            
+            String[] imageTypes = new String[0];
+//            String[] imageTypes = new String[1];
+//            imageTypes[0] = "PNG";
+            
+            
+            
             for (File inputDirectoryFile : inputDirectoryFiles) {
                 inputFilename = inputDirectoryFile.getName();
                 System.out.println("inputFilename " + inputFilename);
@@ -166,10 +180,11 @@ public class Tarfala
                     inputFilenameWithoutExtension = inputFilename.substring(0, inputFilename.length() - 4);
                     outputDirectory = new File(inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
                     Grids_Grid2DSquareCellDouble grid2DSquareCellDouble = null;
+                    Grids_Grid2DSquareCellDouble g = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
-                        File inputFile = env.initFile(
+                        File inputFile = ge.initFile(
                                 inputDirectory,
                                 inputFilename,
                                 _HandleOutOfMemoryError);
@@ -183,7 +198,8 @@ public class Tarfala
                         init_Grid2DSquareCellIntFactory(
                                 chunkNRows,
                                 chunkNCols);
-                        init_Grid2DSquareCellDoubleFactory(chunkNRows,
+                        init_Grid2DSquareCellDoubleFactory(
+                                chunkNRows,
                                 chunkNCols,
                                 NoDataValue);
 
@@ -196,28 +212,57 @@ public class Tarfala
                                 0,
                                 0,
                                 nrows - 1,
+//                                ncols - 3,
                                 ncols - 1,
                                 //chunkNRows - 1,
                                 //chunkNCols - 1,
-                                env,
+                                ge,
                                 _HandleOutOfMemoryError);
+                        
+                        // clip grid2DSquareCellDouble
+                        nrows         = 7140;
+                        g = (Grids_Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(
+                                grid2DSquareCellDouble, 
+                                0,
+                                0,
+                                nrows -1,
+                                ncols - 1);
+                        grid2DSquareCellDouble = g;
+                        chunkNRows = 340;
+                        chunkNCols = 400;
+            init_Grid2DSquareCellIntFactory(
+                                chunkNRows,
+                                chunkNCols);
+                        init_Grid2DSquareCellDoubleFactory(
+                                chunkNRows,
+                                chunkNCols,
+                                NoDataValue);
                         // Cache input
                         boolean _SwapToFileCache = true;
                         grid2DSquareCellDouble.writeToFile(
                                 _SwapToFileCache,
                                 _HandleOutOfMemoryError);
-                        this.env.get_AbstractGrid2DSquareCell_HashSet().add(grid2DSquareCellDouble);
+                        ge.get_AbstractGrid2DSquareCell_HashSet().add(grid2DSquareCellDouble);
                         System.out.println("<outputImage>");
                         System.out.println("outputDirectory " + outputDirectory);
+                        grid2DSquareCellDouble.set_Name(inputFilenameWithoutExtension, _HandleOutOfMemoryError);
                         outputImage(
-                                grid2DSquareCellDouble,
+                               g,// grid2DSquareCellDouble,
                                 //this,
                                 //_Grids_Environment.get_Grid2DSquareCellProcessor(),
                                 outputDirectory,
                                 aImageExporter,
                                 imageTypes,
                                 _HandleOutOfMemoryError);
+//                        output(grid2DSquareCellDouble,
+//                                outputDirectory,
+//                                aImageExporter,
+//                                imageTypes,
+//                                aESRIAsciiGridExporter,
+//                                _HandleOutOfMemoryError);
                         System.out.println("</outputImage>");
+                        
+                        
                     } else {
                         System.out.println("check1");
 //                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
@@ -238,7 +283,7 @@ public class Tarfala
                     _Message = null;
                     _Message = "Processing complete in "
                             + Grids_Utilities._ReportTime(System.currentTimeMillis() - time);
-                    _Message = env.println(_Message, _Message0, _HandleOutOfMemoryError);
+                    _Message = ge.println(_Message, _Message0, _HandleOutOfMemoryError);
                     // output
 
                 }
@@ -265,7 +310,7 @@ public class Tarfala
                 chunkNCols,
                 this._Grid2DSquareCellDoubleChunkFactory,
                 NoDataValue,
-                this.env,
+                ge,
                 this._HandleOutOfMemoryError);
     }
 
@@ -277,7 +322,7 @@ public class Tarfala
                 chunkNRows,
                 chunkNCols,
                 this._Grid2DSquareCellIntChunkFactory,
-                this.env,
+                ge,
                 this._HandleOutOfMemoryError);
     }
 
@@ -366,9 +411,9 @@ public class Tarfala
                     handleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                env.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                env.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clear_MemoryReserve();
+                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
+                ge.init_MemoryReserve(handleOutOfMemoryError);
                 run1(
                         grid,
                         outputDirectory,
@@ -418,18 +463,18 @@ public class Tarfala
         try {
             // Initialistaion
             _Filename = "_Metrics1";
-            File outputDirectory = env.initFileDirectory(
+            File outputDirectory = ge.initFileDirectory(
                     outputDirectory0,
                     _Filename,
                     handleOutOfMemoryError);
-            File workspaceDirectory = env.initFileDirectory(
+            File workspaceDirectory = ge.initFileDirectory(
                     workspaceDirectory0,
                     _Filename,
                     handleOutOfMemoryError);
-            _Filename = env.initString(_FilenameLength, handleOutOfMemoryError);
+            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
             this.set_Directory(workspaceDirectory);
             int _NameLength = 1000;
-            String _Name = env.initString(_NameLength, false);
+            String _Name = ge.initString(_NameLength, false);
             BigDecimal[] dimensions = grid2DSquareCell.get_Dimensions(handleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[0].toString()).doubleValue();
             double weightIntersect = 1.0d;
@@ -498,9 +543,9 @@ public class Tarfala
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                env.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                env.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clear_MemoryReserve();
+                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
+                ge.init_MemoryReserve(handleOutOfMemoryError);
                 System.out.println("Going round the loop again...");
                 do_Metrics1(
                         grid2DSquareCell,
@@ -530,18 +575,18 @@ public class Tarfala
         try {
             // Initialistaion
             _Filename = "_Metrics2";
-            File outputDirectory = env.initFileDirectory(
+            File outputDirectory = ge.initFileDirectory(
                     outputDirectory0,
                     _Filename,
                     handleOutOfMemoryError);
-            File workspaceDirectory = env.initFileDirectory(
+            File workspaceDirectory = ge.initFileDirectory(
                     workspaceDirectory0,
                     _Filename,
                     handleOutOfMemoryError);
-            _Filename = env.initString(_FilenameLength, handleOutOfMemoryError);
+            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
             this.set_Directory(workspaceDirectory);
             int _NameLength = 1000;
-            String _Name = env.initString(_NameLength, handleOutOfMemoryError);
+            String _Name = ge.initString(_NameLength, handleOutOfMemoryError);
             BigDecimal[] dimensions = grid.get_Dimensions(handleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[0].toString()).doubleValue();
             double weightIntersect = 1.0d;
@@ -609,15 +654,15 @@ public class Tarfala
         try {
             // Initialistaion
             _Filename = "_SlopeAndAspect";
-            File outputDirectory = env.initFileDirectory(
+            File outputDirectory = ge.initFileDirectory(
                     outputDirectory0,
                     _Filename,
                     handleOutOfMemoryError);
-            File workspaceDirectory = env.initFileDirectory(
+            File workspaceDirectory = ge.initFileDirectory(
                     workspaceDirectory0,
                     _Filename,
                     handleOutOfMemoryError);
-            _Filename = env.initString(_FilenameLength, handleOutOfMemoryError);
+            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
             this.set_Directory(workspaceDirectory);
             BigDecimal[] dimensions = grid.get_Dimensions(handleOutOfMemoryError);
             double cellsize = Double.valueOf(dimensions[0].toString()).doubleValue();
@@ -658,14 +703,14 @@ public class Tarfala
                             eSRIAsciiGridExporter,
                             handleOutOfMemoryError);
                     slopeAndAspect[i] = null;
-                    this.env.get_AbstractGrid2DSquareCell_HashSet().remove(slopeAndAspect[i]);
+                    ge.get_AbstractGrid2DSquareCell_HashSet().remove(slopeAndAspect[i]);
                 }
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                env.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                env.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clear_MemoryReserve();
+                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
+                ge.init_MemoryReserve(handleOutOfMemoryError);
                 do_SlopeAndAspect(
                         grid,
                         outputDirectory0,
