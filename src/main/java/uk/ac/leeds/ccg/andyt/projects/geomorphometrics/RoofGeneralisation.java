@@ -20,16 +20,17 @@ package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
 import java.math.BigDecimal;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorDEM;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_FileCreator;
 
 public class RoofGeneralisation
-        extends Grid2DSquareCellProcessorDEM {
+        extends Grids_ProcessorDEM {
 
     private long time;
     boolean _HandleOutOfMemoryError;
@@ -43,17 +44,11 @@ public class RoofGeneralisation
     /**
      * Creates a new RoofGeneralisation
      */
-    public RoofGeneralisation() {
-        this(Grids_FileCreator.createNewFile());
-    }
+    protected RoofGeneralisation() {}
 
-    /**
-     * Creates a new RoofGeneralisation using specified _Directory.
-     * WARNING: Files in the specified _Directory may get overwritten.
-     * @param workspace
-     */
-    public RoofGeneralisation(File workspace) {
-        super(workspace);
+    public RoofGeneralisation(
+            Grids_Environment ge) {
+        super(ge);
         this.time = System.currentTimeMillis();
         this._HandleOutOfMemoryError = true;
         this._FileSeparator = System.getProperty("file.separator");
@@ -85,7 +80,9 @@ public class RoofGeneralisation
         } else {
             System.out.println(" does not exist.");
         }
-        RoofGeneralisation aRoofGeneralisation = new RoofGeneralisation(_Directory);
+        Grids_Environment ge;
+        ge = new Grids_Environment(_Directory);
+        RoofGeneralisation aRoofGeneralisation = new RoofGeneralisation(ge);
         aRoofGeneralisation.run();
     }
 

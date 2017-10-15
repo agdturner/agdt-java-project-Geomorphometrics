@@ -20,14 +20,14 @@ package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
 import java.math.BigDecimal;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellIntFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellIntFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorDEM;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_FileCreator;
 
@@ -37,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_FileCreator;
  * @author geoagdt
  */
 public class Tarfala
-        extends Grid2DSquareCellProcessorDEM {
+        extends Grids_ProcessorDEM {
 
     private long time;
     boolean _HandleOutOfMemoryError;
@@ -48,32 +48,24 @@ public class Tarfala
     String _Message;
     String _Filename;
 
-    /**
-     * Creates a new RoofGeneralisation
-     */
-    public Tarfala() {
-        this(new Grids_Environment(), Grids_FileCreator.createNewFile());
-    }
+    protected Tarfala() {}
 
     /**
      * Creates a new RoofGeneralisation using specified _Directory. WARNING:
      * Files in the specified _Directory may get overwritten.
      *
-     * @param _Grids_Environment
-     * @param workspace
+     * @param ge
      */
-    public Tarfala(
-            Grids_Environment _Grids_Environment,
-            File workspace) {
-        super(_Grids_Environment, workspace);
+    public Tarfala(Grids_Environment ge) {
+        super(ge);
         this.time = System.currentTimeMillis();
         this._HandleOutOfMemoryError = true;
         this._FileSeparator = System.getProperty("file.separator");
         this._MessageLength = 1000;
         this._FilenameLength = 1000;
-        this._Message0 = _Grids_Environment.initString(_MessageLength, _HandleOutOfMemoryError);
-        this._Message = _Grids_Environment.initString(_MessageLength, _HandleOutOfMemoryError);
-        this._Filename = _Grids_Environment.initString(_FilenameLength, _HandleOutOfMemoryError);
+        this._Message0 = ge.initString(_MessageLength, _HandleOutOfMemoryError);
+        this._Message = ge.initString(_MessageLength, _HandleOutOfMemoryError);
+        this._Filename = ge.initString(_FilenameLength, _HandleOutOfMemoryError);
     }
 
     /**
@@ -92,8 +84,8 @@ public class Tarfala
         } else {
             System.out.println(" does not exist.");
         }
-        Grids_Environment _Grids_Environment = new Grids_Environment();
-        Tarfala t = new Tarfala(_Grids_Environment, _Directory);
+        Grids_Environment ge = new Grids_Environment(_Directory);
+        Tarfala t = new Tarfala(ge);
         t.run();
     }
 
