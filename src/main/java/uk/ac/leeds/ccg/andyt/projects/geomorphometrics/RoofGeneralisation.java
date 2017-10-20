@@ -70,10 +70,10 @@ public class RoofGeneralisation
     }
 
     public static void runOnPC() {
-        //File _Directory = new File( "D:/Work/Projects/Geomorphometrics/Workspace/" );
+        //File Directory = new File( "D:/Work/Projects/Geomorphometrics/Workspace/" );
         File _Directory = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/synthetic/");
-        //File _Directory = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/NeuralNetwork/Input/");
-        //File _Directory = new File( "C:/temp/GEOG5060/Geomorphometrics/" );
+        //File Directory = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/NeuralNetwork/Input/");
+        //File Directory = new File( "C:/temp/GEOG5060/Geomorphometrics/" );
         System.out.print("" + _Directory.toString());
         if (_Directory.exists()) {
             System.out.println(" exists.");
@@ -88,7 +88,7 @@ public class RoofGeneralisation
 
     public void run() {
         try {
-            File _Input_Directory = get_Directory(_HandleOutOfMemoryError);
+            File _Input_Directory = getDirectory(_HandleOutOfMemoryError);
             File[] _Files = _Input_Directory.listFiles();
             String _Input_Filename;
             String _ASC = "asc";
@@ -112,7 +112,7 @@ public class RoofGeneralisation
                                 _Input_Directory,
                                 _Input_Filename,
                                 _HandleOutOfMemoryError);
-                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this._Grid2DSquareCellDoubleFactory.create(_Input_File);
+                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this.Grid2DSquareCellDoubleFactory.create(_Input_File);
                         // Cache input
                         boolean _SwapToFileCache = true;
                         _Grid2DSquareCellDouble.writeToFile(
@@ -127,7 +127,7 @@ public class RoofGeneralisation
 //                                _HandleOutOfMemoryError);
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) _Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) Grid2DSquareCellDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
@@ -168,8 +168,8 @@ public class RoofGeneralisation
             log("run1();",
                     _HandleOutOfMemoryError);
             int maxIterations = 2;
-            long nrows = _Grid2DSquareCellDouble.get_NRows(_HandleOutOfMemoryError);
-            long ncols = _Grid2DSquareCellDouble.get_NCols(_HandleOutOfMemoryError);
+            long nrows = _Grid2DSquareCellDouble.getNRows(_HandleOutOfMemoryError);
+            long ncols = _Grid2DSquareCellDouble.getNCols(_HandleOutOfMemoryError);
             long distances = 16;
 
 //        maxIterations = 2000;
@@ -213,37 +213,37 @@ public class RoofGeneralisation
     }
 
     public void do_Metrics1(
-            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGrid2DSquareCell g,
             File _Output_Directory0,
             File _Workspace_Directory0,
-            Grids_ImageExporter _ImageExporter,
-            boolean _HandleOutOfMemoryError)
+            Grids_ImageExporter ie,
+            boolean handleOutOfMemoryError)
             throws Exception, Error {
         try {
             // Initialistaion
-            Grids_ESRIAsciiGridExporter _ESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(ge);
+            Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(ge);
             _Filename = "_Metrics1";
             File _Output_Directory = ge.initFileDirectory(
                     _Output_Directory0,
                     _Filename,
-                    _HandleOutOfMemoryError);
+                    handleOutOfMemoryError);
             File _Workspace_Directory = ge.initFileDirectory(
                     _Workspace_Directory0,
                     _Filename,
-                    _HandleOutOfMemoryError);
-            _Filename = ge.initString(_FilenameLength, _HandleOutOfMemoryError);
-            this.set_Directory(_Workspace_Directory);
+                    handleOutOfMemoryError);
+            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
+            this.setDirectory(_Workspace_Directory);
             boolean swapOutInitialisedFiles = false;
             boolean swapOutProcessedChunks = false;
             int _NameLength = 1000;
             String _Name = ge.initString(_NameLength, false);
-            BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions(_HandleOutOfMemoryError);
-            double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
+            //Grids_Dimensions dimensions = grid2DSquareCell.getDimensions(handleOutOfMemoryError);
+            double cellsize = g.getCellsizeDouble(handleOutOfMemoryError);
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
             Grids_AbstractGrid2DSquareCell dummyGrid = null;
-            long nrows = _Grid2DSquareCell.get_NRows(_HandleOutOfMemoryError);
-            long ncols = _Grid2DSquareCell.get_NCols(_HandleOutOfMemoryError);
+            long nrows = g.getNRows(handleOutOfMemoryError);
+            long ncols = g.getNCols(handleOutOfMemoryError);
             long _StartRowIndexLong = 0L;
             long _StartColIndexLong = 0L;
             long _EndRowIndexLong = 0L;
@@ -259,16 +259,15 @@ public class RoofGeneralisation
             double max = 1;
             for (distances = 2; distances <= 4; distances *= 2) {
                 distance = cellsize * (double) distances;
-                Grids_AbstractGrid2DSquareCell[] metrics1 = getMetrics1(
-                        _Grid2DSquareCell,
+                Grids_AbstractGrid2DSquareCell[] metrics1 = getMetrics1(g,
                         distance,
                         weightIntersect,
                         weightFactor,
-                        _Grid2DSquareCellDoubleFactory,
-                        _Grid2DSquareCellIntFactory,
+                        Grid2DSquareCellDoubleFactory,
+                        Grid2DSquareCellIntFactory,
                         swapOutInitialisedFiles,
                         swapOutProcessedChunks,
-                        _HandleOutOfMemoryError);
+                        handleOutOfMemoryError);
                 for (i = _int_0; i < metrics1.length; i++) {
 //                    maskEdges(
 //                            metrics1[i],
@@ -277,9 +276,9 @@ public class RoofGeneralisation
                     //rescale
                     metrics1[i] = rescale(
                             metrics1[i],
-                            null, min, max, _HandleOutOfMemoryError);
+                            null, min, max, handleOutOfMemoryError);
                     // output
-                    _Name = metrics1[i].get_Name(_HandleOutOfMemoryError);
+                    _Name = metrics1[i].getName(handleOutOfMemoryError);
                     if (_Name.startsWith("count_hhhl") || _Name.startsWith("count_hhll")) {
 //                        output(
 //                                metrics1[i],
@@ -288,25 +287,25 @@ public class RoofGeneralisation
 //                                null,
 //                                _ESRIAsciiGridExporter,
 //                                _HandleOutOfMemoryError);
-                        _OutputESRIAsciiGrid(
+                        outputESRIAsciiGrid(
                                 metrics1[i],
                                 _Output_Directory,
-                                _ESRIAsciiGridExporter, 
-                                _HandleOutOfMemoryError);
+                                eage, 
+                                handleOutOfMemoryError);
                     }
                 }
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
-            if (_HandleOutOfMemoryError) {
+            if (handleOutOfMemoryError) {
                 ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                ge.init_MemoryReserve(_HandleOutOfMemoryError);
+                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
+                ge.init_MemoryReserve(handleOutOfMemoryError);
                 do_Metrics1(
-                        _Grid2DSquareCell,
+                        g,
                         _Output_Directory0,
                         _Workspace_Directory0,
-                        _ImageExporter,
-                        _HandleOutOfMemoryError);
+                        ie,
+                        handleOutOfMemoryError);
             } else {
                 throw _OutOfMemoryError;
             }
@@ -331,16 +330,16 @@ public class RoofGeneralisation
 //                    _Filename,
 //                    _HandleOutOfMemoryError );
 //            _Filename = initString( _FilenameLength, _HandleOutOfMemoryError );
-//            this.set_Directory( _Workspace_Directory );
+//            this.setDirectory( _Workspace_Directory );
 //            int _NameLength = 1000;
 //            String _Name = initString( _NameLength, _HandleOutOfMemoryErrorFalse );
-//            BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions( _HandleOutOfMemoryError );
+//            BigDecimal[] dimensions = _Grid2DSquareCell.getDimensions( _HandleOutOfMemoryError );
 //            double cellsize = Double.valueOf( dimensions[ 0 ].toString() ).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
 //            Grids_AbstractGrid2DSquareCell dummyGrid = null;
-//            long nrows = _Grid2DSquareCell.get_NRows( _HandleOutOfMemoryError );
-//            long ncols = _Grid2DSquareCell.get_NCols( _HandleOutOfMemoryError );
+//            long nrows = _Grid2DSquareCell.getNRows( _HandleOutOfMemoryError );
+//            long ncols = _Grid2DSquareCell.getNCols( _HandleOutOfMemoryError );
 //            long _StartRowIndexLong = 0L;
 //            long _StartColIndexLong = 0L;
 //            long _EndRowIndexLong =  0L;
@@ -359,21 +358,21 @@ public class RoofGeneralisation
 //                        distance,
 //                        weightIntersect,
 //                        weightFactor,
-//                        _Grid2DSquareCellDoubleFactory,
-//                        _Grid2DSquareCellIntFactory,
+//                        Grid2DSquareCellDoubleFactory,
+//                        Grid2DSquareCellIntFactory,
 //                        _HandleOutOfMemoryError );
 //                maskEdges(
 //                            _Roughness,
 //                            distances,
 //                            _HandleOutOfMemoryError );
-////                    _Name = _Roughness.get_Name( _HandleOutOfMemoryError ) + "_" + distances;
-////                    metrics1[ i ].set_Name( _Name, _HandleOutOfMemoryError );
+////                    _Name = _Roughness.getName( _HandleOutOfMemoryError ) + "_" + distances;
+////                    metrics1[ i ].setName( _Name, _HandleOutOfMemoryError );
 ////                    _Name = initString( _NameLength, _HandleOutOfMemoryError );
 ////                    output(
 ////                            _Roughness,
 ////                            _Output_Directory,
 ////                            _HandleOutOfMemoryError );
-//                    _OutputESRIAsciiGrid(
+//                    outputESRIAsciiGrid(
 //                            _Roughness,
 //                            _Output_Directory,
 //                            _HandleOutOfMemoryError );
@@ -412,8 +411,8 @@ public class RoofGeneralisation
 //                    _Filename,
 //                    _HandleOutOfMemoryError);
 //            _Filename = initString(_FilenameLength, _HandleOutOfMemoryError);
-//            this.set_Directory(_Workspace_Directory);
-//            BigDecimal[] dimensions = _Grid2DSquareCell.get_Dimensions(_HandleOutOfMemoryError);
+//            this.setDirectory(_Workspace_Directory);
+//            BigDecimal[] dimensions = _Grid2DSquareCell.getDimensions(_HandleOutOfMemoryError);
 //            double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
@@ -465,8 +464,8 @@ public class RoofGeneralisation
 //            boolean _HandleOutOfMemoryError) {
 //        try {
 //            System.out.println("Masking Edges");
-//            long nrows = _Grid2DSquareCell.get_NRows(_HandleOutOfMemoryErrorFalse);
-//            long ncols = _Grid2DSquareCell.get_NCols(_HandleOutOfMemoryErrorFalse);
+//            long nrows = _Grid2DSquareCell.getNRows(_HandleOutOfMemoryErrorFalse);
+//            long ncols = _Grid2DSquareCell.getNCols(_HandleOutOfMemoryErrorFalse);
 //            long _StartRowIndexLong = 0L;
 //            long _StartColIndexLong = 0L;
 //            long _EndRowIndexLong = 0L;
