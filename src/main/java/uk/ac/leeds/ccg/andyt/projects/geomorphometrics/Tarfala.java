@@ -136,7 +136,7 @@ ncols         = 5200;
                     chunkNRows,
                     chunkNCols,
                     NoDataValue);
-            ge.setGrid2DSquareCellProcessor(this);
+            ge.setGridProcessor(this);
             //this.Grid2DSquareCellDoubleFactory.setChunkNRows(chunkNRows);
             //this.Grid2DSquareCellDoubleFactory.setChunkNCols(chunkNCols);
             //this.Grid2DSquareCellDoubleFactory.set_NoDataValue(NoDataValue);
@@ -230,13 +230,13 @@ ncols         = 5200;
                         boolean _SwapToFileCache = true;
                         grid2DSquareCellDouble.writeToFile(_SwapToFileCache,
                                 HandleOutOfMemoryError);
-                        ge.get_AbstractGrid2DSquareCell_HashSet().add(grid2DSquareCellDouble);
+                        ge.getGrids().add(grid2DSquareCellDouble);
                         System.out.println("<outputImage>");
                         System.out.println("outputDirectory " + outputDirectory);
                         grid2DSquareCellDouble.setName(inputFilenameWithoutExtension, HandleOutOfMemoryError);
                         outputImage(g,// grid2DSquareCellDouble,
                                 //this,
-                                //_Grids_Environment.get_Grid2DSquareCellProcessor(),
+                                //_Grids_Environment.getGridProcessor(),
                                 outputDirectory,
                                 aImageExporter,
                                 imageTypes,
@@ -397,9 +397,9 @@ ncols         = 5200;
                     handleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                ge.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clearMemoryReserve();
+                ge.swapChunks(handleOutOfMemoryError);
+                ge.initMemoryReserve(handleOutOfMemoryError);
                 run1(
                         grid,
                         outputDirectory,
@@ -528,9 +528,9 @@ ncols         = 5200;
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                ge.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clearMemoryReserve();
+                ge.swapChunks(handleOutOfMemoryError);
+                ge.initMemoryReserve(handleOutOfMemoryError);
                 System.out.println("Going round the loop again...");
                 do_Metrics1(
                         g,
@@ -681,21 +681,21 @@ ncols         = 5200;
 //                            imageTypes,
 //                            HandleOutOfMemoryError);
                     output(slopeAndAspect[i],
-                            //_Grids_Environment.get_Grid2DSquareCellProcessor(),
+                            //_Grids_Environment.getGridProcessor(),
                             outputDirectory,
                             ie,
                             imageTypes,
                             eage,
                             handleOutOfMemoryError);
                     slopeAndAspect[i] = null;
-                    ge.get_AbstractGrid2DSquareCell_HashSet().remove(slopeAndAspect[i]);
+                    ge.getGrids().remove(slopeAndAspect[i]);
                 }
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                ge.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clearMemoryReserve();
+                ge.swapChunks(handleOutOfMemoryError);
+                ge.initMemoryReserve(handleOutOfMemoryError);
                 do_SlopeAndAspect(
                         g,
                         outputDirectory0,
@@ -775,10 +775,10 @@ ncols         = 5200;
 //                    HandleOutOfMemoryError);
 //        } catch (OutOfMemoryError _OutOfMemoryError) {
 //            if (HandleOutOfMemoryError) {
-//                clear_MemoryReserve();
-////                swapToFile_Grid2DSquareCellChunk_AccountDetail();
+//                clearMemoryReserve();
+////                swapChunk_AccountDetail();
 //                _SwapToFileGrid2DSquareCellChunksExcept(_Grid2DSquareCell);
-//                init_MemoryReserve(_Grid2DSquareCell, HandleOutOfMemoryError);
+//                initMemoryReserve(_Grid2DSquareCell, HandleOutOfMemoryError);
 //                maskEdges(
 //                        _Grid2DSquareCell,
 //                        distances,

@@ -118,7 +118,7 @@ public class RoofGeneralisation
                         _Grid2DSquareCellDouble.writeToFile(
                                 _SwapToFileCache,
                                 _HandleOutOfMemoryError);
-                        ge.get_AbstractGrid2DSquareCell_HashSet().add(_Grid2DSquareCellDouble);
+                        ge.getGrids().add(_Grid2DSquareCellDouble);
 //                        outputImage(
 //                                _Grid2DSquareCellDouble,
 //                                _Output_Directory,
@@ -197,9 +197,9 @@ public class RoofGeneralisation
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
-                ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunks(_HandleOutOfMemoryError);
-                ge.init_MemoryReserve(_HandleOutOfMemoryError);
+                ge.clearMemoryReserve();
+                ge.swapChunks(_HandleOutOfMemoryError);
+                ge.initMemoryReserve(_HandleOutOfMemoryError);
                 run1(
                         _Grid2DSquareCellDouble,
                         _Output_Directory,
@@ -297,9 +297,9 @@ public class RoofGeneralisation
             }
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunks(handleOutOfMemoryError);
-                ge.init_MemoryReserve(handleOutOfMemoryError);
+                ge.clearMemoryReserve();
+                ge.swapChunks(handleOutOfMemoryError);
+                ge.initMemoryReserve(handleOutOfMemoryError);
                 do_Metrics1(
                         g,
                         _Output_Directory0,
@@ -379,9 +379,9 @@ public class RoofGeneralisation
 //             }
 //        } catch ( OutOfMemoryError _OutOfMemoryError ) {
 //            if ( _HandleOutOfMemoryError ) {
-//                clear_MemoryReserve();
-//                swapToFile_Grid2DSquareCellChunks();
-//                init_MemoryReserve( _HandleOutOfMemoryError );
+//                clearMemoryReserve();
+//                swapChunks();
+//                initMemoryReserve( _HandleOutOfMemoryError );
 //                do_Roughness(
 //                        _Grid2DSquareCell,
 //                        _Output_Directory0,
@@ -442,9 +442,9 @@ public class RoofGeneralisation
 //            }
 //        } catch (OutOfMemoryError _OutOfMemoryError) {
 //            if (_HandleOutOfMemoryError) {
-//                clear_MemoryReserve();
-//                swapToFile_Grid2DSquareCellChunks();
-//                init_MemoryReserve(_HandleOutOfMemoryError);
+//                clearMemoryReserve();
+//                swapChunks();
+//                initMemoryReserve(_HandleOutOfMemoryError);
 //                do_SlopeAndAspect(
 //                        _Grid2DSquareCell,
 //                        _Output_Directory0,
@@ -518,10 +518,10 @@ public class RoofGeneralisation
 //                    _HandleOutOfMemoryError);
 //        } catch (OutOfMemoryError _OutOfMemoryError) {
 //            if (_HandleOutOfMemoryError) {
-//                clear_MemoryReserve();
-////                swapToFile_Grid2DSquareCellChunk_AccountDetail();
+//                clearMemoryReserve();
+////                swapChunk_AccountDetail();
 //                _SwapToFileGrid2DSquareCellChunksExcept(_Grid2DSquareCell);
-//                init_MemoryReserve(_Grid2DSquareCell, _HandleOutOfMemoryError);
+//                initMemoryReserve(_Grid2DSquareCell, _HandleOutOfMemoryError);
 //                maskEdges(
 //                        _Grid2DSquareCell,
 //                        distances,
