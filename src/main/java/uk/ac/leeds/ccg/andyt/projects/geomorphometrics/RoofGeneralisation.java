@@ -21,8 +21,8 @@ package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 import java.io.File;
 import java.math.BigDecimal;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
@@ -104,7 +104,7 @@ public class RoofGeneralisation
                     // Initialisation
                     _Input_Filename_WithoutExtension = _Input_Filename.substring(0, _Input_Filename.length() - 4);
                     _Output_Directory = new File(_Input_Directory + "/Geomorphometrics/" + _Input_Filename_WithoutExtension + "/");
-                    Grids_Grid2DSquareCellDouble _Grid2DSquareCellDouble = null;
+                    Grids_GridDouble _Grid2DSquareCellDouble = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
@@ -112,7 +112,7 @@ public class RoofGeneralisation
                                 _Input_Directory,
                                 _Input_Filename,
                                 _HandleOutOfMemoryError);
-                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this.Grid2DSquareCellDoubleFactory.create(_Input_File);
+                        _Grid2DSquareCellDouble = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(_Input_File);
                         // Cache input
                         boolean _SwapToFileCache = true;
                         _Grid2DSquareCellDouble.writeToFile(
@@ -127,7 +127,7 @@ public class RoofGeneralisation
 //                                _HandleOutOfMemoryError);
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_GridDouble) Grid2DSquareCellDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
@@ -157,7 +157,7 @@ public class RoofGeneralisation
     }
 
     public void run1(
-            Grids_Grid2DSquareCellDouble _Grid2DSquareCellDouble,
+            Grids_GridDouble _Grid2DSquareCellDouble,
             File _Output_Directory,
             File _Workspace_Directory,
             Grids_ImageExporter _ImageExporter,
@@ -213,7 +213,7 @@ public class RoofGeneralisation
     }
 
     public void do_Metrics1(
-            Grids_AbstractGrid2DSquareCell g,
+            Grids_AbstractGridNumber g,
             File _Output_Directory0,
             File _Workspace_Directory0,
             Grids_ImageExporter ie,
@@ -241,7 +241,7 @@ public class RoofGeneralisation
             double cellsize = g.getCellsizeDouble(handleOutOfMemoryError);
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
-            Grids_AbstractGrid2DSquareCell dummyGrid = null;
+            Grids_AbstractGridNumber dummyGrid = null;
             long nrows = g.getNRows(handleOutOfMemoryError);
             long ncols = g.getNCols(handleOutOfMemoryError);
             long _StartRowIndexLong = 0L;
@@ -259,7 +259,7 @@ public class RoofGeneralisation
             double max = 1;
             for (distances = 2; distances <= 4; distances *= 2) {
                 distance = cellsize * (double) distances;
-                Grids_AbstractGrid2DSquareCell[] metrics1 = getMetrics1(g,
+                Grids_AbstractGridNumber[] metrics1 = getMetrics1(g,
                         distance,
                         weightIntersect,
                         weightFactor,
@@ -313,7 +313,7 @@ public class RoofGeneralisation
     }
 
     public void do_Roughness(
-            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
+            Grids_AbstractGridNumber _Grid2DSquareCell,
             File _Output_Directory0,
             File _Workspace_Directory0,
             boolean _HandleOutOfMemoryError)
@@ -337,7 +337,7 @@ public class RoofGeneralisation
 //            double cellsize = Double.valueOf( dimensions[ 0 ].toString() ).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
-//            Grids_AbstractGrid2DSquareCell dummyGrid = null;
+//            Grids_AbstractGridNumber dummyGrid = null;
 //            long nrows = _Grid2DSquareCell.getNRows( _HandleOutOfMemoryError );
 //            long ncols = _Grid2DSquareCell.getNCols( _HandleOutOfMemoryError );
 //            long _StartRowIndexLong = 0L;
@@ -353,7 +353,7 @@ public class RoofGeneralisation
 //            int _int_0 = 0;
 //            for ( distances = 2; distances <= 32; distances *=2 ) {
 //                distance = cellsize * ( double ) distances;
-//                Grids_AbstractGrid2DSquareCell _Roughness = get_Roughness(
+//                Grids_AbstractGridNumber _Roughness = get_Roughness(
 //                        _Grid2DSquareCell,
 //                        distance,
 //                        weightIntersect,
@@ -394,7 +394,7 @@ public class RoofGeneralisation
     }
 
 //    public void do_SlopeAndAspect(
-//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGridNumber _Grid2DSquareCell,
 //            File _Output_Directory0,
 //            File _Workspace_Directory0,
 //            boolean _HandleOutOfMemoryError)
@@ -416,13 +416,13 @@ public class RoofGeneralisation
 //            double cellsize = Double.valueOf(dimensions[ 0].toString()).doubleValue();
 //            double weightIntersect = 1.0d;
 //            double weightFactor = 1.0d;
-//            Grids_AbstractGrid2DSquareCell dummyGrid = null;
+//            Grids_AbstractGridNumber dummyGrid = null;
 //            double distance = 0.0d;
 //            int distances = 2;
 //            int i = 0;
 //            for (distances = 2; distances <= 16; distances *= 2) {
 //                distance = cellsize * (double) distances;
-//                Grids_AbstractGrid2DSquareCell[] _SlopeAndAspect = getSlopeAspect(
+//                Grids_AbstractGridNumber[] _SlopeAndAspect = getSlopeAspect(
 //                        _Grid2DSquareCell,
 //                        distance,
 //                        weightIntersect,
@@ -459,7 +459,7 @@ public class RoofGeneralisation
 //     *
 //     */
 //    public void maskEdges(
-//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGridNumber _Grid2DSquareCell,
 //            int distances,
 //            boolean _HandleOutOfMemoryError) {
 //        try {

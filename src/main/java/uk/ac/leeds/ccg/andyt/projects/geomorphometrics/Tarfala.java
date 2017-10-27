@@ -19,10 +19,10 @@
 package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellIntFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridIntFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
@@ -169,8 +169,8 @@ ncols         = 5200;
                     // Initialisation
                     inputFilenameWithoutExtension = inputFilename.substring(0, inputFilename.length() - 4);
                     outputDirectory = new File(inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
-                    Grids_Grid2DSquareCellDouble grid2DSquareCellDouble = null;
-                    Grids_Grid2DSquareCellDouble g = null;
+                    Grids_GridDouble grid2DSquareCellDouble = null;
+                    Grids_GridDouble g = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
@@ -192,9 +192,9 @@ ncols         = 5200;
                                 chunkNCols,
                                 NoDataValue);
 
-//                        grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this.Grid2DSquareCellDoubleFactory.create(
+//                        grid2DSquareCellDouble = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(
 //                                inputFile);
-                        grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) this.Grid2DSquareCellDoubleFactory.create(_GridStatistics,
+                        grid2DSquareCellDouble = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(_GridStatistics,
                                 Directory,
                                 inputFile,
                                 _Grid2DSquareCellDoubleChunkFactory,
@@ -210,7 +210,7 @@ ncols         = 5200;
                         
                         // clip grid2DSquareCellDouble
                         nrows         = 7140;
-                        g = (Grids_Grid2DSquareCellDouble) this.Grid2DSquareCellDoubleFactory.create(
+                        g = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(
                                 grid2DSquareCellDouble,
                                 0,
                                 0,
@@ -252,7 +252,7 @@ ncols         = 5200;
                         
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_Grid2DSquareCellDouble) Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_GridDouble) Grid2DSquareCellDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
@@ -290,7 +290,7 @@ ncols         = 5200;
             int chunkNRows,
             int chunkNCols,
             double NoDataValue) {
-        this.Grid2DSquareCellDoubleFactory = new Grids_Grid2DSquareCellDoubleFactory(
+        this.Grid2DSquareCellDoubleFactory = new Grids_GridDoubleFactory(
                 this.Directory,
                 chunkNRows,
                 chunkNCols,
@@ -303,7 +303,7 @@ ncols         = 5200;
     private void init_Grid2DSquareCellIntFactory(
             int chunkNRows,
             int chunkNCols) {
-        this.Grid2DSquareCellIntFactory = new Grids_Grid2DSquareCellIntFactory(
+        this.Grid2DSquareCellIntFactory = new Grids_GridIntFactory(
                 this.Directory,
                 chunkNRows,
                 chunkNCols,
@@ -326,7 +326,7 @@ ncols         = 5200;
      * @throws Error
      */
     public void run1(
-            Grids_Grid2DSquareCellDouble grid,
+            Grids_GridDouble grid,
             File outputDirectory,
             File workspaceDirectory,
             Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter,
@@ -433,7 +433,7 @@ ncols         = 5200;
      * @throws Error
      */
     public void do_Metrics1(
-            Grids_AbstractGrid2DSquareCell g,
+            Grids_AbstractGridNumber g,
             File outputDirectory0,
             File workspaceDirectory0,
             Grids_ESRIAsciiGridExporter eage,
@@ -465,7 +465,7 @@ ncols         = 5200;
             double cellsize = g.getCellsizeDouble(handleOutOfMemoryError);
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
-            Grids_AbstractGrid2DSquareCell dummyGrid = null;
+            Grids_AbstractGridNumber dummyGrid = null;
             long nrows = g.getNRows(handleOutOfMemoryError);
             long ncols = g.getNCols(handleOutOfMemoryError);
 //            long _StartRowIndexLong = 0L;
@@ -483,7 +483,7 @@ ncols         = 5200;
             double max = 1;
             for (distances = minDistance; distances <= maxDistance; distances *= multiplier) {
                 distance = cellsize * (double) distances;
-                Grids_AbstractGrid2DSquareCell[] metrics1 = getMetrics1(g,
+                Grids_AbstractGridNumber[] metrics1 = getMetrics1(g,
                         distance,
                         weightIntersect,
                         weightFactor,
@@ -552,7 +552,7 @@ ncols         = 5200;
     }
 
     public void do_Metrics2(
-            Grids_AbstractGrid2DSquareCell g,
+            Grids_AbstractGridNumber g,
             File outputDirectory0,
             File workspaceDirectory0,
             boolean handleOutOfMemoryError)
@@ -576,7 +576,7 @@ ncols         = 5200;
             double cellsize = g.getCellsizeDouble(handleOutOfMemoryError);
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
-            Grids_AbstractGrid2DSquareCell dummyGrid = null;
+            Grids_AbstractGridNumber dummyGrid = null;
             long nrows = g.getNRows(handleOutOfMemoryError);
             long ncols = g.getNCols(handleOutOfMemoryError);
             long _StartRowIndexLong = 0L;
@@ -592,7 +592,7 @@ ncols         = 5200;
             int _int_0 = 0;
             for (distances = 2; distances <= 32; distances *= 2) {
                 distance = cellsize * (double) distances;
-//                Grids_AbstractGrid2DSquareCell roughness = getMetrics2(
+//                Grids_AbstractGridNumber roughness = getMetrics2(
 //                        grid,
 //                        distance,
 //                        weightIntersect,
@@ -625,7 +625,7 @@ ncols         = 5200;
      * @throws Error
      */
     public void do_SlopeAndAspect(
-            Grids_AbstractGrid2DSquareCell g,
+            Grids_AbstractGridNumber g,
             File outputDirectory0,
             File workspaceDirectory0,
             Grids_ESRIAsciiGridExporter eage,
@@ -658,7 +658,7 @@ ncols         = 5200;
             int i = 0;
             for (distances = minDistance; distances <= maxDistance; distances *= multiplier) {
                 distance = cellsize * (double) distances;
-                Grids_AbstractGrid2DSquareCell[] slopeAndAspect = getSlopeAspect(
+                Grids_AbstractGridNumber[] slopeAndAspect = getSlopeAspect(
                         g,
                         distance,
                         weightIntersect,
@@ -716,7 +716,7 @@ ncols         = 5200;
 //     *
 //     */
 //    public void maskEdges(
-//            Grids_AbstractGrid2DSquareCell _Grid2DSquareCell,
+//            Grids_AbstractGridNumber _Grid2DSquareCell,
 //            int distances,
 //            boolean HandleOutOfMemoryError) {
 //        try {
