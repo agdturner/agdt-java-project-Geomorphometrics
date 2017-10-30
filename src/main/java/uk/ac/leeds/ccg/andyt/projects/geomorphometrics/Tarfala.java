@@ -24,8 +24,8 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 
@@ -136,7 +136,7 @@ ncols         = 5200;
                     chunkNRows,
                     chunkNCols,
                     NoDataValue);
-            ge.setGridProcessor(this);
+            ge.setProcessor(this);
             //this.Grid2DSquareCellDoubleFactory.setChunkNRows(chunkNRows);
             //this.Grid2DSquareCellDoubleFactory.setChunkNCols(chunkNCols);
             //this.Grid2DSquareCellDoubleFactory.set_NoDataValue(NoDataValue);
@@ -236,7 +236,7 @@ ncols         = 5200;
                         grid2DSquareCellDouble.setName(inputFilenameWithoutExtension, HandleOutOfMemoryError);
                         outputImage(g,// grid2DSquareCellDouble,
                                 //this,
-                                //_Grids_Environment.getGridProcessor(),
+                                //_Grids_Environment.getProcessor(),
                                 outputDirectory,
                                 aImageExporter,
                                 imageTypes,
@@ -681,7 +681,7 @@ ncols         = 5200;
 //                            imageTypes,
 //                            HandleOutOfMemoryError);
                     output(slopeAndAspect[i],
-                            //_Grids_Environment.getGridProcessor(),
+                            //_Grids_Environment.getProcessor(),
                             outputDirectory,
                             ie,
                             imageTypes,
