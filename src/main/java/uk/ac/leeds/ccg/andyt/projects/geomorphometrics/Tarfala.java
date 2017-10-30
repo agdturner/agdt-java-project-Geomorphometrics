@@ -72,17 +72,17 @@ public class Tarfala
     public static void main(String[] args) {
         //File Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/test/Workspace/");
         //File Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/Workspace/");
-        File _Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Owen/Workspace/");
+        File dir = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Owen/Workspace/");
         //File Directory = new File("C:/Temp/Owen/Workspace");
         //File Directory = new File("C:/Temp/Owen/Workspace2");
-        System.out.print("" + _Directory.toString());
-        if (_Directory.exists()) {
+        System.out.print("" + dir.toString());
+        if (dir.exists()) {
             System.out.println(" exists.");
-            _Directory.mkdirs();
+            dir.mkdirs();
         } else {
             System.out.println(" does not exist.");
         }
-        Grids_Environment ge = new Grids_Environment(_Directory);
+        Grids_Environment ge = new Grids_Environment(dir);
         Tarfala t = new Tarfala(ge);
         t.run();
     }
@@ -307,7 +307,7 @@ ncols         = 5200;
                 this.Directory,
                 chunkNRows,
                 chunkNCols,
-                this._Grid2DSquareCellIntChunkFactory,
+                this.GridChunkIntFactory,
                 ge,
                 this.HandleOutOfMemoryError);
     }
