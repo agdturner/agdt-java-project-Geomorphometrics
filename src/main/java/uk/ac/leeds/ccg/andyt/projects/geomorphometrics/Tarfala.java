@@ -139,7 +139,7 @@ ncols         = 5200;
             ge.setProcessor(this);
             //this.Grid2DSquareCellDoubleFactory.setChunkNRows(chunkNRows);
             //this.Grid2DSquareCellDoubleFactory.setChunkNCols(chunkNCols);
-            //this.Grid2DSquareCellDoubleFactory.set_NoDataValue(NoDataValue);
+            //this.Grid2DSquareCellDoubleFactory.setNoDataValue(NoDataValue);
 
             boolean swapOutInitialisedFiles = true;
             File inputDirectory = getDirectory(HandleOutOfMemoryError);
