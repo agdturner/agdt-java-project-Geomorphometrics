@@ -37,9 +37,8 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 public class Tarfala
         extends Grids_ProcessorDEM {
 
-    private long time;
+    private long Time;
     boolean HandleOutOfMemoryError;
-    String _FileSeparator;
     int _MessageLength;
     int _FilenameLength;
     String _Message0;
@@ -56,9 +55,8 @@ public class Tarfala
      */
     public Tarfala(Grids_Environment ge) {
         super(ge);
-        this.time = System.currentTimeMillis();
+        Time = System.currentTimeMillis();
         this.HandleOutOfMemoryError = true;
-        this._FileSeparator = System.getProperty("file.separator");
         this._MessageLength = 1000;
         this._FilenameLength = 1000;
         this._Message0 = ge.initString(_MessageLength, HandleOutOfMemoryError);
@@ -127,19 +125,19 @@ ncols         = 5200;
             chunkNCols = 16;
             //chunkNCols = 217;
             NoDataValue = -9999.0d;
-            init_Grid2DSquareCellIntFactory(
+            initGridIntFactory(
                     chunkNRows,
                     chunkNCols);
-            //this.Grid2DSquareCellIntFactory.setChunkNRows(chunkNRows);
-            //this.Grid2DSquareCellIntFactory.setChunkNCols(chunkNCols);
+            //this.GridIntFactory.setChunkNRows(chunkNRows);
+            //this.GridIntFactory.setChunkNCols(chunkNCols);
             init_Grid2DSquareCellDoubleFactory(
                     chunkNRows,
                     chunkNCols,
                     NoDataValue);
             ge.setProcessor(this);
-            //this.Grid2DSquareCellDoubleFactory.setChunkNRows(chunkNRows);
-            //this.Grid2DSquareCellDoubleFactory.setChunkNCols(chunkNCols);
-            //this.Grid2DSquareCellDoubleFactory.setNoDataValue(NoDataValue);
+            //this.GridDoubleFactory.setChunkNRows(chunkNRows);
+            //this.GridDoubleFactory.setChunkNCols(chunkNCols);
+            //this.GridDoubleFactory.setNoDataValue(NoDataValue);
 
             boolean swapOutInitialisedFiles = true;
             File inputDirectory = getDirectory(HandleOutOfMemoryError);
@@ -169,8 +167,8 @@ ncols         = 5200;
                     // Initialisation
                     inputFilenameWithoutExtension = inputFilename.substring(0, inputFilename.length() - 4);
                     outputDirectory = new File(inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
-                    Grids_GridDouble grid2DSquareCellDouble = null;
-                    Grids_GridDouble g = null;
+                    Grids_GridDouble gridDouble = null;
+                    Grids_GridDouble g;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
@@ -184,7 +182,7 @@ ncols         = 5200;
 //                            chunkNRows = 3797;
 //                            chunkNCols = 1399;
 //                        }
-                        init_Grid2DSquareCellIntFactory(
+                        initGridIntFactory(
                                 chunkNRows,
                                 chunkNCols);
                         init_Grid2DSquareCellDoubleFactory(
@@ -192,12 +190,12 @@ ncols         = 5200;
                                 chunkNCols,
                                 NoDataValue);
 
-//                        grid2DSquareCellDouble = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(
+//                        grid2DSquareCellDouble = (Grids_GridDouble) this.GridDoubleFactory.create(
 //                                inputFile);
-                        grid2DSquareCellDouble = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(_GridStatistics,
+                        gridDouble = (Grids_GridDouble) this.GridDoubleFactory.create(GridStatistics,
                                 Directory,
                                 inputFile,
-                                _Grid2DSquareCellDoubleChunkFactory,
+                                GridChunkDoubleFactory,
                                 0,
                                 0,
                                 nrows - 1,
@@ -210,16 +208,16 @@ ncols         = 5200;
                         
                         // clip grid2DSquareCellDouble
                         nrows         = 7140;
-                        g = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(
-                                grid2DSquareCellDouble,
+                        g = (Grids_GridDouble) this.GridDoubleFactory.create(
+                                gridDouble,
                                 0,
                                 0,
                                 nrows -1,
                                 ncols - 1);
-                        grid2DSquareCellDouble = g;
+                        gridDouble = g;
                         chunkNRows = 340;
                         chunkNCols = 400;
-            init_Grid2DSquareCellIntFactory(
+            initGridIntFactory(
                                 chunkNRows,
                                 chunkNCols);
                         init_Grid2DSquareCellDoubleFactory(
@@ -228,12 +226,12 @@ ncols         = 5200;
                                 NoDataValue);
                         // Cache input
                         boolean _SwapToFileCache = true;
-                        grid2DSquareCellDouble.writeToFile(_SwapToFileCache,
+                        gridDouble.writeToFile(_SwapToFileCache,
                                 HandleOutOfMemoryError);
-                        ge.getGrids().add(grid2DSquareCellDouble);
+                        ge.getGrids().add(gridDouble);
                         System.out.println("<outputImage>");
                         System.out.println("outputDirectory " + outputDirectory);
-                        grid2DSquareCellDouble.setName(inputFilenameWithoutExtension, HandleOutOfMemoryError);
+                        gridDouble.setName(inputFilenameWithoutExtension, HandleOutOfMemoryError);
                         outputImage(g,// grid2DSquareCellDouble,
                                 //this,
                                 //_Grids_Environment.getProcessor(),
@@ -252,13 +250,13 @@ ncols         = 5200;
                         
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_GridDouble) Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_GridDouble) GridDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
-                    System.out.println(grid2DSquareCellDouble.toString(HandleOutOfMemoryError));
+                    System.out.println(gridDouble.toString(HandleOutOfMemoryError));
                     // generalise
-                    run1(grid2DSquareCellDouble,
+                    run1(gridDouble,
                             outputDirectory,
                             workspaceDirectory,
                             aESRIAsciiGridExporter,
@@ -268,21 +266,18 @@ ncols         = 5200;
                             HandleOutOfMemoryError);
                     _Message = null;
                     _Message = "Processing complete in "
-                            + Grids_Utilities._ReportTime(System.currentTimeMillis() - time);
+                            + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time);
                     _Message = ge.println(_Message, _Message0, HandleOutOfMemoryError);
                     // output
 
                 }
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         } catch (OutOfMemoryError e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         } catch (Error e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -290,26 +285,28 @@ ncols         = 5200;
             int chunkNRows,
             int chunkNCols,
             double NoDataValue) {
-        this.Grid2DSquareCellDoubleFactory = new Grids_GridDoubleFactory(
+        this.GridDoubleFactory = new Grids_GridDoubleFactory(
                 this.Directory,
                 chunkNRows,
                 chunkNCols,
-                this._Grid2DSquareCellDoubleChunkFactory,
+                this.GridChunkDoubleFactory,
                 NoDataValue,
                 ge,
                 this.HandleOutOfMemoryError);
     }
 
-    private void init_Grid2DSquareCellIntFactory(
+    private void initGridIntFactory(
             int chunkNRows,
             int chunkNCols) {
-        this.Grid2DSquareCellIntFactory = new Grids_GridIntFactory(
-                this.Directory,
+        GridIntFactory = new Grids_GridIntFactory(
+                new File(
+                        Directory,
+                        "GridIntFactory"),
                 chunkNRows,
                 chunkNCols,
-                this.GridChunkIntFactory,
+                GridChunkIntFactory,
                 ge,
-                this.HandleOutOfMemoryError);
+                HandleOutOfMemoryError);
     }
 
     /**
@@ -393,7 +390,7 @@ ncols         = 5200;
 //                    swapOutProcessedChunks,
 //                    handleOutOfMemoryError);
 
-            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - time),
+            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time),
                     handleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -458,7 +455,7 @@ ncols         = 5200;
                     _Filename,
                     handleOutOfMemoryError);
             _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
-            this.setDirectory(workspaceDirectory);
+            setDirectory(workspaceDirectory);
             int _NameLength = 1000;
             String _Name = ge.initString(_NameLength, false);
             //Grids_Dimensions dimensions = grid2DSquareCell.getDimensions(handleOutOfMemoryError);
@@ -487,8 +484,8 @@ ncols         = 5200;
                         distance,
                         weightIntersect,
                         weightFactor,
-                        Grid2DSquareCellDoubleFactory,
-                        Grid2DSquareCellIntFactory,
+                        GridDoubleFactory,
+                        GridIntFactory,
                         swapOutInitialisedFiles,
                         swapOutProcessedChunks,
                         handleOutOfMemoryError);
@@ -569,7 +566,7 @@ ncols         = 5200;
                     _Filename,
                     handleOutOfMemoryError);
             _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
-            this.setDirectory(workspaceDirectory);
+            setDirectory(workspaceDirectory);
             int _NameLength = 1000;
             String _Name = ge.initString(_NameLength, handleOutOfMemoryError);
             //Grids_Dimensions dimensions = grid2DSquareCell.getDimensions(handleOutOfMemoryError);
@@ -598,7 +595,7 @@ ncols         = 5200;
 //                        weightIntersect,
 //                        weightFactor,
 //                        _NameLength,
-//                        Grid2DSquareCellDoubleFactory,
+//                        GridDoubleFactory,
 //                        handleOutOfMemoryError);
 //                output(roughness,
 //                            outputDirectory,
@@ -648,7 +645,7 @@ ncols         = 5200;
                     _Filename,
                     handleOutOfMemoryError);
             _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
-            this.setDirectory(workspaceDirectory);
+            setDirectory(workspaceDirectory);
             //Grids_Dimensions dimensions = grid2DSquareCell.getDimensions(handleOutOfMemoryError);
             double cellsize = g.getCellsizeDouble(handleOutOfMemoryError);
             double weightIntersect = 1.0d;
@@ -790,6 +787,6 @@ ncols         = 5200;
 //    }
 
     public long getTime() {
-        return time;
+        return Time;
     }
 }

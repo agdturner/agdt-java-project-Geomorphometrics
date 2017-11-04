@@ -112,7 +112,7 @@ public class RoofGeneralisation
                                 _Input_Directory,
                                 _Input_Filename,
                                 _HandleOutOfMemoryError);
-                        _Grid2DSquareCellDouble = (Grids_GridDouble) this.Grid2DSquareCellDoubleFactory.create(_Input_File);
+                        _Grid2DSquareCellDouble = (Grids_GridDouble) this.GridDoubleFactory.create(_Input_File);
                         // Cache input
                         boolean _SwapToFileCache = true;
                         _Grid2DSquareCellDouble.writeToFile(
@@ -127,7 +127,7 @@ public class RoofGeneralisation
 //                                _HandleOutOfMemoryError);
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_GridDouble) Grid2DSquareCellDoubleFactory.create(
+//                        _Grid2DSquareCellDouble = (Grids_GridDouble) GridDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
@@ -263,8 +263,8 @@ public class RoofGeneralisation
                         distance,
                         weightIntersect,
                         weightFactor,
-                        Grid2DSquareCellDoubleFactory,
-                        Grid2DSquareCellIntFactory,
+                        GridDoubleFactory,
+                        GridIntFactory,
                         swapOutInitialisedFiles,
                         swapOutProcessedChunks,
                         handleOutOfMemoryError);
@@ -358,8 +358,8 @@ public class RoofGeneralisation
 //                        distance,
 //                        weightIntersect,
 //                        weightFactor,
-//                        Grid2DSquareCellDoubleFactory,
-//                        Grid2DSquareCellIntFactory,
+//                        GridDoubleFactory,
+//                        GridIntFactory,
 //                        _HandleOutOfMemoryError );
 //                maskEdges(
 //                            _Roughness,
