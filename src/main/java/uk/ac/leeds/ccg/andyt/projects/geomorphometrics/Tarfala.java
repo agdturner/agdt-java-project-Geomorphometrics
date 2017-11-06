@@ -19,19 +19,23 @@
 package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridIntFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkIntArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 
 /**
- * Originally this class was for processing some data from Sweden, but it has 
+ * Originally this class was for processing some data from Sweden, but it has
  * also been used to process data from the Himalayan region.
+ *
  * @author geoagdt
  */
 public class Tarfala
@@ -45,11 +49,12 @@ public class Tarfala
     String _Message;
     String _Filename;
 
-    protected Tarfala() {}
+    protected Tarfala() {
+    }
 
     /**
      * Creates a new RoofGeneralisation using specified Directory. WARNING:
- Files in the specified Directory may get overwritten.
+     * Files in the specified Directory may get overwritten.
      *
      * @param ge
      */
@@ -87,11 +92,11 @@ public class Tarfala
 
     public void run() {
         try {
-            int nrows;
-            int ncols;
+            int nRows;
+            int nCols;
             int chunkNRows;
             int chunkNCols;
-            double NoDataValue;
+            double noDataValue;
             // Init nrows, ncols, chunkNRows, chunkNCols, NoDataValue
             //nrows = 4415;
             //ncols = 4838;
@@ -107,8 +112,8 @@ public class Tarfala
 //            ncols = 6728;
             //ncols = 6727;
 //nrows         = 7142;
-nrows         = 7142;
-ncols         = 5200;
+            nRows = 7142;
+            nCols = 5200;
 //            chunkNRows = 200;
 //            chunkNCols = 883;
 //            chunkNRows = 64;
@@ -121,23 +126,15 @@ ncols         = 5200;
 //            chunkNCols = 519;
 //            chunkNRows = 1993;
 //            chunkNCols = 232;
+            int nChunkRows = 2;
+            int nChunkCols = 325;
             chunkNRows = 3571;
             chunkNCols = 16;
             //chunkNCols = 217;
-            NoDataValue = -9999.0d;
-            initGridIntFactory(
-                    chunkNRows,
-                    chunkNCols);
-            //this.GridIntFactory.setChunkNRows(chunkNRows);
-            //this.GridIntFactory.setChunkNCols(chunkNCols);
-            init_Grid2DSquareCellDoubleFactory(
-                    chunkNRows,
-                    chunkNCols,
-                    NoDataValue);
+            noDataValue = -9999.0d;
+            initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols, (int) noDataValue);
+            initGridDoubleFactory(nRows, nCols, chunkNRows, chunkNCols, noDataValue);
             ge.setProcessor(this);
-            //this.GridDoubleFactory.setChunkNRows(chunkNRows);
-            //this.GridDoubleFactory.setChunkNCols(chunkNCols);
-            //this.GridDoubleFactory.setNoDataValue(NoDataValue);
 
             boolean swapOutInitialisedFiles = true;
             File inputDirectory = getDirectory(HandleOutOfMemoryError);
@@ -149,17 +146,11 @@ ncols         = 5200;
             Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(ge);
             Grids_ImageExporter aImageExporter = new Grids_ImageExporter(ge);
             File workspaceDirectory = new File(inputDirectory + "/Workspace/");
-            
-            
-            
-            
-            
+
             String[] imageTypes = new String[0];
 //            String[] imageTypes = new String[1];
 //            imageTypes[0] = "PNG";
-            
-            
-            
+
             for (File inputDirectoryFile : inputDirectoryFiles) {
                 inputFilename = inputDirectoryFile.getName();
                 System.out.println("inputFilename " + inputFilename);
@@ -182,48 +173,41 @@ ncols         = 5200;
 //                            chunkNRows = 3797;
 //                            chunkNCols = 1399;
 //                        }
-                        initGridIntFactory(
-                                chunkNRows,
-                                chunkNCols);
-                        init_Grid2DSquareCellDoubleFactory(
-                                chunkNRows,
-                                chunkNCols,
-                                NoDataValue);
-
+//                        initGridIntFactory(
+//                                chunkNRows,
+//                                chunkNCols);
+//                        initGridDoubleFactory(
+//                                chunkNRows,
+//                                chunkNCols,
+//                                noDataValue);
 //                        grid2DSquareCellDouble = (Grids_GridDouble) this.GridDoubleFactory.create(
 //                                inputFile);
-                        gridDouble = (Grids_GridDouble) this.GridDoubleFactory.create(GridStatistics,
+                        gridDouble = (Grids_GridDouble) GridDoubleFactory.create(
+                                Statistics,
                                 Directory,
                                 inputFile,
                                 GridChunkDoubleFactory,
                                 0,
                                 0,
-                                nrows - 1,
-//                                ncols - 3,
-                                ncols - 1,
-                                //chunkNRows - 1,
-                                //chunkNCols - 1,
-                                ge,
+                                nRows - 1,
+                                nCols - 1,
                                 HandleOutOfMemoryError);
-                        
+
                         // clip grid2DSquareCellDouble
-                        nrows         = 7140;
-                        g = (Grids_GridDouble) this.GridDoubleFactory.create(
+                        nRows = 7140;
+                        g = (Grids_GridDouble) GridDoubleFactory.create(
                                 gridDouble,
                                 0,
                                 0,
-                                nrows -1,
-                                ncols - 1);
+                                nRows - 1,
+                                nCols - 1);
                         gridDouble = g;
                         chunkNRows = 340;
                         chunkNCols = 400;
-            initGridIntFactory(
-                                chunkNRows,
-                                chunkNCols);
-                        init_Grid2DSquareCellDoubleFactory(
-                                chunkNRows,
-                                chunkNCols,
-                                NoDataValue);
+                        initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols,
+                                (int) noDataValue);
+                        initGridDoubleFactory(nRows, nCols, chunkNRows,
+                                chunkNCols, noDataValue);
                         // Cache input
                         boolean _SwapToFileCache = true;
                         gridDouble.writeToFile(_SwapToFileCache,
@@ -246,8 +230,7 @@ ncols         = 5200;
 //                                aESRIAsciiGridExporter,
 //                                HandleOutOfMemoryError);
                         System.out.println("</outputImage>");
-                        
-                        
+
                     } else {
                         System.out.println("check1");
 //                        _Grid2DSquareCellDouble = (Grids_GridDouble) GridDoubleFactory.create(
@@ -281,32 +264,38 @@ ncols         = 5200;
         }
     }
 
-    private void init_Grid2DSquareCellDoubleFactory(
+    private void initGridDoubleFactory(
+            int nRows,
+            int nCols,
             int chunkNRows,
             int chunkNCols,
-            double NoDataValue) {
-        this.GridDoubleFactory = new Grids_GridDoubleFactory(
-                this.Directory,
+            double noDataValue) {
+        GridDoubleFactory = new Grids_GridDoubleFactory(
+                ge,
+                Directory,
+                noDataValue,
                 chunkNRows,
                 chunkNCols,
-                this.GridChunkDoubleFactory,
-                NoDataValue,
-                ge,
-                this.HandleOutOfMemoryError);
+                new Grids_Dimensions(nRows, nCols),
+                Statistics,
+                new Grids_GridChunkDoubleArrayFactory());
     }
 
     private void initGridIntFactory(
+            int nRows,
+            int nCols,
             int chunkNRows,
-            int chunkNCols) {
+            int chunkNCols,
+            int noDataValue) {
         GridIntFactory = new Grids_GridIntFactory(
-                new File(
-                        Directory,
-                        "GridIntFactory"),
+                ge,
+                Directory,
+                noDataValue,
                 chunkNRows,
                 chunkNCols,
-                GridChunkIntFactory,
-                ge,
-                HandleOutOfMemoryError);
+                new Grids_Dimensions(nRows, nCols),
+                Statistics,
+                new Grids_GridChunkIntArrayFactory());
     }
 
     /**
