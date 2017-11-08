@@ -137,14 +137,14 @@ public class Tarfala
             ge.setProcessor(this);
 
             boolean swapOutInitialisedFiles = true;
-            File inputDirectory = getDirectory(HandleOutOfMemoryError);
+            File inputDirectory = getDirectory(HandleOutOfMemoryError).getParentFile();
             File[] inputDirectoryFiles = inputDirectory.listFiles();
             String inputFilename;
             String ascString = "asc";
             String inputFilenameWithoutExtension;
             File outputDirectory;
-            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter = new Grids_ESRIAsciiGridExporter(ge);
-            Grids_ImageExporter aImageExporter = new Grids_ImageExporter(ge);
+            Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(ge);
+            Grids_ImageExporter imageExporter = new Grids_ImageExporter(ge);
             File workspaceDirectory = new File(inputDirectory + "/Workspace/");
 
             String[] imageTypes = new String[0];
@@ -220,7 +220,7 @@ public class Tarfala
                                 //this,
                                 //_Grids_Environment.getProcessor(),
                                 outputDirectory,
-                                aImageExporter,
+                                imageExporter,
                                 imageTypes,
                                 HandleOutOfMemoryError);
 //                        output(grid2DSquareCellDouble,
@@ -242,8 +242,8 @@ public class Tarfala
                     run1(gridDouble,
                             outputDirectory,
                             workspaceDirectory,
-                            aESRIAsciiGridExporter,
-                            aImageExporter,
+                            eage,
+                            imageExporter,
                             imageTypes,
                             swapOutInitialisedFiles,
                             HandleOutOfMemoryError);
