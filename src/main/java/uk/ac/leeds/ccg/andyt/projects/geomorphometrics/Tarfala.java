@@ -183,7 +183,7 @@ public class Tarfala
 //                        grid2DSquareCellDouble = (Grids_GridDouble) this.GridDoubleFactory.create(
 //                                inputFile);
                         gridDouble = (Grids_GridDouble) GridDoubleFactory.create(
-                                Statistics,
+                                GridDoubleStatisticsNotUpdated,
                                 Directory,
                                 inputFile,
                                 GridChunkDoubleFactory,
@@ -277,7 +277,7 @@ public class Tarfala
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(nRows, nCols),
-                Statistics,
+                GridDoubleStatisticsNotUpdated,
                 new Grids_GridChunkDoubleArrayFactory());
     }
 
@@ -294,7 +294,7 @@ public class Tarfala
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(nRows, nCols),
-                Statistics,
+                GridIntStatisticsNotUpdated,
                 new Grids_GridChunkIntArrayFactory());
     }
 
