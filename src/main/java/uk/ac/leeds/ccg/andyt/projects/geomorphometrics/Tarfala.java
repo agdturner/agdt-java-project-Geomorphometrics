@@ -43,11 +43,7 @@ public class Tarfala
 
     private long Time;
     boolean HandleOutOfMemoryError;
-    int _MessageLength;
-    int _FilenameLength;
-    String _Message0;
-    String _Message;
-    String _Filename;
+    String Filename;
 
     protected Tarfala() {
     }
@@ -61,12 +57,7 @@ public class Tarfala
     public Tarfala(Grids_Environment ge) {
         super(ge);
         Time = System.currentTimeMillis();
-        this.HandleOutOfMemoryError = true;
-        this._MessageLength = 1000;
-        this._FilenameLength = 1000;
-        this._Message0 = ge.initString(_MessageLength, HandleOutOfMemoryError);
-        this._Message = ge.initString(_MessageLength, HandleOutOfMemoryError);
-        this._Filename = ge.initString(_FilenameLength, HandleOutOfMemoryError);
+        HandleOutOfMemoryError = true;
     }
 
     /**
@@ -216,26 +207,16 @@ public class Tarfala
                         System.out.println("<outputImage>");
                         System.out.println("outputDirectory " + outputDirectory);
                         gridDouble.setName(inputFilenameWithoutExtension, HandleOutOfMemoryError);
-                        outputImage(g,// grid2DSquareCellDouble,
-                                //this,
-                                //_Grids_Environment.getProcessor(),
+                        outputImage(
+                                g,
                                 outputDirectory,
                                 imageExporter,
                                 imageTypes,
                                 HandleOutOfMemoryError);
-//                        output(grid2DSquareCellDouble,
-//                                outputDirectory,
-//                                aImageExporter,
-//                                imageTypes,
-//                                aESRIAsciiGridExporter,
-//                                HandleOutOfMemoryError);
                         System.out.println("</outputImage>");
 
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_GridDouble) GridDoubleFactory.create(
-//                                new File(_Input_Directory.toString() + this._FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
-//                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
                     System.out.println(gridDouble.toString(HandleOutOfMemoryError));
                     // generalise
@@ -247,12 +228,8 @@ public class Tarfala
                             imageTypes,
                             swapOutInitialisedFiles,
                             HandleOutOfMemoryError);
-                    _Message = null;
-                    _Message = "Processing complete in "
-                            + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time);
-                    _Message = ge.println(_Message, _Message0, HandleOutOfMemoryError);
-                    // output
-
+                    System.out.println("Processing complete in "
+                            + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time));
                 }
             }
         } catch (Exception e) {
@@ -434,16 +411,13 @@ public class Tarfala
             throws Exception, Error {
         try {
             // Initialistaion
-            _Filename = "_Metrics1";
-            File outputDirectory = ge.initFileDirectory(
-                    outputDirectory0,
-                    _Filename,
+            Filename = "_Metrics1";
+            File outputDirectory = ge.initFileDirectory(outputDirectory0,
+                    Filename,
                     handleOutOfMemoryError);
-            File workspaceDirectory = ge.initFileDirectory(
-                    workspaceDirectory0,
-                    _Filename,
+            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
+                    Filename,
                     handleOutOfMemoryError);
-            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
             setDirectory(workspaceDirectory);
             int _NameLength = 1000;
             String _Name = ge.initString(_NameLength, false);
@@ -545,16 +519,13 @@ public class Tarfala
             throws Exception, Error {
         try {
             // Initialistaion
-            _Filename = "_Metrics2";
-            File outputDirectory = ge.initFileDirectory(
-                    outputDirectory0,
-                    _Filename,
+            Filename = "_Metrics2";
+            File outputDirectory = ge.initFileDirectory(outputDirectory0,
+                    Filename,
                     handleOutOfMemoryError);
-            File workspaceDirectory = ge.initFileDirectory(
-                    workspaceDirectory0,
-                    _Filename,
+            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
+                    Filename,
                     handleOutOfMemoryError);
-            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
             setDirectory(workspaceDirectory);
             int _NameLength = 1000;
             String _Name = ge.initString(_NameLength, handleOutOfMemoryError);
@@ -624,16 +595,13 @@ public class Tarfala
             throws Exception, Error {
         try {
             // Initialistaion
-            _Filename = "_SlopeAndAspect";
-            File outputDirectory = ge.initFileDirectory(
-                    outputDirectory0,
-                    _Filename,
+            Filename = "_SlopeAndAspect";
+            File outputDirectory = ge.initFileDirectory(outputDirectory0,
+                    Filename,
                     handleOutOfMemoryError);
-            File workspaceDirectory = ge.initFileDirectory(
-                    workspaceDirectory0,
-                    _Filename,
+            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
+                    Filename,
                     handleOutOfMemoryError);
-            _Filename = ge.initString(_FilenameLength, handleOutOfMemoryError);
             setDirectory(workspaceDirectory);
             //Grids_Dimensions dimensions = grid2DSquareCell.getDimensions(handleOutOfMemoryError);
             double cellsize = g.getCellsizeDouble(handleOutOfMemoryError);
