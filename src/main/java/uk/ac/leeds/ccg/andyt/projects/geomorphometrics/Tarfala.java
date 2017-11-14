@@ -249,13 +249,14 @@ public class Tarfala
             double noDataValue) {
         GridDoubleFactory = new Grids_GridDoubleFactory(
                 ge,
-                Directory,
+                ge.getFiles().getGeneratedGridDoubleDir(),
+                GridChunkDoubleFactory,
+                DefaultGridChunkDoubleFactory,
                 noDataValue,
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(nRows, nCols),
-                GridDoubleStatisticsNotUpdated,
-                new Grids_GridChunkDoubleArrayFactory());
+                GridDoubleStatisticsNotUpdated);
     }
 
     private void initGridIntFactory(
@@ -266,13 +267,15 @@ public class Tarfala
             int noDataValue) {
         GridIntFactory = new Grids_GridIntFactory(
                 ge,
-                Directory,
+                //Directory,
+                ge.getFiles().getGeneratedGridDoubleDir(),
+                GridChunkIntFactory,
+                DefaultGridChunkIntFactory,
                 noDataValue,
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(nRows, nCols),
-                GridIntStatisticsNotUpdated,
-                new Grids_GridChunkIntArrayFactory());
+                GridIntStatisticsNotUpdated);
     }
 
     /**
