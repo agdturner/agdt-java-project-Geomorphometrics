@@ -138,9 +138,9 @@ public class Tarfala
             Grids_ImageExporter imageExporter = new Grids_ImageExporter(ge);
             File workspaceDirectory = new File(inputDirectory + "/Workspace/");
 
-            String[] imageTypes = new String[0];
-//            String[] imageTypes = new String[1];
-//            imageTypes[0] = "PNG";
+            //String[] imageTypes = new String[0];
+            String[] imageTypes = new String[1];
+            imageTypes[0] = "PNG";
 
             for (File inputDirectoryFile : inputDirectoryFiles) {
                 inputFilename = inputDirectoryFile.getName();
@@ -148,34 +148,22 @@ public class Tarfala
                 if (inputFilename.endsWith(ascString)) {
                     // Initialisation
                     inputFilenameWithoutExtension = inputFilename.substring(0, inputFilename.length() - 4);
-                    outputDirectory = new File(inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
+                    outputDirectory = new File(
+                            inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
                     Grids_GridDouble gridDouble = null;
                     Grids_GridDouble g;
                     // Load input
-                    boolean _NotLoadedAsGrid = true;
-                    if (_NotLoadedAsGrid) {
+                    boolean notLoadedAsGrid = true;
+                    if (notLoadedAsGrid) {
                         File inputFile = ge.initFile(inputDirectory,
                                 inputFilename,
                                 HandleOutOfMemoryError);
-
-//                        if (inputFilename.equalsIgnoreCase("rastert_c0202_c1.asc")) {
-//                            nrows = 7594;
-//                            ncols = 8394;
-//                            chunkNRows = 3797;
-//                            chunkNCols = 1399;
-//                        }
-//                        initGridIntFactory(
-//                                chunkNRows,
-//                                chunkNCols);
-//                        initGridDoubleFactory(
-//                                chunkNRows,
-//                                chunkNCols,
-//                                noDataValue);
-//                        grid2DSquareCellDouble = (Grids_GridDouble) this.GridDoubleFactory.create(
-//                                inputFile);
+                        File dir;
+                        dir = new File(
+                        ge.getFiles().getGeneratedGridDoubleDir(),inputFilenameWithoutExtension);
                         gridDouble = (Grids_GridDouble) GridDoubleFactory.create(
                                 GridDoubleStatisticsNotUpdated,
-                                Directory,
+                                dir,
                                 inputFile,
                                 GridChunkDoubleFactory,
                                 0,
@@ -183,16 +171,21 @@ public class Tarfala
                                 nRows - 1,
                                 nCols - 1,
                                 HandleOutOfMemoryError);
-
-                        // clip grid2DSquareCellDouble
+                        
+                        // clip gridDouble
+                        dir = new File(
+                        ge.getFiles().getGeneratedGridDoubleDir(),"Clipped" + inputFilenameWithoutExtension);
                         nRows = 7140;
                         g = (Grids_GridDouble) GridDoubleFactory.create(
+                                dir,
                                 gridDouble,
                                 0,
                                 0,
                                 nRows - 1,
-                                nCols - 1);
+                                nCols - 1,
+                                HandleOutOfMemoryError);
                         gridDouble = g;
+                        
                         chunkNRows = 340;
                         chunkNCols = 400;
                         initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols,
@@ -200,8 +193,8 @@ public class Tarfala
                         initGridDoubleFactory(nRows, nCols, chunkNRows,
                                 chunkNCols, noDataValue);
                         // Cache input
-                        boolean _SwapToFileCache = true;
-                        gridDouble.writeToFile(_SwapToFileCache,
+                        boolean swapToFileCache = true;
+                        gridDouble.writeToFile(swapToFileCache,
                                 HandleOutOfMemoryError);
                         ge.getGrids().add(gridDouble);
                         System.out.println("<outputImage>");
