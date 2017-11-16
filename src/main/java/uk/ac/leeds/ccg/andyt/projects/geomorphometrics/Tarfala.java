@@ -122,9 +122,9 @@ public class Tarfala
             chunkNRows = 3571;
             chunkNCols = 16;
             //chunkNCols = 217;
-            noDataValue = -9999.0d;
-            initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols, (int) noDataValue);
-            initGridDoubleFactory(nRows, nCols, chunkNRows, chunkNCols, noDataValue);
+//            noDataValue = -9999.0d;
+//            initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols, (int) noDataValue);
+//            initGridDoubleFactory(nRows, nCols, chunkNRows, chunkNCols, noDataValue);
             ge.setProcessor(this);
 
             boolean swapOutInitialisedFiles = true;
@@ -160,38 +160,42 @@ public class Tarfala
                                 HandleOutOfMemoryError);
                         File dir;
                         dir = new File(
-                        ge.getFiles().getGeneratedGridDoubleDir(),inputFilenameWithoutExtension);
+                        ge.getFiles().getGeneratedGridDoubleDir(),
+                                inputFilenameWithoutExtension);
                         gridDouble = (Grids_GridDouble) GridDoubleFactory.create(
-                                GridDoubleStatisticsNotUpdated,
                                 dir,
                                 inputFile,
-                                GridChunkDoubleFactory,
-                                0,
-                                0,
-                                nRows - 1,
-                                nCols - 1,
                                 HandleOutOfMemoryError);
+//                                GridDoubleStatisticsNotUpdated,
+//                                dir,
+//                                inputFile,
+//                                GridChunkDoubleFactory,
+//                                0,
+//                                0,
+//                                nRows - 1,
+//                                nCols - 1,
+//                                HandleOutOfMemoryError);
                         
-                        // clip gridDouble
-                        dir = new File(
-                        ge.getFiles().getGeneratedGridDoubleDir(),"Clipped" + inputFilenameWithoutExtension);
-                        nRows = 7140;
-                        g = (Grids_GridDouble) GridDoubleFactory.create(
-                                dir,
-                                gridDouble,
-                                0,
-                                0,
-                                nRows - 1,
-                                nCols - 1,
-                                HandleOutOfMemoryError);
-                        gridDouble = g;
+//                        // clip gridDouble
+//                        dir = new File(
+//                        ge.getFiles().getGeneratedGridDoubleDir(),"Clipped" + inputFilenameWithoutExtension);
+//                        nRows = 7140;
+//                        g = (Grids_GridDouble) GridDoubleFactory.create(
+//                                dir,
+//                                gridDouble,
+//                                0,
+//                                0,
+//                                nRows - 1,
+//                                nCols - 1,
+//                                HandleOutOfMemoryError);
+//                        gridDouble = g;
                         
-                        chunkNRows = 340;
-                        chunkNCols = 400;
-                        initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols,
-                                (int) noDataValue);
-                        initGridDoubleFactory(nRows, nCols, chunkNRows,
-                                chunkNCols, noDataValue);
+//                        chunkNRows = 340;
+//                        chunkNCols = 400;
+//                        initGridIntFactory(nRows, nCols, chunkNRows, chunkNCols,
+//                                (int) noDataValue);
+//                        initGridDoubleFactory(nRows, nCols, chunkNRows,
+//                                chunkNCols, noDataValue);
                         // Cache input
                         boolean swapToFileCache = true;
                         gridDouble.writeToFile(swapToFileCache,
@@ -201,7 +205,7 @@ public class Tarfala
                         System.out.println("outputDirectory " + outputDirectory);
                         gridDouble.setName(inputFilenameWithoutExtension, HandleOutOfMemoryError);
                         outputImage(
-                                g,
+                                gridDouble,//g,
                                 outputDirectory,
                                 imageExporter,
                                 imageTypes,
@@ -354,7 +358,7 @@ public class Tarfala
 
             log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time),
                     handleOutOfMemoryError);
-        } catch (OutOfMemoryError _OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 ge.clearMemoryReserve();
                 ge.swapChunks(handleOutOfMemoryError);
@@ -369,7 +373,7 @@ public class Tarfala
                         swapOutInitialisedFiles,
                         handleOutOfMemoryError);
             } else {
-                throw _OutOfMemoryError;
+                throw e;
             }
         }
     }
