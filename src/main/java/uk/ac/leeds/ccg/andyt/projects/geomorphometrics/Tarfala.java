@@ -127,7 +127,8 @@ public class Tarfala
 //            initGridDoubleFactory(nRows, nCols, chunkNRows, chunkNCols, noDataValue);
             ge.setProcessor(this);
 
-            boolean swapOutInitialisedFiles = true;
+            //boolean swapOutInitialisedFiles = true;
+            boolean swapOutInitialisedFiles = false;
             File inputDirectory = getDirectory(HandleOutOfMemoryError).getParentFile();
             File[] inputDirectoryFiles = inputDirectory.listFiles();
             String inputFilename;
@@ -486,7 +487,7 @@ public class Tarfala
 //                    }
                 }
             }
-        } catch (OutOfMemoryError _OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 ge.clearMemoryReserve();
                 ge.swapChunks(handleOutOfMemoryError);
@@ -506,7 +507,7 @@ public class Tarfala
                         swapOutProcessedChunks,
                         handleOutOfMemoryError);
             } else {
-                throw _OutOfMemoryError;
+                throw e;
             }
         }
     }
