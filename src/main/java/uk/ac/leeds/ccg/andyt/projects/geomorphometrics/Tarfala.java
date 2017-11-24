@@ -444,7 +444,8 @@ public class Tarfala
             double max = 1;
             for (distances = minDistance; distances <= maxDistance; distances *= multiplier) {
                 distance = cellsize * (double) distances;
-                Grids_AbstractGridNumber[] metrics1 = getMetrics1(g,
+                Grids_AbstractGridNumber[] metrics1 = getMetrics1(
+                        g,
                         distance,
                         weightIntersect,
                         weightFactor,
