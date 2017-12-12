@@ -482,7 +482,7 @@ public class Tarfala
 //                                handleOutOfMemoryError);
 ////                        outputESRIAsciiGrid(
 ////                                metrics1[i],
-////                                _Output_Directory,
+////                                outputDirectory,
 ////                                _ESRIAsciiGridExporter,
 ////                                HandleOutOfMemoryError);
 //                    }
@@ -563,7 +563,7 @@ public class Tarfala
 //                            outputDirectory,
 //                            handleOutOfMemoryError );
             }
-        } catch (OutOfMemoryError _OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             System.err.println("OOME fggfd");
         }
     }
@@ -627,12 +627,12 @@ public class Tarfala
 //                            HandleOutOfMemoryError);
 //                    outputESRIAsciiGrid(
 //                            _SlopeAndAspect[i],
-//                            _Output_Directory,
+//                            outputDirectory,
 //                            _ESRIAsciiGridExporter,
 //                            HandleOutOfMemoryError);
 //                    outputImage(
 //                            _SlopeAndAspect[i],
-//                            _Output_Directory,
+//                            outputDirectory,
 //                            _ImageExporter,
 //                            imageTypes,
 //                            HandleOutOfMemoryError);
@@ -647,7 +647,7 @@ public class Tarfala
                     ge.getGrids().remove(slopeAndAspect[i]);
                 }
             }
-        } catch (OutOfMemoryError _OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 ge.clearMemoryReserve();
                 ge.swapChunks(handleOutOfMemoryError);
@@ -664,7 +664,7 @@ public class Tarfala
                         multiplier,
                         handleOutOfMemoryError);
             } else {
-                throw _OutOfMemoryError;
+                throw e;
             }
         }
     }
@@ -729,7 +729,7 @@ public class Tarfala
 //                    _EndRowIndexLong,
 //                    _EndColIndexLong,
 //                    HandleOutOfMemoryError);
-//        } catch (OutOfMemoryError _OutOfMemoryError) {
+//        } catch (OutOfMemoryError e) {
 //            if (HandleOutOfMemoryError) {
 //                clearMemoryReserve();
 ////                swapChunk_AccountDetail();
@@ -740,7 +740,7 @@ public class Tarfala
 //                        distances,
 //                        HandleOutOfMemoryError);
 //            } else {
-//                throw _OutOfMemoryError;
+//                throw e;
 //            }
 //        }
 //    }

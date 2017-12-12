@@ -93,7 +93,7 @@ public class RoofGeneralisation
             String _Input_Filename;
             String _ASC = "asc";
             String _Input_Filename_WithoutExtension;
-            File _Output_Directory;
+            File outDirectory;
             Grids_ImageExporter _ImageExporter = new Grids_ImageExporter(ge);
             File _Workspace_Directory = new File(_Input_Directory + "/Workspace/");
             String[] _ImageTypes = new String[1];
@@ -103,7 +103,7 @@ public class RoofGeneralisation
                 if (_Input_Filename.endsWith(_ASC)) {
                     // Initialisation
                     _Input_Filename_WithoutExtension = _Input_Filename.substring(0, _Input_Filename.length() - 4);
-                    _Output_Directory = new File(_Input_Directory + "/Geomorphometrics/" + _Input_Filename_WithoutExtension + "/");
+                    outDirectory = new File(_Input_Directory + "/Geomorphometrics/" + _Input_Filename_WithoutExtension + "/");
                     Grids_GridDouble _Grid2DSquareCellDouble = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
@@ -121,7 +121,7 @@ public class RoofGeneralisation
                         ge.getGrids().add(_Grid2DSquareCellDouble);
 //                        outputImage(
 //                                _Grid2DSquareCellDouble,
-//                                _Output_Directory,
+//                                outDirectory,
 //                                _ImageExporter,
 //                                _ImageTypes,
 //                                _HandleOutOfMemoryError);
@@ -135,7 +135,7 @@ public class RoofGeneralisation
                     // generalise
                     run1(
                             _Grid2DSquareCellDouble,
-                            _Output_Directory,
+                            outDirectory,
                             _Workspace_Directory,
                             _ImageExporter,
                             _HandleOutOfMemoryError);
