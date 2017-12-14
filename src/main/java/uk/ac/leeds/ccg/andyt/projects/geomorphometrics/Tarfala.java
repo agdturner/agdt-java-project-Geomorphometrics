@@ -227,7 +227,7 @@ public class Tarfala
                             swapOutInitialisedFiles,
                             HandleOutOfMemoryError);
                     System.out.println("Processing complete in "
-                            + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time));
+                            + Grids_Utilities.getTime(System.currentTimeMillis() - Time));
                 }
             }
         } catch (Exception e) {
@@ -357,7 +357,7 @@ public class Tarfala
 //                    swapOutProcessedChunks,
 //                    handleOutOfMemoryError);
 
-            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - Time),
+            log("Processing complete in " + Grids_Utilities.getTime(System.currentTimeMillis() - Time),
                     handleOutOfMemoryError);
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {

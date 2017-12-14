@@ -141,7 +141,7 @@ public class RoofGeneralisation
                             _HandleOutOfMemoryError);
                     _Message = null;
                     _Message = "Processing complete in " +
-                            Grids_Utilities._ReportTime(System.currentTimeMillis() - time);
+                            Grids_Utilities.getTime(System.currentTimeMillis() - time);
                     _Message = ge.println(_Message, _Message0, _HandleOutOfMemoryError);
                 // output
 
@@ -193,7 +193,7 @@ public class RoofGeneralisation
                     _ImageExporter,
                     _HandleOutOfMemoryError);
 
-            log("Processing complete in " + Grids_Utilities._ReportTime(System.currentTimeMillis() - time),
+            log("Processing complete in " + Grids_Utilities.getTime(System.currentTimeMillis() - time),
                     _HandleOutOfMemoryError);
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (_HandleOutOfMemoryError) {
