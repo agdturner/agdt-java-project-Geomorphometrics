@@ -126,7 +126,7 @@ public class RoofGeneralisation
                             ie);
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { 
             e.printStackTrace(System.err);
         } catch (OutOfMemoryError e) {
             e.printStackTrace(System.err);
