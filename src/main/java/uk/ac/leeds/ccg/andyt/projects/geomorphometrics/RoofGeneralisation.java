@@ -179,7 +179,7 @@ public class RoofGeneralisation
             Grids_AbstractGridNumber[] metrics1 = getMetrics1(g, distance,
                     weightIntersect, weightFactor, GridDoubleFactory,
                     GridIntFactory, swapOutInitialisedFiles,
-                    swapOutProcessedChunks, Hoome);
+                    swapOutProcessedChunks);
             for (i = 0; i < metrics1.length; i++) {
 //                    maskEdges(
 //                            metrics1[i],
