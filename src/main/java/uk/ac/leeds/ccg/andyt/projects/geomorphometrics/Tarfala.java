@@ -174,7 +174,9 @@ public class Tarfala
             throws Exception, Error {
         // Initialise
         log(0, "run1(...)");
-        int minDistance = 2;
+        int minDistance;
+        //minDistance = 8; 
+        minDistance = 2;
         int maxDistance = 16;
         int multiplier = 2;
 
@@ -258,43 +260,43 @@ public class Tarfala
             boolean swapOutProcessedChunks,
             boolean handleOutOfMemoryError)
             throws Exception, Error {
-            // Initialistaion
+        // Initialistaion
+        ge.checkAndMaybeFreeMemory();
+        Filename = "Metrics1";
+        File outputDirectory = ge.initFileDirectory(outputDirectory0,
+                Filename);
+        File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
+                Filename);
+        setDirectory(workspaceDirectory);
+        double cellsize = g.getCellsizeDouble();
+        double weightIntersect = 1.0d;
+        double weightFactor = 1.0d;
+        double distance;
+        int d;
+        int i;
+        for (d = minDistance; d <= maxDistance; d *= multiplier) {
             ge.checkAndMaybeFreeMemory();
-            Filename = "Metrics1";
-            File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                    Filename);
-            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                    Filename);
-            setDirectory(workspaceDirectory);
-            double cellsize = g.getCellsizeDouble();
-            double weightIntersect = 1.0d;
-            double weightFactor = 1.0d;
-            double distance;
-            int d;
-            int i;
-            for (d = minDistance; d <= maxDistance; d *= multiplier) {
+            distance = cellsize * (double) d;
+            Grids_AbstractGridNumber[] metrics1 = getMetrics1(
+                    g,
+                    distance,
+                    weightIntersect,
+                    weightFactor,
+                    GridDoubleFactory,
+                    GridIntFactory,
+                    swapOutInitialisedFiles,
+                    swapOutProcessedChunks);
+            ge.checkAndMaybeFreeMemory();
+            for (i = 0; i < metrics1.length; i++) {
                 ge.checkAndMaybeFreeMemory();
-                distance = cellsize * (double) d;
-                Grids_AbstractGridNumber[] metrics1 = getMetrics1(
-                        g,
-                        distance,
-                        weightIntersect,
-                        weightFactor,
-                        GridDoubleFactory,
-                        GridIntFactory,
-                        swapOutInitialisedFiles,
-                        swapOutProcessedChunks);
-                ge.checkAndMaybeFreeMemory();
-                for (i = 0; i < metrics1.length; i++) {
-                    ge.checkAndMaybeFreeMemory();
-                    output(
-                            metrics1[i],
-                            outputDirectory,
-                            ie,
-                            imageTypes,
-                            eage);
-                }
+                output(
+                        metrics1[i],
+                        outputDirectory,
+                        ie,
+                        imageTypes,
+                        eage);
             }
+        }
     }
 
     public void do_Metrics2(
