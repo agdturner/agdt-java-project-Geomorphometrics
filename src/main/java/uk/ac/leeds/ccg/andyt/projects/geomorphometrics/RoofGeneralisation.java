@@ -90,6 +90,9 @@ public class RoofGeneralisation
             File workspaceDirectory = new File(inputDirectory + "/Workspace/");
             String[] imageTypes = new String[1];
             imageTypes[0] = "PNG";
+            Grids_Files gf;
+            gf = ge.getFiles();
+            File dir;
             for (int i = 0; i < files.length; i++) {
                 inputFilename = files[i].getName();
                 if (inputFilename.endsWith(asc)) {
@@ -102,7 +105,10 @@ public class RoofGeneralisation
                     if (_NotLoadedAsGrid) {
                         File inputFile;
                         inputFile = ge.initFile(inputDirectory, inputFilename);
-                        g = (Grids_GridDouble) this.GridDoubleFactory.create(inputFile);
+                        
+                        dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
+                        g = (Grids_GridDouble) GridDoubleFactory.create(
+                                dir, inputFile);
                         // Cache input
                         boolean swapToFileCache = true;
                         g.writeToFile(swapToFileCache);
