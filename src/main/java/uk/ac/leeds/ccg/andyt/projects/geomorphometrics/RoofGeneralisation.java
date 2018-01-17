@@ -80,14 +80,14 @@ public class RoofGeneralisation
 
     public void run() {
         try {
-            File inputDirectory = getDirectory();
-            File[] files = inputDirectory.listFiles();
+            File inDir = getDirectory();
+            File[] files = inDir.listFiles();
             String inputFilename;
             String asc = "asc";
             String inputFilenameWithoutExtension;
-            File outDirectory;
+            File outDir;
             Grids_ImageExporter ie = new Grids_ImageExporter(ge);
-            File workspaceDirectory = new File(inputDirectory + "/Workspace/");
+            File workspaceDirectory = new File(inDir + "/Workspace/");
             String[] imageTypes = new String[1];
             imageTypes[0] = "PNG";
             Grids_Files gf;
@@ -97,15 +97,16 @@ public class RoofGeneralisation
                 inputFilename = files[i].getName();
                 if (inputFilename.endsWith(asc)) {
                     // Initialisation
-                    inputFilenameWithoutExtension = inputFilename.substring(0, inputFilename.length() - 4);
-                    outDirectory = new File(inputDirectory + "/Geomorphometrics/" + inputFilenameWithoutExtension + "/");
+                    inputFilenameWithoutExtension = inputFilename.substring(
+                            0, inputFilename.length() - 4);
+                    outDir = new File(inDir + "/Geomorphometrics/"
+                            + inputFilenameWithoutExtension + "/");
                     Grids_GridDouble g = null;
                     // Load input
                     boolean _NotLoadedAsGrid = true;
                     if (_NotLoadedAsGrid) {
                         File inputFile;
-                        inputFile = ge.initFile(inputDirectory, inputFilename);
-                        
+                        inputFile = ge.initFile(inDir, inputFilename);
                         dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
                         g = (Grids_GridDouble) GridDoubleFactory.create(
                                 dir, inputFile);
@@ -113,26 +114,19 @@ public class RoofGeneralisation
                         boolean swapToFileCache = true;
                         g.writeToFile(swapToFileCache);
                         ge.getGrids().add(g);
-//                        outputImage(
-//                                g,
-//                                outDirectory,
-//                                ie,
-//                                imageTypes);
+//                        outputImage(g, outDirectory, ie, imageTypes);
                     } else {
                         System.out.println("check1");
-//                        _Grid2DSquareCellDouble = (Grids_GridDouble) GridDoubleFactory.create(
+//                        g = (Grids_GridDouble) GridDoubleFactory.create(
 //                                new File(_Input_Directory.toString() + this.FileSeparator + _Input_Filename_WithoutExtension + "uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory_chunkNrows(" + chunkNrows + ")_chunkNcols(" + chunkNcols + ")"));
 //                        this._AbstractGrid2DSquareCell_HashSet.add(_Grid2DSquareCellDouble);
                     }
 
                     // generalise
-                    run1(g,
-                            outDirectory,
-                            workspaceDirectory,
-                            ie);
+                    run1(g, outDir, workspaceDirectory, ie);
                 }
             }
-        } catch (Exception e) { 
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         } catch (OutOfMemoryError e) {
             e.printStackTrace(System.err);
