@@ -80,7 +80,7 @@ public class RoofGeneralisation
 
     public void run() {
         try {
-            File inDir = getDirectory();
+            File inDir = Files.getDataDir();
             File[] files = inDir.listFiles();
             String inputFilename;
             String asc = "asc";
@@ -103,16 +103,15 @@ public class RoofGeneralisation
                             + inputFilenameWithoutExtension + "/");
                     Grids_GridDouble g = null;
                     // Load input
-                    boolean _NotLoadedAsGrid = true;
-                    if (_NotLoadedAsGrid) {
+                    boolean notLoadedAsGrid = true;
+                    if (notLoadedAsGrid) {
                         File inputFile;
-                        inputFile = ge.initFile(inDir, inputFilename);
+                        inputFile = new File(inDir, inputFilename);
                         dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
                         g = (Grids_GridDouble) GridDoubleFactory.create(
                                 dir, inputFile);
                         // Cache input
-                        boolean swapToFileCache = true;
-                        g.writeToFile(swapToFileCache);
+                        g.writeToFile();
                         ge.getGrids().add(g);
 //                        outputImage(g, outDirectory, ie, imageTypes);
                     } else {
@@ -148,20 +147,14 @@ public class RoofGeneralisation
                 + Grids_Utilities.getTime(System.currentTimeMillis() - time));
     }
 
-    public void doMetrics1(
-            Grids_AbstractGridNumber g,
-            File outDir0,
-            File workspaceDir0,
-            Grids_ImageExporter ie)
-            throws Exception, Error {
+    public void doMetrics1(Grids_AbstractGridNumber g, File outDir0, 
+            File workspaceDir0, Grids_ImageExporter ie) {
         // Initialistaion
         Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(ge);
         Filename = "Metrics1";
         File outDir;
-        outDir = ge.initFileDirectory(outDir0, Filename);
-        File workspaceDir;
-        workspaceDir = ge.initFileDirectory(workspaceDir0, Filename);
-        this.setDirectory(workspaceDir);
+        outDir = new File(outDir0, Filename);
+        outDir.mkdirs();
         boolean swapOutInitialisedFiles = false;
         boolean swapOutProcessedChunks = false;
         String name;
@@ -181,10 +174,6 @@ public class RoofGeneralisation
                     GridIntFactory, swapOutInitialisedFiles,
                     swapOutProcessedChunks);
             for (i = 0; i < metrics1.length; i++) {
-//                    maskEdges(
-//                            metrics1[i],
-//                            distances,
-//                            Hoome);
                 //rescale
                 metrics1[i] = rescale(metrics1[i], null, min, max);
                 // output

@@ -38,8 +38,7 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
  *
  * @author geoagdt
  */
-public class Tarfala
-        extends Grids_ProcessorDEM {
+public class Tarfala extends Grids_ProcessorDEM {
 
     private long Time;
     boolean HandleOutOfMemoryError;
@@ -86,15 +85,16 @@ public class Tarfala
             ge.setProcessor(this);
             //boolean swapOutInitialisedFiles = true;
             boolean swapOutInitialisedFiles = false;
-            File inputDirectory = getDirectory().getParentFile();
-            File[] inputDirectoryFiles = inputDirectory.listFiles();
+            File inDir = Files.getDataDir().getParentFile();
+            File[] inputDirectoryFiles = inDir.listFiles();
             String inputFilename;
             String ascString = "asc";
             String inputFilenameWithoutExtension;
-            File outputDirectory;
-            Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(ge);
+            File outDir;
+            Grids_ESRIAsciiGridExporter eage;
+            eage = new Grids_ESRIAsciiGridExporter(ge);
             Grids_ImageExporter ie = new Grids_ImageExporter(ge);
-            File workspaceDirectory = new File(inputDirectory + "/Workspace/");
+            File workspaceDirectory = new File(inDir + "/Workspace/");
 
             //String[] imageTypes = new String[0];
             String[] imageTypes = new String[1];
@@ -107,27 +107,25 @@ public class Tarfala
                     // Initialisation
                     inputFilenameWithoutExtension = inputFilename.substring(0,
                             inputFilename.length() - 4);
-                    outputDirectory = new File(inputDirectory
+                    outDir = new File(inDir
                             + "/Geomorphometrics/"
                             + inputFilenameWithoutExtension + "/");
                     Grids_GridDouble g = null;
                     // Load input
                     boolean notLoadedAsGrid = true;
                     if (notLoadedAsGrid) {
-                        File inputFile = ge.initFile(inputDirectory,
-                                inputFilename);
+                        File inputFile = new File(inDir, inputFilename);
                         File dir;
                         dir = new File(ge.getFiles().getGeneratedGridDoubleDir(),
                                 inputFilenameWithoutExtension);
                         g = GridDoubleFactory.create(dir, inputFile);
                         // Cache input
-                        boolean swapToFileCache = true;
-                        g.writeToFile(swapToFileCache);
+                        g.writeToFile();
                         ge.getGrids().add(g);
                         System.out.println("<outputImage>");
-                        System.out.println("outputDirectory " + outputDirectory);
+                        System.out.println("outputDirectory " + outDir);
                         g.setName(inputFilenameWithoutExtension);
-                        outputImage(g, outputDirectory, ie, imageTypes,
+                        outputImage(g, outDir, ie, imageTypes,
                                 HandleOutOfMemoryError);
                         System.out.println("</outputImage>");
 
@@ -136,7 +134,7 @@ public class Tarfala
                     }
                     System.out.println(g.toString());
                     // generalise
-                    run1(g, outputDirectory, workspaceDirectory, eage, ie,
+                    run1(g, outDir, workspaceDirectory, eage, ie,
                             imageTypes, swapOutInitialisedFiles);
                     System.out.println("Processing complete in "
                             + Grids_Utilities.getTime(System.currentTimeMillis() - Time));
@@ -263,11 +261,9 @@ public class Tarfala
         // Initialistaion
         ge.checkAndMaybeFreeMemory();
         Filename = "Metrics1";
-        File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                Filename);
-        File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                Filename);
-        setDirectory(workspaceDirectory);
+        File outputDirectory = new File(outputDirectory0, Filename);
+        File workspaceDirectory = new File(workspaceDirectory0, Filename);
+        Files.setDataDirectory(workspaceDirectory);
         double cellsize = g.getCellsizeDouble();
         double weightIntersect = 1.0d;
         double weightFactor = 1.0d;
@@ -308,11 +304,8 @@ public class Tarfala
         try {
             // Initialistaion
             Filename = "_Metrics2";
-            File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                    Filename);
-            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                    Filename);
-            setDirectory(workspaceDirectory);
+            File outputDirectory = new File(outputDirectory0, Filename);
+            File workspaceDirectory = new File(workspaceDirectory0, Filename);
             int _NameLength = 1000;
             String name;
             double cellsize = g.getCellsizeDouble();
@@ -381,11 +374,8 @@ public class Tarfala
         try {
             // Initialistaion
             Filename = "_SlopeAndAspect";
-            File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                    Filename);
-            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                    Filename);
-            setDirectory(workspaceDirectory);
+            File outputDirectory = new File(outputDirectory0,                    Filename);
+            File workspaceDirectory = new File(workspaceDirectory0,                    Filename);
             double cellsize = g.getCellsizeDouble();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
