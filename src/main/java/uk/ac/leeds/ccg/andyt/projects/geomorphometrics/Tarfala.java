@@ -41,7 +41,7 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 public class Tarfala extends Grids_ProcessorDEM {
 
     private long Time;
-    boolean HandleOutOfMemoryError;
+    boolean HOOME;
     String Filename;
 
     protected Tarfala() {
@@ -56,7 +56,7 @@ public class Tarfala extends Grids_ProcessorDEM {
     public Tarfala(Grids_Environment ge) {
         super(ge);
         Time = System.currentTimeMillis();
-        HandleOutOfMemoryError = true;
+        HOOME = true;
     }
 
     /**
@@ -112,12 +112,13 @@ public class Tarfala extends Grids_ProcessorDEM {
                             + inputFilenameWithoutExtension + "/");
                     Grids_GridDouble g = null;
                     // Load input
-                    boolean notLoadedAsGrid = true;
-                    if (notLoadedAsGrid) {
+                    File dir;
+                    dir = new File(ge.getFiles().getGeneratedGridDoubleDir(),
+                            inputFilenameWithoutExtension);
+                    if (dir.exists()) {
+                        g = GridDoubleFactory.create(dir, dir);
+                    } else {
                         File inputFile = new File(inDir, inputFilename);
-                        File dir;
-                        dir = new File(ge.getFiles().getGeneratedGridDoubleDir(),
-                                inputFilenameWithoutExtension);
                         g = GridDoubleFactory.create(dir, inputFile);
                         // Cache input
                         g.writeToFile();
@@ -125,12 +126,8 @@ public class Tarfala extends Grids_ProcessorDEM {
                         System.out.println("<outputImage>");
                         System.out.println("outputDirectory " + outDir);
                         g.setName(inputFilenameWithoutExtension);
-                        outputImage(g, outDir, ie, imageTypes,
-                                HandleOutOfMemoryError);
+                        outputImage(g, outDir, ie, imageTypes, HOOME);
                         System.out.println("</outputImage>");
-
-                    } else {
-                        System.out.println("check1");
                     }
                     System.out.println(g.toString());
                     // generalise
@@ -174,7 +171,7 @@ public class Tarfala extends Grids_ProcessorDEM {
         int multiplier = 2;
         //int maxIterations = 2000;
         doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
-                minDistance, maxDistance, multiplier, HandleOutOfMemoryError);
+                minDistance, maxDistance, multiplier, HOOME);
 //            do_HollowFilledDEM(//                grid,
 //                maxIterations,
 //                outputDirectory,
@@ -241,7 +238,7 @@ public class Tarfala extends Grids_ProcessorDEM {
             distance = cellsize * (double) d;
             Grids_AbstractGridNumber[] metrics1 = getMetrics1(g, distance,
                     weightIntersect, weightFactor, GridDoubleFactory,
-                    GridIntFactory, swapOutInitialisedFiles, 
+                    GridIntFactory, swapOutInitialisedFiles,
                     swapOutProcessedChunks);
             ge.checkAndMaybeFreeMemory();
             for (i = 0; i < metrics1.length; i++) {
@@ -340,18 +337,18 @@ public class Tarfala extends Grids_ProcessorDEM {
 //                    mask(
 //                            SlopeAndAspect[i],
 //                            distances,
-//                            HandleOutOfMemoryError);
+//                            HOOME);
 //                    outputESRIAsciiGrid(
 //                            SlopeAndAspect[i],
 //                            outputDirectory,
 //                            _ESRIAsciiGridExporter,
-//                            HandleOutOfMemoryError);
+//                            HOOME);
 //                    outputImage(
 //                            SlopeAndAspect[i],
 //                            outputDirectory,
 //                            _ImageExporter,
 //                            imageTypes,
-//                            HandleOutOfMemoryError);
+//                            HOOME);
                     output(slopeAndAspect[i],
                             outDir,
                             ie,
@@ -380,7 +377,7 @@ public class Tarfala extends Grids_ProcessorDEM {
 //    public void maskEdges(
 //            Grids_AbstractGridNumber g,
 //            int distances,
-//            boolean HandleOutOfMemoryError) {
+//            boolean HOOME) {
 //        try {
 //            System.out.println("Masking Edges");
 //            long nrows = g.getNRows(_HandleOutOfMemoryErrorFalse);
@@ -401,7 +398,7 @@ public class Tarfala extends Grids_ProcessorDEM {
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
 //                    _EndColIndexLong,
-//                    HandleOutOfMemoryError);
+//                    HOOME);
 //            // mask right
 //            _StartRowIndexLong = _long_0;
 //            _StartColIndexLong = ncols - distances;
@@ -412,7 +409,7 @@ public class Tarfala extends Grids_ProcessorDEM {
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
 //                    _EndColIndexLong,
-//                    HandleOutOfMemoryError);
+//                    HOOME);
 //            // mask top
 //            _StartRowIndexLong = _long_0;
 //            _StartColIndexLong = _long_0;
@@ -423,7 +420,7 @@ public class Tarfala extends Grids_ProcessorDEM {
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
 //                    _EndColIndexLong,
-//                    HandleOutOfMemoryError);
+//                    HOOME);
 //            // mask bottom
 //            _StartRowIndexLong = nrows - distances;
 //            _StartColIndexLong = _long_0;
@@ -434,17 +431,17 @@ public class Tarfala extends Grids_ProcessorDEM {
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
 //                    _EndColIndexLong,
-//                    HandleOutOfMemoryError);
+//                    HOOME);
 //        } catch (OutOfMemoryError e) {
-//            if (HandleOutOfMemoryError) {
+//            if (HOOME) {
 //                clearMemoryReserve();
 ////                swapChunk_AccountDetail();
 //                _SwapToFileGrid2DSquareCellChunksExcept(g);
-//                initMemoryReserve(g, HandleOutOfMemoryError);
+//                initMemoryReserve(g, HOOME);
 //                maskEdges(
 //                        g,
 //                        distances,
-//                        HandleOutOfMemoryError);
+//                        HOOME);
 //            } else {
 //                throw e;
 //            }
