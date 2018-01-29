@@ -38,8 +38,7 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
  *
  * @author geoagdt
  */
-public class Tarfala
-        extends Grids_ProcessorDEM {
+public class Tarfala extends Grids_ProcessorDEM {
 
     private long Time;
     boolean HandleOutOfMemoryError;
@@ -86,15 +85,16 @@ public class Tarfala
             ge.setProcessor(this);
             //boolean swapOutInitialisedFiles = true;
             boolean swapOutInitialisedFiles = false;
-            File inputDirectory = getDirectory().getParentFile();
-            File[] inputDirectoryFiles = inputDirectory.listFiles();
+            File inDir = Files.getDataDir().getParentFile();
+            File[] inputDirectoryFiles = inDir.listFiles();
             String inputFilename;
             String ascString = "asc";
             String inputFilenameWithoutExtension;
-            File outputDirectory;
-            Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(ge);
+            File outDir;
+            Grids_ESRIAsciiGridExporter eage;
+            eage = new Grids_ESRIAsciiGridExporter(ge);
             Grids_ImageExporter ie = new Grids_ImageExporter(ge);
-            File workspaceDirectory = new File(inputDirectory + "/Workspace/");
+            File workspaceDirectory = new File(inDir + "/Workspace/");
 
             //String[] imageTypes = new String[0];
             String[] imageTypes = new String[1];
@@ -107,27 +107,25 @@ public class Tarfala
                     // Initialisation
                     inputFilenameWithoutExtension = inputFilename.substring(0,
                             inputFilename.length() - 4);
-                    outputDirectory = new File(inputDirectory
+                    outDir = new File(inDir
                             + "/Geomorphometrics/"
                             + inputFilenameWithoutExtension + "/");
                     Grids_GridDouble g = null;
                     // Load input
                     boolean notLoadedAsGrid = true;
                     if (notLoadedAsGrid) {
-                        File inputFile = ge.initFile(inputDirectory,
-                                inputFilename);
+                        File inputFile = new File(inDir, inputFilename);
                         File dir;
                         dir = new File(ge.getFiles().getGeneratedGridDoubleDir(),
                                 inputFilenameWithoutExtension);
                         g = GridDoubleFactory.create(dir, inputFile);
                         // Cache input
-                        boolean swapToFileCache = true;
-                        g.writeToFile(swapToFileCache);
+                        g.writeToFile();
                         ge.getGrids().add(g);
                         System.out.println("<outputImage>");
-                        System.out.println("outputDirectory " + outputDirectory);
+                        System.out.println("outputDirectory " + outDir);
                         g.setName(inputFilenameWithoutExtension);
-                        outputImage(g, outputDirectory, ie, imageTypes,
+                        outputImage(g, outDir, ie, imageTypes,
                                 HandleOutOfMemoryError);
                         System.out.println("</outputImage>");
 
@@ -136,7 +134,7 @@ public class Tarfala
                     }
                     System.out.println(g.toString());
                     // generalise
-                    run1(g, outputDirectory, workspaceDirectory, eage, ie,
+                    run1(g, outDir, workspaceDirectory, eage, ie,
                             imageTypes, swapOutInitialisedFiles);
                     System.out.println("Processing complete in "
                             + Grids_Utilities.getTime(System.currentTimeMillis() - Time));
@@ -175,7 +173,7 @@ public class Tarfala
         int maxDistance = 16;
         int multiplier = 2;
         //int maxIterations = 2000;
-        do_SlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
+        doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
                 minDistance, maxDistance, multiplier, HandleOutOfMemoryError);
 //            do_HollowFilledDEM(//                grid,
 //                maxIterations,
@@ -183,10 +181,10 @@ public class Tarfala
 //                workspaceDirectory,
 //                handleOutOfMemoryError );
         boolean swapOutProcessedChunks = true;
-        do_Metrics1(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
+        doMetrics1(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
                 maxDistance, multiplier, swapOutInitialisedFiles,
-                swapOutProcessedChunks, HandleOutOfMemoryError);
-//            do_Metrics2(
+                swapOutProcessedChunks);
+//            doMetrics2(
 //                    grid,
 //                    outputDirectory,
 //                    workspaceDirectory,
@@ -207,8 +205,8 @@ public class Tarfala
     /**
      *
      * @param g
-     * @param outputDirectory0
-     * @param workspaceDirectory0
+     * @param outDir0
+     * @param workDir0
      * @param eage
      * @param ie
      * @param imageTypes
@@ -217,32 +215,21 @@ public class Tarfala
      * @param multiplier
      * @param swapOutInitialisedFiles
      * @param swapOutProcessedChunks
-     * @param handleOutOfMemoryError
+     * @param hoome
      * @throws Exception
      * @throws Error
      */
-    public void do_Metrics1(
-            Grids_AbstractGridNumber g,
-            File outputDirectory0,
-            File workspaceDirectory0,
-            Grids_ESRIAsciiGridExporter eage,
-            Grids_ImageExporter ie,
-            String[] imageTypes,
-            int minDistance,
-            int maxDistance,
-            int multiplier,
-            boolean swapOutInitialisedFiles,
-            boolean swapOutProcessedChunks,
-            boolean handleOutOfMemoryError)
-            throws Exception, Error {
+    public void doMetrics1(Grids_AbstractGridNumber g, File outDir0,
+            File workDir0, Grids_ESRIAsciiGridExporter eage,
+            Grids_ImageExporter ie, String[] imageTypes, int minDistance,
+            int maxDistance, int multiplier, boolean swapOutInitialisedFiles,
+            boolean swapOutProcessedChunks) throws Exception, Error {
         // Initialistaion
         ge.checkAndMaybeFreeMemory();
         Filename = "Metrics1";
-        File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                Filename);
-        File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                Filename);
-        setDirectory(workspaceDirectory);
+        File outputDirectory = new File(outDir0, Filename);
+        File workspaceDirectory = new File(workDir0, Filename);
+        Files.setDataDirectory(workspaceDirectory);
         double cellsize = g.getCellsizeDouble();
         double weightIntersect = 1.0d;
         double weightFactor = 1.0d;
@@ -252,42 +239,29 @@ public class Tarfala
         for (d = minDistance; d <= maxDistance; d *= multiplier) {
             ge.checkAndMaybeFreeMemory();
             distance = cellsize * (double) d;
-            Grids_AbstractGridNumber[] metrics1 = getMetrics1(
-                    g,
-                    distance,
-                    weightIntersect,
-                    weightFactor,
-                    GridDoubleFactory,
-                    GridIntFactory,
-                    swapOutInitialisedFiles,
+            Grids_AbstractGridNumber[] metrics1 = getMetrics1(g, distance,
+                    weightIntersect, weightFactor, GridDoubleFactory,
+                    GridIntFactory, swapOutInitialisedFiles, 
                     swapOutProcessedChunks);
             ge.checkAndMaybeFreeMemory();
             for (i = 0; i < metrics1.length; i++) {
                 ge.checkAndMaybeFreeMemory();
-                output(
-                        metrics1[i],
-                        outputDirectory,
-                        ie,
-                        imageTypes,
-                        eage);
+                output(metrics1[i], outputDirectory, ie, imageTypes, eage);
             }
         }
     }
 
-    public void do_Metrics2(
+    public void doMetrics2(
             Grids_AbstractGridNumber g,
             File outputDirectory0,
             File workspaceDirectory0,
-            boolean handleOutOfMemoryError)
+            boolean hoome)
             throws Exception, Error {
         try {
             // Initialistaion
             Filename = "_Metrics2";
-            File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                    Filename);
-            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                    Filename);
-            setDirectory(workspaceDirectory);
+            File outputDirectory = new File(outputDirectory0, Filename);
+            File workspaceDirectory = new File(workspaceDirectory0, Filename);
             int _NameLength = 1000;
             String name;
             double cellsize = g.getCellsizeDouble();
@@ -341,17 +315,16 @@ public class Tarfala
      * @throws Exception
      * @throws Error
      */
-    public void do_SlopeAndAspect(Grids_AbstractGridNumber g, File outDir0,
+    public void doSlopeAndAspect(Grids_AbstractGridNumber g, File outDir0,
             File workDir0, Grids_ESRIAsciiGridExporter eage,
             Grids_ImageExporter ie, String[] imageTypes, int minDistance,
             int maxDistance, int multiplier, boolean hoome)
             throws Exception, Error {
         try {
             // Initialistaion
-            Filename = "_SlopeAndAspect";
+            Filename = "SlopeAndAspect";
             File outDir = ge.initFileDirectory(outDir0, Filename);
             File workDir = ge.initFileDirectory(workDir0, Filename);
-            setDirectory(workDir);
             double cellsize = g.getCellsizeDouble();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
@@ -361,20 +334,20 @@ public class Tarfala
             for (distances = minDistance; distances <= maxDistance; distances *= multiplier) {
                 distance = cellsize * (double) distances;
                 Grids_AbstractGridNumber[] slopeAndAspect;
-                slopeAndAspect = getSlopeAspect(g, distance, weightIntersect, 
+                slopeAndAspect = getSlopeAspect(g, distance, weightIntersect,
                         weightFactor, hoome);
                 for (i = 0; i < slopeAndAspect.length; i++) {
 //                    mask(
-//                            _SlopeAndAspect[i],
+//                            SlopeAndAspect[i],
 //                            distances,
 //                            HandleOutOfMemoryError);
 //                    outputESRIAsciiGrid(
-//                            _SlopeAndAspect[i],
+//                            SlopeAndAspect[i],
 //                            outputDirectory,
 //                            _ESRIAsciiGridExporter,
 //                            HandleOutOfMemoryError);
 //                    outputImage(
-//                            _SlopeAndAspect[i],
+//                            SlopeAndAspect[i],
 //                            outputDirectory,
 //                            _ImageExporter,
 //                            imageTypes,
@@ -393,7 +366,7 @@ public class Tarfala
                 ge.clearMemoryReserve();
                 ge.swapChunks(hoome);
                 ge.initMemoryReserve();
-                do_SlopeAndAspect(g, outDir0, workDir0,
+                doSlopeAndAspect(g, outDir0, workDir0,
                         eage, ie, imageTypes, minDistance, maxDistance,
                         multiplier, hoome);
             } else {
