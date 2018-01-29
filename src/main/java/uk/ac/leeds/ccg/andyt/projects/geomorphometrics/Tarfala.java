@@ -154,23 +154,18 @@ public class Tarfala
     /**
      *
      * @param grid
-     * @param outputDirectory
-     * @param workspaceDirectory
-     * @param aESRIAsciiGridExporter
-     * @param aImageExporter
+     * @param outDir
+     * @param workDir
+     * @param eage
+     * @param ie
      * @param imageTypes
      * @param swapOutInitialisedFiles
      * @throws Exception
      * @throws Error
      */
-    public void run1(
-            Grids_GridDouble grid,
-            File outputDirectory,
-            File workspaceDirectory,
-            Grids_ESRIAsciiGridExporter aESRIAsciiGridExporter,
-            Grids_ImageExporter aImageExporter,
-            String[] imageTypes,
-            boolean swapOutInitialisedFiles)
+    public void run1(Grids_GridDouble grid, File outDir, File workDir,
+            Grids_ESRIAsciiGridExporter eage, Grids_ImageExporter ie,
+            String[] imageTypes, boolean swapOutInitialisedFiles)
             throws Exception, Error {
         // Initialise
         log(0, "run1(...)");
@@ -179,37 +174,17 @@ public class Tarfala
         minDistance = 2;
         int maxDistance = 16;
         int multiplier = 2;
-
-//        int maxIterations = 2000;
-//            do_SlopeAndAspect(
-//                    grid,
-//                    outputDirectory,
-//                    workspaceDirectory,
-//                    aESRIAsciiGridExporter,
-//                    aImageExporter,
-//                    imageTypes,
-//                    minDistance,
-//                    maxDistance,
-//                    multiplier,
-//                    handleOutOfMemoryError);
-//            do_HollowFilledDEM(
-//                grid,
+        //int maxIterations = 2000;
+        do_SlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
+                minDistance, maxDistance, multiplier, HandleOutOfMemoryError);
+//            do_HollowFilledDEM(//                grid,
 //                maxIterations,
 //                outputDirectory,
 //                workspaceDirectory,
 //                handleOutOfMemoryError );
         boolean swapOutProcessedChunks = true;
-        do_Metrics1(
-                grid,
-                outputDirectory,
-                workspaceDirectory,
-                aESRIAsciiGridExporter,
-                aImageExporter,
-                imageTypes,
-                minDistance,
-                maxDistance,
-                multiplier,
-                swapOutInitialisedFiles,
+        do_Metrics1(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
+                maxDistance, multiplier, swapOutInitialisedFiles,
                 swapOutProcessedChunks, HandleOutOfMemoryError);
 //            do_Metrics2(
 //                    grid,
@@ -354,38 +329,29 @@ public class Tarfala
     /**
      *
      * @param g
-     * @param outputDirectory0
-     * @param workspaceDirectory0
+     * @param outDir0
+     * @param workDir0
      * @param eage
      * @param ie
      * @param imageTypes
      * @param minDistance
      * @param maxDistance
      * @param multiplier
-     * @param handleOutOfMemoryError
+     * @param hoome
      * @throws Exception
      * @throws Error
      */
-    public void do_SlopeAndAspect(
-            Grids_AbstractGridNumber g,
-            File outputDirectory0,
-            File workspaceDirectory0,
-            Grids_ESRIAsciiGridExporter eage,
-            Grids_ImageExporter ie,
-            String[] imageTypes,
-            int minDistance,
-            int maxDistance,
-            int multiplier,
-            boolean handleOutOfMemoryError)
+    public void do_SlopeAndAspect(Grids_AbstractGridNumber g, File outDir0,
+            File workDir0, Grids_ESRIAsciiGridExporter eage,
+            Grids_ImageExporter ie, String[] imageTypes, int minDistance,
+            int maxDistance, int multiplier, boolean hoome)
             throws Exception, Error {
         try {
             // Initialistaion
             Filename = "_SlopeAndAspect";
-            File outputDirectory = ge.initFileDirectory(outputDirectory0,
-                    Filename);
-            File workspaceDirectory = ge.initFileDirectory(workspaceDirectory0,
-                    Filename);
-            setDirectory(workspaceDirectory);
+            File outDir = ge.initFileDirectory(outDir0, Filename);
+            File workDir = ge.initFileDirectory(workDir0, Filename);
+            setDirectory(workDir);
             double cellsize = g.getCellsizeDouble();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
@@ -394,12 +360,9 @@ public class Tarfala
             int i = 0;
             for (distances = minDistance; distances <= maxDistance; distances *= multiplier) {
                 distance = cellsize * (double) distances;
-                Grids_AbstractGridNumber[] slopeAndAspect = getSlopeAspect(
-                        g,
-                        distance,
-                        weightIntersect,
-                        weightFactor,
-                        handleOutOfMemoryError);
+                Grids_AbstractGridNumber[] slopeAndAspect;
+                slopeAndAspect = getSlopeAspect(g, distance, weightIntersect, 
+                        weightFactor, hoome);
                 for (i = 0; i < slopeAndAspect.length; i++) {
 //                    mask(
 //                            _SlopeAndAspect[i],
@@ -417,8 +380,7 @@ public class Tarfala
 //                            imageTypes,
 //                            HandleOutOfMemoryError);
                     output(slopeAndAspect[i],
-                            //_Grids_Environment.getProcessor(),
-                            outputDirectory,
+                            outDir,
                             ie,
                             imageTypes,
                             eage);
@@ -427,13 +389,13 @@ public class Tarfala
                 }
             }
         } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
+            if (hoome) {
                 ge.clearMemoryReserve();
-                ge.swapChunks(handleOutOfMemoryError);
+                ge.swapChunks(hoome);
                 ge.initMemoryReserve();
-                do_SlopeAndAspect(g, outputDirectory0, workspaceDirectory0,
+                do_SlopeAndAspect(g, outDir0, workDir0,
                         eage, ie, imageTypes, minDistance, maxDistance,
-                        multiplier, handleOutOfMemoryError);
+                        multiplier, hoome);
             } else {
                 throw e;
             }
@@ -443,13 +405,13 @@ public class Tarfala
 //     *
 //     */
 //    public void maskEdges(
-//            Grids_AbstractGridNumber _Grid2DSquareCell,
+//            Grids_AbstractGridNumber g,
 //            int distances,
 //            boolean HandleOutOfMemoryError) {
 //        try {
 //            System.out.println("Masking Edges");
-//            long nrows = _Grid2DSquareCell.getNRows(_HandleOutOfMemoryErrorFalse);
-//            long ncols = _Grid2DSquareCell.getNCols(_HandleOutOfMemoryErrorFalse);
+//            long nrows = g.getNRows(_HandleOutOfMemoryErrorFalse);
+//            long ncols = g.getNCols(_HandleOutOfMemoryErrorFalse);
 //            long _StartRowIndexLong = 0L;
 //            long _StartColIndexLong = 0L;
 //            long _EndRowIndexLong = 0L;
@@ -461,7 +423,7 @@ public class Tarfala
 //            _StartColIndexLong = _long_0;
 //            _EndRowIndexLong = nrows - _long_1;
 //            _EndColIndexLong = distances - _long_1;
-//            mask(_Grid2DSquareCell,
+//            mask(g,
 //                    _StartRowIndexLong,
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
@@ -472,7 +434,7 @@ public class Tarfala
 //            _StartColIndexLong = ncols - distances;
 //            _EndRowIndexLong = nrows - _long_1;
 //            _EndColIndexLong = ncols - _long_1;
-//            mask(_Grid2DSquareCell,
+//            mask(g,
 //                    _StartRowIndexLong,
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
@@ -483,7 +445,7 @@ public class Tarfala
 //            _StartColIndexLong = _long_0;
 //            _EndRowIndexLong = distances - _long_1;
 //            _EndColIndexLong = ncols - _long_1;
-//            mask(_Grid2DSquareCell,
+//            mask(g,
 //                    _StartRowIndexLong,
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
@@ -494,7 +456,7 @@ public class Tarfala
 //            _StartColIndexLong = _long_0;
 //            _EndRowIndexLong = nrows - _long_1;
 //            _EndColIndexLong = ncols - _long_1;
-//            mask(_Grid2DSquareCell,
+//            mask(g,
 //                    _StartRowIndexLong,
 //                    _StartColIndexLong,
 //                    _EndRowIndexLong,
@@ -504,10 +466,10 @@ public class Tarfala
 //            if (HandleOutOfMemoryError) {
 //                clearMemoryReserve();
 ////                swapChunk_AccountDetail();
-//                _SwapToFileGrid2DSquareCellChunksExcept(_Grid2DSquareCell);
-//                initMemoryReserve(_Grid2DSquareCell, HandleOutOfMemoryError);
+//                _SwapToFileGrid2DSquareCellChunksExcept(g);
+//                initMemoryReserve(g, HandleOutOfMemoryError);
 //                maskEdges(
-//                        _Grid2DSquareCell,
+//                        g,
 //                        distances,
 //                        HandleOutOfMemoryError);
 //            } else {
