@@ -170,8 +170,6 @@ public class Tarfala extends Grids_ProcessorDEM {
         int maxDistance = 16;
         int multiplier = 2;
         //int maxIterations = 2000;
-        doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
-                minDistance, maxDistance, multiplier, HOOME);
 //            do_HollowFilledDEM(//                grid,
 //                maxIterations,
 //                outputDirectory,
@@ -181,6 +179,8 @@ public class Tarfala extends Grids_ProcessorDEM {
         doMetrics1(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
                 maxDistance, multiplier, swapOutInitialisedFiles,
                 swapOutProcessedChunks);
+        doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
+                minDistance, maxDistance, multiplier, HOOME);
 //            doMetrics2(
 //                    grid,
 //                    outputDirectory,
