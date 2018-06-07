@@ -181,20 +181,9 @@ public class Tarfala extends Grids_ProcessorDEM {
                 swapOutProcessedChunks);
         doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
                 minDistance, maxDistance, multiplier, HOOME);
-//            doMetrics2(
-//                    grid,
-//                    outputDirectory,
-//                    workspaceDirectory,
-//                    aESRIAsciiGridExporter,
-//                    aImageExporter,
-//                    imageTypes,
-//                    minDistance,
-//                    maxDistance,
-//                    multiplier,
-//                    swapOutInitialisedFiles,
-//                    swapOutProcessedChunks,
-//                    handleOutOfMemoryError);
-
+        doMetrics2(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
+                maxDistance, multiplier, swapOutInitialisedFiles,
+                swapOutProcessedChunks);
         log(0, "Processing complete in "
                 + Grids_Utilities.getTime(System.currentTimeMillis() - Time));
     }
@@ -212,7 +201,6 @@ public class Tarfala extends Grids_ProcessorDEM {
      * @param multiplier
      * @param swapOutInitialisedFiles
      * @param swapOutProcessedChunks
-     * @param hoome
      * @throws Exception
      * @throws Error
      */
@@ -248,52 +236,36 @@ public class Tarfala extends Grids_ProcessorDEM {
         }
     }
 
-    public void doMetrics2(
-            Grids_AbstractGridNumber g,
-            File outputDirectory0,
-            File workspaceDirectory0,
-            boolean hoome)
-            throws Exception, Error {
-        try {
-            // Initialistaion
-            Filename = "_Metrics2";
-            File outputDirectory = new File(outputDirectory0, Filename);
-            File workspaceDirectory = new File(workspaceDirectory0, Filename);
-            int _NameLength = 1000;
-            String name;
-            double cellsize = g.getCellsizeDouble();
-            double weightIntersect = 1.0d;
-            double weightFactor = 1.0d;
-            Grids_AbstractGridNumber dummyGrid = null;
-            long nrows = g.getNRows();
-            long ncols = g.getNCols();
-            long _StartRowIndexLong = 0L;
-            long _StartColIndexLong = 0L;
-            long _EndRowIndexLong = 0L;
-            long _EndColIndexLong = 0L;
-            long _long_0 = 0L;
-            long _long_1 = 1L;
-            double distance = 0.0d;
-            int distances = 2;
-            int i = 0;
-            int _int_2 = 2;
-            int _int_0 = 0;
-            for (distances = 2; distances <= 32; distances *= 2) {
-                distance = cellsize * (double) distances;
-//                Grids_AbstractGridNumber roughness = getMetrics2(
-//                        grid,
-//                        distance,
-//                        weightIntersect,
-//                        weightFactor,
-//                        _NameLength,
-//                        GridDoubleFactory,
-//                        handleOutOfMemoryError);
-//                output(roughness,
-//                            outputDirectory,
-//                            handleOutOfMemoryError );
+    public void doMetrics2(Grids_AbstractGridNumber g, File outDir0,
+            File workDir0, Grids_ESRIAsciiGridExporter eage,
+            Grids_ImageExporter ie, String[] imageTypes, int minDistance,
+            int maxDistance, int multiplier, boolean swapOutInitialisedFiles,
+            boolean swapOutProcessedChunks) {
+        // Initialistaion
+        ge.checkAndMaybeFreeMemory();
+        Filename = "Metrics1";
+        File outputDirectory = new File(outDir0, Filename);
+        File workspaceDirectory = new File(workDir0, Filename);
+        Files.setDataDirectory(workspaceDirectory);
+        double cellsize = g.getCellsizeDouble();
+        double weightIntersect = 1.0d;
+        double weightFactor = 1.0d;
+        double distance;
+        int d;
+        int i;
+        int samplingDensity = 1;
+        for (d = minDistance; d <= maxDistance; d *= multiplier) {
+            ge.checkAndMaybeFreeMemory();
+            distance = cellsize * (double) d;
+            Grids_AbstractGridNumber[] metrics2 = getMetrics2(
+                    (Grids_GridDouble) g, distance,
+                    weightIntersect, weightFactor, samplingDensity,
+                    GridDoubleFactory, true);
+            ge.checkAndMaybeFreeMemory();
+            for (i = 0; i < metrics2.length; i++) {
+                ge.checkAndMaybeFreeMemory();
+                output(metrics2[i], outputDirectory, ie, imageTypes, eage);
             }
-        } catch (OutOfMemoryError e) {
-            System.err.println("OOME fggfd");
         }
     }
 
