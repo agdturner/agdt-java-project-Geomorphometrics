@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
 /**
  * Start programming time 25 19:05. End programming time.
@@ -85,7 +85,7 @@ public class Clip {
 //        ymin = new Double(args[2]);
 //        ymax = new Double(args[3]);
         File parametersFile = new File(cwd, "parameters.txt");
-        BufferedReader br = Generic_StaticIO.getBufferedReader(parametersFile);
+        BufferedReader br = Generic_IO.getBufferedReader(parametersFile);
         while (true) {
             String line = br.readLine();
             if (line != null) {
@@ -143,7 +143,7 @@ public class Clip {
         double yminObserved = Double.POSITIVE_INFINITY;
         double ymaxObserved = Double.NEGATIVE_INFINITY;
 
-        BufferedReader br = Generic_StaticIO.getBufferedReader(input);
+        BufferedReader br = Generic_IO.getBufferedReader(input);
         String name = input.getName();
         String[] nameSplit = name.split("\\.");
         File output = new File(outputDir, name);
