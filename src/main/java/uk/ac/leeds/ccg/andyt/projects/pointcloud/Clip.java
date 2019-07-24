@@ -7,20 +7,20 @@ package uk.ac.leeds.ccg.andyt.projects.pointcloud;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.Geomorphometrics_Environment;
+import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.Geomorphometrics_Object;
 
 /**
  * Start programming time 25 19:05. End programming time.
  *
  * @author geoagdt
  */
-public class Clip {
+public class Clip extends Geomorphometrics_Object {
 
     private Double xmin;
     private Double ymin;
@@ -29,7 +29,8 @@ public class Clip {
     private Double ymax;
     private Double zmax;
 
-    public Clip() {
+    public Clip( Geomorphometrics_Environment e) {
+        super(e);
     }
 
     /**
@@ -47,7 +48,7 @@ public class Clip {
 //                args[3] = "401.2";
 //            }
 //            new Clip().run(args);
-            new Clip().run();
+            new Clip(new Geomorphometrics_Environment()).run();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             Logger.getLogger(Clip.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,23 +86,23 @@ public class Clip {
 //        ymin = new Double(args[2]);
 //        ymax = new Double(args[3]);
         File parametersFile = new File(cwd, "parameters.txt");
-        BufferedReader br = Generic_IO.getBufferedReader(parametersFile);
+        BufferedReader br = env.io.getBufferedReader(parametersFile);
         while (true) {
             String line = br.readLine();
             if (line != null) {
                 System.out.println(line);
                 if (line.split(" ").length == 2) {
                     if (xmin == null) {
-                        xmin = new Double(line.split(" ")[1]).doubleValue();
+                        xmin = Double.parseDouble(line.split(" ")[1]);
                     } else {
                         if (xmax == null) {
-                            xmax = new Double(line.split(" ")[1]).doubleValue();
+                            xmax = Double.parseDouble(line.split(" ")[1]);
                         } else {
                             if (ymin == null) {
-                                ymin = new Double(line.split(" ")[1]).doubleValue();
+                                ymin = Double.parseDouble(line.split(" ")[1]);
                             } else {
                                 if (ymax == null) {
-                                    ymax = new Double(line.split(" ")[1]).doubleValue();
+                                    ymax = Double.parseDouble(line.split(" ")[1]);
                                 }
                             }
                         }
@@ -119,7 +120,7 @@ public class Clip {
     }
 
     public HashSet<String> getReservedFilenames() {
-        HashSet<String> reservedFilenames = new HashSet<String>();
+        HashSet<String> reservedFilenames = new HashSet<>();
         reservedFilenames.add("geomorphometrics.jar");
         reservedFilenames.add("geomorphometrics.zip");
         reservedFilenames.add("lib");
@@ -143,7 +144,7 @@ public class Clip {
         double yminObserved = Double.POSITIVE_INFINITY;
         double ymaxObserved = Double.NEGATIVE_INFINITY;
 
-        BufferedReader br = Generic_IO.getBufferedReader(input);
+        BufferedReader br = env.io.getBufferedReader(input);
         String name = input.getName();
         String[] nameSplit = name.split("\\.");
         File output = new File(outputDir, name);
@@ -164,13 +165,7 @@ public class Clip {
                 throw new Exception("Unable to create output file write after " + n + " attempts.");
             }
         }
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(output);
-        } catch (FileNotFoundException ex) {
-            System.err.println("Unable to write to file " + output);
-            Logger.getLogger(Clip.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PrintWriter pw = env.io.getPrintWriter(output, false);
         if (pw != null) {
             int lineCount = 0;
             int recordsIn = 0;

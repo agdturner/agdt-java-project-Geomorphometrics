@@ -29,8 +29,7 @@ import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 
-public class RoofGeneralisation
-        extends Grids_ProcessorDEM {
+public class RoofGeneralisation extends Grids_ProcessorDEM {
 
     private long time;
     boolean Hoome;
@@ -86,12 +85,12 @@ public class RoofGeneralisation
             String asc = "asc";
             String inputFilenameWithoutExtension;
             File outDir;
-            Grids_ImageExporter ie = new Grids_ImageExporter(ge);
+            Grids_ImageExporter ie = new Grids_ImageExporter(env);
             File workspaceDirectory = new File(inDir + "/Workspace/");
             String[] imageTypes = new String[1];
             imageTypes[0] = "PNG";
             Grids_Files gf;
-            gf = ge.getFiles();
+            gf = env.getFiles();
             File dir;
             for (int i = 0; i < files.length; i++) {
                 inputFilename = files[i].getName();
@@ -112,7 +111,7 @@ public class RoofGeneralisation
                                 dir, inputFile);
                         // Cache input
                         g.writeToFile();
-                        ge.getGrids().add(g);
+                        env.getGrids().add(g);
 //                        outputImage(g, outDirectory, ie, imageTypes);
                     } else {
                         System.out.println("check1");
@@ -125,11 +124,7 @@ public class RoofGeneralisation
                     run1(g, outDir, workspaceDirectory, ie);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace(System.err);
-        } catch (Error e) {
+        } catch (Exception | Error e) {
             e.printStackTrace(System.err);
         }
     }
@@ -150,7 +145,7 @@ public class RoofGeneralisation
     public void doMetrics1(Grids_AbstractGridNumber g, File outDir0, 
             File workspaceDir0, Grids_ImageExporter ie) {
         // Initialistaion
-        Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(ge);
+        Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(env);
         Filename = "Metrics1";
         File outDir;
         outDir = new File(outDir0, Filename);
