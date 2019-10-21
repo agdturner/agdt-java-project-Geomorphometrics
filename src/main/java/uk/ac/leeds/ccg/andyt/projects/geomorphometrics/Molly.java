@@ -19,6 +19,8 @@
 package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
+import java.io.IOException;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
@@ -39,16 +41,17 @@ public class Molly extends Grids_ProcessorDEM {
     boolean HOOME;
     String Filename;
 
-    protected Molly() {
-    }
+//    protected Molly() {
+//    }
 
     /**
-     * Creates a new RoofGeneralisation using specified Directory. WARNING:
-     * Files in the specified Directory may get overwritten.
+     * Creates a new RoofGeneralisation using specified Directory.WARNING:
+ Files in the specified Directory may get overwritten.
      *
      * @param env
+     * @throws java.io.IOException
      */
-    public Molly(Grids_Environment env) {
+    public Molly(Grids_Environment env) throws IOException {
         super(env);
         Time = System.currentTimeMillis();
         HOOME = true;
@@ -58,20 +61,20 @@ public class Molly extends Grids_ProcessorDEM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //File Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/test/Workspace/");
-        //File Directory = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/Workspace/");
-        File dir = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Molly/Workspace/");
-        //File Directory = new File("C:/Temp/Owen/Workspace");
-        //File Directory = new File("C:/Temp/Owen/Workspace2");
-        System.out.print("" + dir.toString());
-        if (dir.exists()) {
-            System.out.println(" exists.");
-            dir.mkdirs();
-        } else {
-            System.out.println(" does not exist.");
+        try {
+            File dir = new File("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Molly/Workspace/");
+            System.out.print("" + dir.toString());
+            if (dir.exists()) {
+                System.out.println(" exists.");
+                dir.mkdirs();
+            } else {
+                System.out.println(" does not exist.");
+            }
+            Molly t = new Molly(new Grids_Environment(new Generic_Environment(dir), dir));
+            t.run();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
         }
-        Molly t = new Molly(new Grids_Environment(dir));
-        t.run();
     }
 
     public void run() {
@@ -79,7 +82,7 @@ public class Molly extends Grids_ProcessorDEM {
             env.setProcessor(this);
             //boolean swapOutInitialisedFiles = true;
             boolean swapOutInitialisedFiles = false;
-            File inDir = Files.getDataDir().getParentFile();
+            File inDir = env.files.getDir().getParentFile();
             File[] inputDirectoryFiles = inDir.listFiles();
             String inputFilename;
             String ascString = "asc";
@@ -107,7 +110,7 @@ public class Molly extends Grids_ProcessorDEM {
                     Grids_GridDouble g = null;
                     // Load input
                     File dir;
-                    dir = new File(env.getFiles().getGeneratedGridDoubleDir(),
+                    dir = new File(env.files.getGeneratedGridDoubleDir(),
                             inputFilenameWithoutExtension);
                     if (dir.exists()) {
                         g = GridDoubleFactory.create(dir, dir);
@@ -210,7 +213,7 @@ public class Molly extends Grids_ProcessorDEM {
         Filename = "Metrics1";
         File outputDirectory = new File(outDir0, Filename);
         File workspaceDirectory = new File(workDir0, Filename);
-        Files.setDataDirectory(workspaceDirectory);
+        env.files.setDir(workspaceDirectory);
         double cellsize = g.getCellsizeDouble();
         double weightIntersect = 1.0d;
         double weightFactor = 1.0d;
@@ -236,13 +239,13 @@ public class Molly extends Grids_ProcessorDEM {
             File workDir0, Grids_ESRIAsciiGridExporter eage,
             Grids_ImageExporter ie, String[] imageTypes, int minDistance,
             int maxDistance, int multiplier, boolean swapOutInitialisedFiles,
-            boolean swapOutProcessedChunks) {
+            boolean swapOutProcessedChunks) throws IOException {
         // Initialistaion
         env.checkAndMaybeFreeMemory();
         Filename = "Metrics1";
         File outputDirectory = new File(outDir0, Filename);
         File workspaceDirectory = new File(workDir0, Filename);
-        Files.setDataDirectory(workspaceDirectory);
+        env.files.setDir(workspaceDirectory);
         double cellsize = g.getCellsizeDouble();
         double weightIntersect = 1.0d;
         double weightFactor = 1.0d;

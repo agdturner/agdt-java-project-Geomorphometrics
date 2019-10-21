@@ -86,7 +86,7 @@ public class Clip extends Geomorphometrics_Object {
 //        ymin = new Double(args[2]);
 //        ymax = new Double(args[3]);
         File parametersFile = new File(cwd, "parameters.txt");
-        BufferedReader br = env.io.getBufferedReader(parametersFile);
+        BufferedReader br = env.env.io.getBufferedReader(parametersFile);
         while (true) {
             String line = br.readLine();
             if (line != null) {
@@ -144,7 +144,7 @@ public class Clip extends Geomorphometrics_Object {
         double yminObserved = Double.POSITIVE_INFINITY;
         double ymaxObserved = Double.NEGATIVE_INFINITY;
 
-        BufferedReader br = env.io.getBufferedReader(input);
+        BufferedReader br = env.env.io.getBufferedReader(input);
         String name = input.getName();
         String[] nameSplit = name.split("\\.");
         File output = new File(outputDir, name);
@@ -165,7 +165,7 @@ public class Clip extends Geomorphometrics_Object {
                 throw new Exception("Unable to create output file write after " + n + " attempts.");
             }
         }
-        PrintWriter pw = env.io.getPrintWriter(output, false);
+        PrintWriter pw = env.env.io.getPrintWriter(output, false);
         if (pw != null) {
             int lineCount = 0;
             int recordsIn = 0;

@@ -19,7 +19,9 @@
 package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
@@ -36,14 +38,14 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
     String FileSeparator;
     String Filename;
 
-    /**
-     * Creates a new RoofGeneralisation
-     */
-    protected RoofGeneralisation() {
-    }
+//    /**
+//     * Creates a new RoofGeneralisation
+//     */
+//    protected RoofGeneralisation() throws IOException {
+//        
+//    }
 
-    public RoofGeneralisation(
-            Grids_Environment ge) {
+    public RoofGeneralisation(Grids_Environment ge) throws IOException {
         super(ge);
         this.time = System.currentTimeMillis();
         this.Hoome = true;
@@ -54,32 +56,35 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
         // _NotLoadedAsGrid = true?
         // Output images?
         // VM parameters: -Xmx1200m
         runOnPC();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
-    public static void runOnPC() {
-        //File Directory = new File( "D:/Work/Projects/Geomorphometrics/Workspace/" );
-        File _Directory = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/synthetic/");
-        //File Directory = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/NeuralNetwork/Input/");
-        //File Directory = new File( "C:/temp/GEOG5060/Geomorphometrics/" );
-        System.out.print("" + _Directory.toString());
-        if (_Directory.exists()) {
+    public static void runOnPC() throws IOException {
+        //File dir = new File( "D:/Work/Projects/Geomorphometrics/Workspace/" );
+        File dir = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/synthetic/");
+        //File dir = new File("C:/Work/People/Sadhvi Selvaraj/Roofs/data/NeuralNetwork/Input/");
+        //File dir = new File( "C:/temp/GEOG5060/Geomorphometrics/" );
+        System.out.print("" + dir.toString());
+        if (dir.exists()) {
             System.out.println(" exists.");
         } else {
             System.out.println(" does not exist.");
         }
-        Grids_Environment ge;
-        ge = new Grids_Environment(_Directory);
+        Grids_Environment ge = new Grids_Environment(new Generic_Environment(dir), dir);
         RoofGeneralisation aRoofGeneralisation = new RoofGeneralisation(ge);
         aRoofGeneralisation.run();
     }
 
     public void run() {
         try {
-            File inDir = Files.getDataDir();
+            File inDir = env.files.getDir();
             File[] files = inDir.listFiles();
             String inputFilename;
             String asc = "asc";
@@ -89,8 +94,7 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
             File workspaceDirectory = new File(inDir + "/Workspace/");
             String[] imageTypes = new String[1];
             imageTypes[0] = "PNG";
-            Grids_Files gf;
-            gf = env.getFiles();
+            Grids_Files gf = env.files;
             File dir;
             for (int i = 0; i < files.length; i++) {
                 inputFilename = files[i].getName();
@@ -106,7 +110,7 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
                     if (notLoadedAsGrid) {
                         File inputFile;
                         inputFile = new File(inDir, inputFilename);
-                        dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
+                        dir = env.env.io.createNewFile(gf.getGeneratedGridDoubleDir());
                         g = (Grids_GridDouble) GridDoubleFactory.create(
                                 dir, inputFile);
                         // Cache input
@@ -143,7 +147,7 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
     }
 
     public void doMetrics1(Grids_AbstractGridNumber g, File outDir0, 
-            File workspaceDir0, Grids_ImageExporter ie) {
+            File workspaceDir0, Grids_ImageExporter ie) throws IOException {
         // Initialistaion
         Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(env);
         Filename = "Metrics1";
