@@ -6,18 +6,18 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>agdt-project-Geomorphometrics</name>
-    <url>https://github.com/agdturner/agdt-project-Geomorphometrics</url>
+    <name>agdt-java-project-Geomorphometrics</name>
+    <url>https://github.com/agdturner/agdt-java-project-Geomorphometrics</url>
     <description>A Java Library for handling the SARIC Funded Agricultural Pollution Rainfall Run-Off Risk Project.</description>
     <scm>
-        <url>git@github.com:agdturner/agdt-project-Geomorphometrics.git</url>
-        <connection>scm:git:git@github.com:agdturner/agdt-project-Geomorphometrics.git</connection>
-        <developerConnection>scm:git:git@github.com:agdturner/agdt-project-Geomorphometrics</developerConnection>
+        <url>git@github.com:agdturner/agdt-java-project-Geomorphometrics.git</url>
+        <connection>scm:git:git@github.com:agdturner/agdt-java-project-Geomorphometrics.git</connection>
+        <developerConnection>scm:git:git@github.com:agdturner/agdt-java-project-Geomorphometrics</developerConnection>
     </scm>
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://github.com/agdturner/agdt-project-Geomorphometrics/LICENSE.txt</url>
+            <url>https://github.com/agdturner/agdt-java-project-Geomorphometrics/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -43,8 +43,18 @@
         <agdt-java-generic.version>1.0-SNAPSHOT</agdt-java-generic.version>
         <agdt-java-generic-grids.version>1.0-SNAPSHOT</agdt-java-generic-grids.version>
         <agdt-java-generic-vector.version>1.0-SNAPSHOT</agdt-java-generic-vector.version>
+        <commons-math.version>3.6.1</commons-math.version>
+        <!--
+        <commons-math.version>3.4.1</commons-math.version>
+        -->
+        <maven.compiler.source>12</maven.compiler.source>
+        <maven.compiler.target>12</maven.compiler.target>
+        <!--
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        -->
     </properties>
 
     <dependencies>
@@ -52,7 +62,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <!--<version>3.6.1</version>-->
-            <version>3.4.1</version>
+            <version>${commons-math.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
