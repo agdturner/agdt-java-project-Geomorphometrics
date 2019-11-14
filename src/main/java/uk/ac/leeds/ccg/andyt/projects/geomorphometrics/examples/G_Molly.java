@@ -16,7 +16,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
+package uk.ac.leeds.ccg.andyt.projects.geomorphometrics.examples;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,13 +35,13 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
  *
  * @author geoagdt
  */
-public class Molly extends Grids_ProcessorDEM {
+public class G_Molly extends Grids_ProcessorDEM {
 
     private long Time;
     boolean HOOME;
     String Filename;
 
-//    protected Molly() {
+//    protected G_Molly() {
 //    }
 
     /**
@@ -51,7 +51,7 @@ public class Molly extends Grids_ProcessorDEM {
      * @param env
      * @throws java.io.IOException
      */
-    public Molly(Grids_Environment env) throws IOException {
+    public G_Molly(Grids_Environment env) throws IOException {
         super(env);
         Time = System.currentTimeMillis();
         HOOME = true;
@@ -70,7 +70,7 @@ public class Molly extends Grids_ProcessorDEM {
             } else {
                 System.out.println(" does not exist.");
             }
-            Molly t = new Molly(new Grids_Environment(new Generic_Environment(dir), dir));
+            G_Molly t = new G_Molly(new Grids_Environment(new Generic_Environment(dir), dir));
             t.run();
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
@@ -291,8 +291,10 @@ public class Molly extends Grids_ProcessorDEM {
         try {
             // Initialistaion
             Filename = "SlopeAndAspect";
-            File outDir = env.initFileDirectory(outDir0, Filename);
-            File workDir = env.initFileDirectory(workDir0, Filename);
+            //File outDir = env.initFileDirectory(outDir0, Filename);
+            File outDir = env.files.getOutputDir();
+            //File workDir = env.initFileDirectory(workDir0, Filename);
+            //File workDir = env.files.getGeneratedDir();
             double cellsize = g.getCellsizeDouble();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
@@ -332,7 +334,7 @@ public class Molly extends Grids_ProcessorDEM {
         } catch (OutOfMemoryError e) {
             if (hoome) {
                 env.clearMemoryReserve();
-                env.swapChunks(hoome);
+                env.cacheChunks(hoome);
                 env.initMemoryReserve();
                 doSlopeAndAspect(g, outDir0, workDir0,
                         eage, ie, imageTypes, minDistance, maxDistance,

@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2019 Centre for Computational Geography, University of Leeds.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package uk.ac.leeds.ccg.andyt.projects.pointcloud;
 
@@ -12,15 +22,16 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.Geomorphometrics_Environment;
-import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.Geomorphometrics_Object;
+import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Environment;
+import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Object;
 
 /**
- * Start programming time 25 19:05. End programming time.
+ * Old code for clipping a 
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public class Clip extends Geomorphometrics_Object {
+public class Clip extends G_Object {
 
     private Double xmin;
     private Double ymin;
@@ -29,7 +40,7 @@ public class Clip extends Geomorphometrics_Object {
     private Double ymax;
     private Double zmax;
 
-    public Clip( Geomorphometrics_Environment e) {
+    public Clip( G_Environment e) {
         super(e);
     }
 
@@ -48,7 +59,7 @@ public class Clip extends Geomorphometrics_Object {
 //                args[3] = "401.2";
 //            }
 //            new Clip().run(args);
-            new Clip(new Geomorphometrics_Environment()).run();
+            new Clip(new G_Environment()).run();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             Logger.getLogger(Clip.class.getName()).log(Level.SEVERE, null, ex);

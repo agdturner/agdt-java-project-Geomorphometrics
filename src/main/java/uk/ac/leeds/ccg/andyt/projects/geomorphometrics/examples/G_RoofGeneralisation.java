@@ -16,7 +16,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
+package uk.ac.leeds.ccg.andyt.projects.geomorphometrics.examples;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 
-public class RoofGeneralisation extends Grids_ProcessorDEM {
+public class G_RoofGeneralisation extends Grids_ProcessorDEM {
 
     private long time;
     boolean Hoome;
@@ -39,13 +39,13 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
     String Filename;
 
 //    /**
-//     * Creates a new RoofGeneralisation
+//     * Creates a new G_RoofGeneralisation
 //     */
-//    protected RoofGeneralisation() throws IOException {
+//    protected G_RoofGeneralisation() throws IOException {
 //        
 //    }
 
-    public RoofGeneralisation(Grids_Environment ge) throws IOException {
+    public G_RoofGeneralisation(Grids_Environment ge) throws IOException {
         super(ge);
         this.time = System.currentTimeMillis();
         this.Hoome = true;
@@ -78,7 +78,7 @@ public class RoofGeneralisation extends Grids_ProcessorDEM {
             System.out.println(" does not exist.");
         }
         Grids_Environment ge = new Grids_Environment(new Generic_Environment(dir), dir);
-        RoofGeneralisation aRoofGeneralisation = new RoofGeneralisation(ge);
+        G_RoofGeneralisation aRoofGeneralisation = new G_RoofGeneralisation(ge);
         aRoofGeneralisation.run();
     }
 

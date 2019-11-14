@@ -11,11 +11,11 @@ import java.io.Serializable;
  *
  * @author geoagdt
  */
-public class Geomorphometrics_Object implements Serializable {
+public class G_Object implements Serializable {
     
-    public Geomorphometrics_Environment env;
+    public G_Environment env;
     
-    public Geomorphometrics_Object(Geomorphometrics_Environment e) {
+    public G_Object(G_Environment e) {
         env = e;
     }
 }

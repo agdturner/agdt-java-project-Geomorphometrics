@@ -1,22 +1,19 @@
-/**
- * <one line to give the library's name and a brief idea of what it does.>
- * Copyright (C) 2005 Andy Turner, CCG, University of Leeds, UK
+/*
+ * Copyright 2019 Centre for Computational Geography, University of Leeds.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.projects.geomorphometrics;
+package uk.ac.leeds.ccg.andyt.projects.geomorphometrics.examples;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,15 +30,16 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
  * Originally this class was for processing some data from Sweden, but it has
  * also been used to process data from the Himalayan region.
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public class Tarfala extends Grids_ProcessorDEM {
+public class G_Tarfala extends Grids_ProcessorDEM {
 
     private long Time;
     boolean HOOME;
     String Filename;
 
-//    protected Tarfala() {
+//    protected G_Tarfala() {
 //    }
 
     /**
@@ -50,7 +48,7 @@ public class Tarfala extends Grids_ProcessorDEM {
      *
      * @param env
      */
-    public Tarfala(Grids_Environment env) throws IOException {
+    public G_Tarfala(Grids_Environment env) throws IOException {
         super(env);
         Time = System.currentTimeMillis();
         HOOME = true;
@@ -74,7 +72,7 @@ public class Tarfala extends Grids_ProcessorDEM {
             System.out.println(" does not exist.");
         }
         Grids_Environment env = new Grids_Environment(new Generic_Environment(dir), dir);
-        Tarfala t = new Tarfala(env);
+        G_Tarfala t = new G_Tarfala(env);
         t.run();
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
@@ -289,8 +287,10 @@ public class Tarfala extends Grids_ProcessorDEM {
         try {
             // Initialistaion
             Filename = "SlopeAndAspect";
-            File outDir = env.initFileDirectory(outDir0, Filename);
-            File workDir = env.initFileDirectory(workDir0, Filename);
+            //File outDir = env.initFileDirectory(outDir0, Filename);
+            File outDir = env.files.getOutputDir();
+            //File workDir = env.initFileDirectory(workDir0, Filename);
+            //File workDir = env.files.getGeneratedDir();
             double cellsize = g.getCellsizeDouble();
             double weightIntersect = 1.0d;
             double weightFactor = 1.0d;
@@ -330,7 +330,7 @@ public class Tarfala extends Grids_ProcessorDEM {
         } catch (OutOfMemoryError e) {
             if (hoome) {
                 env.clearMemoryReserve();
-                env.swapChunks(hoome);
+                env.cacheChunks(hoome);
                 env.initMemoryReserve();
                 doSlopeAndAspect(g, outDir0, workDir0,
                         eage, ie, imageTypes, minDistance, maxDistance,
