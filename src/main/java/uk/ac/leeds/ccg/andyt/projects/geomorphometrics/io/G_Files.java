@@ -23,7 +23,8 @@ import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Strings;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class G_Files extends Generic_Files {
     

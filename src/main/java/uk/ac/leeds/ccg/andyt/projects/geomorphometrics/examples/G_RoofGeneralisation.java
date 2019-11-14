@@ -28,6 +28,11 @@ import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 
+/**
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
+ */
 public class G_RoofGeneralisation extends Grids_ProcessorDEM {
 
     private long time;

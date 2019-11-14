@@ -19,8 +19,10 @@ import java.io.IOException;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 
 /**
- *
- * @author geoagdt
+ * The general environment.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class G_Environment {
     

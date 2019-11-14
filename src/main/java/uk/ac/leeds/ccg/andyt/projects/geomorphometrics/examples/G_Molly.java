@@ -30,7 +30,8 @@ import uk.ac.leeds.ccg.andyt.grids.utilities.Grids_Utilities;
  * Originally this class was for processing some data from Sweden, but it has
  * also been used to process data from the Himalayan region.
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class G_Molly extends Grids_ProcessorDEM {
 

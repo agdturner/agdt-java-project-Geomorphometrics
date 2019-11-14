@@ -26,7 +26,7 @@ import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Environment;
 import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Object;
 
 /**
- * Old code for clipping a 
+ * Old code for clipping some pointcloud data for Mark Smith.
  *
  * @author Andy Turner
  * @version 1.0.0
