@@ -2,15 +2,13 @@
 
 https://github.com/agdturner/agdt-java-project-Geomorphometrics/
 
-A Java library for producing geomorphometrics from digital elevation data.
-
-The library is an example use of Grids (https://github.com/agdturner/agdt-java-generic-grids) - a Java library for 2D square celled raster data processing. The library is designed to be capable of processing very large data sets on relatively modest computational resources
+An example use of Grids for producing geomorphometrics from digital elevation data.
 
 ## Usages
 1. The library has been used to generate geomorphometrics for a number of regions of the world including most recently glacial regions.
 2. The library may be more generally useful for producing metrics of the state and change of any surface relative to a given plane.
 
-More example usages are wanted. If you use this library please add to this list.
+If you use this library please add to this list.
 
 ## Code status and development roadmap
 This code is actively being developed.
@@ -19,7 +17,7 @@ This code is actively being developed.
 Please see the pom.xml for details.
 1. Grids
 https://github.com/agdturner/agdt-java-generic-grids
-A Java library for 2D square celled spatial raster data processing.
+A Java library for 2D square celled raster data processing - capable of processing very large data sets on relatively modest computational resources.
 
 ## Contributions
 Please raise issues and submit pull requests in the usual way. Contributions will be acknowledged.
