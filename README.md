@@ -8,6 +8,7 @@ The library is an example use of Grids (https://github.com/agdturner/agdt-java-g
 
 ## Usages
 1. The library has been used to generate geomorphometrics for a number of regions of the world including most recently glacial regions.
+2. The library may be more generally useful for producing metrics of the state and change of any surface relative to a given plane.
 
 More example usages are wanted. If you use this library please add to this list.
 
