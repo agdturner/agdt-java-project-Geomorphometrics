@@ -15,29 +15,21 @@
  */
 package uk.ac.leeds.ccg.projects.geomorphometrics.io;
 
-import java.io.File;
 import java.io.IOException;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
-import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Strings;
+import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.generic.io.Generic_Files;
 
 /**
- *
+ * G_Files
+ * 
  * @author Andy Turner
  * @version 1.0.0
  */
 public class G_Files extends Generic_Files {
+
+    private static final long serialVersionUID = 1L;
     
-    public G_Files(File dataDir) throws IOException{
-        super(dataDir);        
-    }
-    
-    /**
-     * @return {@code new File(getDefaultGenericDir(), Vector_Strings.s_Math)}.
-     */
-    public static File getDefaultDir() {
-        File d = new File(Generic_Defaults.getDataDir(), G_Strings.s_project);
-        d = new File(d, G_Strings.s_geomorphometrics);
-        return d;
+    public G_Files(Generic_Defaults d) throws IOException{
+        super(d);
     }
 }

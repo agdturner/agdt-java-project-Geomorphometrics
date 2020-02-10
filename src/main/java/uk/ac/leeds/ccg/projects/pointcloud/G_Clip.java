@@ -16,22 +16,29 @@
 package uk.ac.leeds.ccg.projects.pointcloud;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Environment;
 import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Object;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 
 /**
- * Old code for clipping some pointcloud data for Mark Smith.
+ * For clipping some point cloud data for Mark Smith.
  *
  * @author Andy Turner
  * @version 1.0.0
  */
-public class Clip extends G_Object {
+public class G_Clip extends G_Object {
+
+    private static final long serialVersionUID = 1L;
 
     private Double xmin;
     private Double ymin;
@@ -40,7 +47,7 @@ public class Clip extends G_Object {
     private Double ymax;
     private Double zmax;
 
-    public Clip( G_Environment e) {
+    public G_Clip(G_Environment e) {
         super(e);
     }
 
@@ -58,29 +65,26 @@ public class Clip extends G_Object {
 //                args[2] = "394.8";
 //                args[3] = "401.2";
 //            }
-//            new Clip().run(args);
-            new Clip(new G_Environment()).run();
+//            new G_Clip().run(args);
+            new G_Clip(new G_Environment()).run();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
-            Logger.getLogger(Clip.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(G_Clip.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void run( //String[] args
-            )
-            throws Exception {
-        File cwd = new File(System.getProperty("user.dir"));
+    public void run() throws Exception {
+        Path cwd = Paths.get(System.getProperty("user.dir"));
         System.out.println("System.getProperty(\"user.dir\") " + cwd);
-        //setParameters(args, cwd);
         setParameters(cwd);
-        cwd = cwd.getParentFile();
-        File[] files = cwd.listFiles();
-        File outputDir = new File(cwd, "ClippedData");
+        cwd = cwd.getParent();
+        List<Path> files = Files.list(cwd).collect(Collectors.toList());
+        Path outputDir = Paths.get(cwd.toString(), "ClippedData");
         HashSet<String> reservedFilenames = getReservedFilenames();
-        outputDir.mkdir();
-        for (File file : files) {
+        Files.createDirectories(outputDir);
+        for (Path file : files) {
             //if (!file.isDirectory()) {
-            String filename = file.getName();
+            String filename = file.getFileName().toString();
             if (!reservedFilenames.contains(filename)) {
                 processFile(outputDir, file);
             }
@@ -88,16 +92,9 @@ public class Clip extends G_Object {
         }
     }
 
-    public void setParameters(
-            //String[] args, 
-            File cwd)
-            throws Exception {
-//        xmin = new Double(args[0]);
-//        xmax = new Double(args[1]);
-//        ymin = new Double(args[2]);
-//        ymax = new Double(args[3]);
-        File parametersFile = new File(cwd, "parameters.txt");
-        BufferedReader br = env.env.io.getBufferedReader(parametersFile);
+    public void setParameters(Path cwd) throws Exception {
+        Path parametersFile = Paths.get(cwd.toString(), "parameters.txt");
+        BufferedReader br = Generic_IO.getBufferedReader(parametersFile);
         while (true) {
             String line = br.readLine();
             if (line != null) {
@@ -146,37 +143,18 @@ public class Clip extends G_Object {
         return reservedFilenames;
     }
 
-    public void processFile(
-            File outputDir,
-            File input) throws Exception {
+    public void processFile(Path outputDir, Path input) throws Exception {
         int n = 9;
         double xminObserved = Double.POSITIVE_INFINITY;
         double xmaxObserved = Double.NEGATIVE_INFINITY;
         double yminObserved = Double.POSITIVE_INFINITY;
         double ymaxObserved = Double.NEGATIVE_INFINITY;
 
-        BufferedReader br = env.env.io.getBufferedReader(input);
-        String name = input.getName();
-        String[] nameSplit = name.split("\\.");
-        File output = new File(outputDir, name);
-        boolean outputFileCreated;
-        outputFileCreated = createFile(output);
-        int i = 0;
-        while (!outputFileCreated) {
-            String newName = name;
-            if (nameSplit.length == 2) {
-                newName = nameSplit[0] + i + "." + nameSplit[1];
-            } else {
-                newName += i;
-            }
-            output = new File(outputDir, newName);
-            outputFileCreated = createFile(output);
-            i++;
-            if (i > n) {
-                throw new Exception("Unable to create output file write after " + n + " attempts.");
-            }
-        }
-        PrintWriter pw = env.env.io.getPrintWriter(output, false);
+        BufferedReader br = Generic_IO.getBufferedReader(input);
+        String name = input.getFileName().toString();
+        Path output = Paths.get(outputDir.toString(), name);
+        Files.createFile(output);
+        PrintWriter pw = Generic_IO.getPrintWriter(output, false);
         if (pw != null) {
             int lineCount = 0;
             int recordsIn = 0;
@@ -197,7 +175,9 @@ public class Clip extends G_Object {
                             if (x <= xmax) {
                                 if (y >= ymin) {
                                     if (y <= ymax) {
-                                        pw.println(fields[0] + " " + fields[1] + " " + fields[2] + " " + fields[3] + " " + fields[4] + " " + fields[5]);
+                                        pw.println(fields[0] + " " + fields[1] + " " 
+                                                + fields[2] + " " + fields[3] + " " 
+                                                + fields[4] + " " + fields[5]);
                                         recordsIn++;
                                     } else {
                                         recordsOut++;
@@ -217,7 +197,9 @@ public class Clip extends G_Object {
                         ymaxObserved = Math.max(ymaxObserved, y);
                         lineCount++;
                         if (lineCount % 1000000 == 0) {
-                            reportProgress(lineCount, recordsIn, recordsOut, xminObserved, xmaxObserved, yminObserved, ymaxObserved);
+                            reportProgress(lineCount, recordsIn, recordsOut, 
+                                    xminObserved, xmaxObserved, yminObserved, 
+                                    ymaxObserved);
                         }
 //                        }
                     } else {
@@ -226,10 +208,11 @@ public class Clip extends G_Object {
                 }
             } catch (IOException ex) {
                 // Presume we get here once we've read all the lines of input
-                Logger.getLogger(Clip.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(G_Clip.class.getName()).log(Level.SEVERE, null, ex);
             }
             pw.close();
-            reportProgress(lineCount, recordsIn, recordsOut, xminObserved, xmaxObserved, yminObserved, ymaxObserved);
+            reportProgress(lineCount, recordsIn, recordsOut, xminObserved, 
+                    xmaxObserved, yminObserved, ymaxObserved);
         }
     }
 
@@ -249,17 +232,6 @@ public class Clip extends G_Object {
         System.out.print(" yminObserved " + yminObserved);
         System.out.println(" ymaxObserved " + ymaxObserved);
 
-    }
-
-    public boolean createFile(File f) {
-        boolean result = false;
-        try {
-            result = f.createNewFile();
-        } catch (IOException ex) {
-            System.err.println("Unable to create file " + f);
-            Logger.getLogger(Clip.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
     }
 
 }
