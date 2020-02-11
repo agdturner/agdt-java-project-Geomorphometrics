@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Environment;
-import uk.ac.leeds.ccg.andyt.projects.geomorphometrics.core.G_Object;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.projects.geomorphometrics.core.G_Environment;
+import uk.ac.leeds.ccg.projects.geomorphometrics.core.G_Object;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 
 /**
@@ -66,7 +68,9 @@ public class G_Clip extends G_Object {
 //                args[3] = "401.2";
 //            }
 //            new G_Clip().run(args);
-            new G_Clip(new G_Environment()).run();
+            G_Clip p = new G_Clip(new G_Environment(new Generic_Environment(
+                    new Generic_Defaults())));
+            p.run();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             Logger.getLogger(G_Clip.class.getName()).log(Level.SEVERE, null, ex);
