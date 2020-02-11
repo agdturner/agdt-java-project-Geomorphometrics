@@ -58,12 +58,12 @@
         </dependency>
         <dependency>
             <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-generic</artifactId>
+            <artifactId>agdt-java-generic</artifactId>
             <version>${agdt-java-generic.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-grids</artifactId>
+            <artifactId>agdt-java-grids</artifactId>
             <version>${agdt-java-grids.version}</version>
         </dependency>
         <dependency>
