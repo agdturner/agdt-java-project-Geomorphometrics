@@ -9,7 +9,7 @@
 
     <name>agdt-java-project-Geomorphometrics</name>
     <url>https://github.com/agdturner/agdt-java-project-Geomorphometrics</url>
-    <description>A project for generating geomorphoometrics.</description>
+    <description>A project for generating geomorphometrics.</description>
     <scm>
         <url>git@github.com:agdturner/agdt-java-project-Geomorphometrics.git</url>
         <connection>scm:git:git@github.com:agdturner/agdt-java-project-Geomorphometrics.git</connection>
@@ -40,10 +40,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <agdt-java-generic.version>1.2-SNAPSHOT</agdt-java-generic.version>
-        <agdt-java-grids.version>1.0-SNAPSHOT</agdt-java-grids.version>
-        <agdt-java-vector.version>1.0-SNAPSHOT</agdt-java-vector.version>
-        <commons-math.version>3.6.1</commons-math.version>
+        <agdt-java-generic.version>1.3-SNAPSHOT</agdt-java-generic.version>
+        <!--<agdt-java-generic.version>1.2</agdt-java-generic.version>-->
+        <agdt-java-grids.version>1.1-SNAPSHOT</agdt-java-grids.version>
+        <!--<agdt-java-grids.version>1.0</agdt-java-grids.version>-->
+        <agdt-java-vector2d.version>1.0-SNAPSHOT</agdt-java-vector2d.version>
+        <!--<commons-math.version>3.6.1</commons-math.version>-->
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <junit.version>5.5.2</junit.version>
@@ -51,11 +53,11 @@
     </properties>
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>${commons-math.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>io.github.agdturner</groupId>
             <artifactId>agdt-java-generic</artifactId>
@@ -68,8 +70,8 @@
         </dependency>
         <dependency>
             <groupId>io.github.agdturner</groupId>
-            <artifactId>agdt-java-vector</artifactId>
-            <version>${agdt-java-vector.version}</version>
+            <artifactId>agdt-java-vector2d</artifactId>
+            <version>${agdt-java-vector2d.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
