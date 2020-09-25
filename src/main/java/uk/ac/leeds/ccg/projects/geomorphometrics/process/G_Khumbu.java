@@ -30,15 +30,17 @@ import uk.ac.leeds.ccg.grids.d2.grid.Grids_GridNumber;
 import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridDouble;
 import uk.ac.leeds.ccg.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.grids.io.Grids_ImageExporter;
+import uk.ac.leeds.ccg.grids.io.Grids_ESRIAsciiGridImporter;
 import uk.ac.leeds.ccg.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.grids.process.Grids_ProcessorDEM;
 import uk.ac.leeds.ccg.grids.d2.util.Grids_Utilities;
 
 /**
- * For processing some data for Ilkley moor.
+ * For processing some data for glaciers in the Mount Everest region of the 
+ * Himalaya.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 0.1
  */
 public class G_Khumbu extends Grids_ProcessorDEM {
 
@@ -71,38 +73,37 @@ public class G_Khumbu extends Grids_ProcessorDEM {
      */
     public static void main(String[] args) {
         try {
-//            Path dir = Paths.get("/nfs/see-fs-02_users/geoagdt/scratch01/Work/"
-//                    + "people/Molly/Workspace/");
-            //Path dir = Paths.get("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/test/Workspace/");
-            //Path dir = Paths.get("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Scott Watson/Workspace/");
-            Path dir = Paths.get("/nfs/see-fs-02_users/geoagdt/scratch01/Work/people/Owen/Workspace/");
-            //Path dir = Paths.get("C:/Temp/Owen/Workspace");
-            //Path dir = Paths.get("C:/Temp/Owen/Workspace2");
+            Path dir = Paths.get(System.getProperty("user.home"), "data",
+                    "projects", "geomorphometrics");
             System.out.print("" + dir.toString());
-            if (Files.exists(dir)) {
-                System.out.println(" exists.");
-                Files.createDirectories(dir);
-            } else {
-                System.out.println(" does not exist.");
-            }
             G_Khumbu t = new G_Khumbu(new Grids_Environment(
                     new Generic_Environment(new Generic_Defaults(dir))));
-            t.run();
+            t.run(dir);
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
     }
 
-    public void run() {
+    public void run(Path dir) {
         try {
             //boolean swapOutInitialisedFiles = true;
             boolean swapOutInitialisedFiles = false;
-            Path inDir = env.files.getDir().getParent();
+            Path inDir = Paths.get(dir.toString(), "input", "test");
+            // Create workspace directory wsDir if it does not already exist.
+            Path wsDir = Paths.get(dir.toString(), "input", "ws");
+            if (!Files.exists(wsDir)) {
+                Files.createDirectories(wsDir);
+            }
+            // Create output directory outDir if it does not already exist.
+            Path outDir = Paths.get(dir.toString(), "output", "test");
+            if (!Files.exists(outDir)) {
+                Files.createDirectories(outDir);
+            }
+            // Get a List of all input files to process.
             List<Path> ins = Files.list(inDir).collect(Collectors.toList());
             String ascString = "asc";
             Grids_ESRIAsciiGridExporter eage = new Grids_ESRIAsciiGridExporter(env);
             Grids_ImageExporter ie = new Grids_ImageExporter(env);
-            Path workspaceDirectory = Paths.get(inDir + "/Workspace/");
 
             //String[] imageTypes = new String[0];
             String[] imageTypes = new String[1];
@@ -114,27 +115,18 @@ public class G_Khumbu extends Grids_ProcessorDEM {
                 if (fn.endsWith(ascString)) {
                     // Initialisation
                     String pfx = fn.substring(0, fn.length() - 4);
-                    Path outDir = Paths.get(inDir + "/Geomorphometrics/" + pfx + "/");
-                    Grids_GridDouble g = null;
+                    Path outDir2 = Paths.get(outDir.toString(), pfx);
                     // Load input
-                    Path dir = Paths.get(env.files.getGeneratedGridDoubleDir().toString(),
-                            pfx);
-                    if (Files.exists(dir)) {
-                        g = gridFactoryDouble.create(new Generic_Path(dir));
-                    } else {
-                        Path inputFile = Paths.get(inDir.toString(), fn);
-                        g = gridFactoryDouble.create(new Generic_Path(inputFile));
-                        env.getGrids().add(g);
-                        System.out.println("<outputImage>");
-                        System.out.println("outputDirectory " + outDir);
-                        g.setName(pfx);
-                        outputImage(g, new Generic_Path(outDir), ie, imageTypes, hoome);
-                        System.out.println("</outputImage>");
-                    }
+                    Grids_GridDouble g = gridFactoryDouble.create(new Generic_Path(in));
+                    env.getGrids().add(g);
+                    System.out.println("<outputImage>");
+                    System.out.println("outputDirectory " + outDir);
+                    g.setName(pfx);
+                    outputImage(g, new Generic_Path(outDir2), ie, imageTypes, hoome);
+                    System.out.println("</outputImage>");
                     System.out.println(g.toString());
                     // generalise
-                    run1(g, outDir, workspaceDirectory, eage, ie,
-                            imageTypes, swapOutInitialisedFiles);
+                    run1(g, outDir, wsDir, eage, ie, imageTypes, swapOutInitialisedFiles);
                     System.out.println("Processing complete in "
                             + Grids_Utilities.getTime(System.currentTimeMillis() - t));
                 }
@@ -177,11 +169,11 @@ public class G_Khumbu extends Grids_ProcessorDEM {
         doMetrics1(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
                 maxDistance, multiplier, swapOutInitialisedFiles,
                 swapOutProcessedChunks);
-        doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
-                minDistance, maxDistance, multiplier, hoome);
-        doMetrics2(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
-                maxDistance, multiplier, swapOutInitialisedFiles,
-                swapOutProcessedChunks);
+//        doSlopeAndAspect(grid, outDir, workDir, eage, ie, imageTypes,
+//                minDistance, maxDistance, multiplier, hoome);
+//        doMetrics2(grid, outDir, workDir, eage, ie, imageTypes, minDistance,
+//                maxDistance, multiplier, swapOutInitialisedFiles,
+//                swapOutProcessedChunks);
     }
 
     /**
@@ -218,6 +210,7 @@ public class G_Khumbu extends Grids_ProcessorDEM {
         int d;
         int i;
         for (d = minDistance; d <= maxDistance; d *= multiplier) {
+            System.out.println("Distance " + d);
             env.checkAndMaybeFreeMemory();
             distance = cellsize * (double) d;
             Grids_GridNumber[] metrics1 = getMetrics1(g, distance,
